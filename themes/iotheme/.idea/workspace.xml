@@ -54,8 +54,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="570" column="25" selection-start-line="570" selection-start-column="23" selection-end-line="570" selection-end-column="25" />
+            <state relative-caret-position="109">
+              <caret line="347" column="24" lean-forward="true" selection-start-line="347" selection-start-column="24" selection-end-line="347" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -130,6 +130,7 @@
       <find>gr</find>
       <find>a \{</find>
       <find>h1</find>
+      <find>.title</find>
     </findStrings>
   </component>
   <component name="GOROOT" path="/usr/lib64/go/1.14" />
@@ -630,8 +631,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="570" column="25" selection-start-line="570" selection-start-column="23" selection-end-line="570" selection-end-column="25" />
+        <state relative-caret-position="109">
+          <caret line="347" column="24" lean-forward="true" selection-start-line="347" selection-start-column="24" selection-end-line="347" selection-end-column="24" />
         </state>
       </provider>
     </entry>
