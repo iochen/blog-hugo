@@ -1,0 +1,18 @@
+baseURL = "https://iochen.com/"
+languageCode = "en-us"
+title = "Richard Chen's Blog"
+theme = "iotheme"
+copyright = "©2020 Richard Chen."
+
+[params]
+logo = "images/logo.svg"
+
+[params.nav]
+showCategories = true
+showTags = true
+
+[params.license]
+enable = true
+author = "Richard Chen"
+article = "ff"
+code = "dd"
