@@ -6,16 +6,9 @@
 
     {{- $syntaxJS := "" -}}
     {{- if eq $use "hljs" -}}
-        {{- $syntaxJS = "js/hljs.js" -}}
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.1/build/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
     {{- else if eq $use "prismjs" -}}
-        {{- $syntaxJS = "js/prism.js" -}}
-    {{- end -}}
 
-    {{- if ne $syntaxJS "" -}}
-        {{- $js := resources.Get $syntaxJS | resources.Minify | resources.Fingerprint "sha384" -}}
-        <script src="{{- $js.RelPermalink -}}" integrity="{{- $js.Data.Integrity -}}"></script>
-        {{- if eq $use "hljs" -}}
-            <script>hljs.initHighlightingOnLoad();</script>
-        {{- end -}}
     {{- end -}}
 {{- end -}}

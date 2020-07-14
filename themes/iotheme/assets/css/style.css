@@ -15,9 +15,9 @@ html {
 
 body {
   display: block;
-  color: #24292e;
+  color: #222222;
   background-color: #f3f6f9;
-  border-top: 3px solid #24292e;
+  border-top: 3px solid #222222;
 
   word-break: normal;
   word-wrap: break-word;
@@ -66,7 +66,8 @@ q {
 }
 
 ::selection {
-  background-color: #fffed5;
+  background-color: #313131;
+  color: #eeeeee;
 }
 
 mark {
@@ -181,6 +182,12 @@ sb {
   border-radius: 2px;
   transition-property: background-color;
   line-height: 2;
+}
+
+.btn:hover {
+  border-color: #222;
+  color: #fff;
+  background: #222
 }
 
 a.btn {
@@ -342,7 +349,7 @@ a.btn {
 }
 
 .title {
-  color: rgba(34, 34, 34, 0.85);
+  color: #222222;
   font-size: 2.0em;
 }
 
@@ -561,13 +568,8 @@ a.btn {
   background-position: center center;
 }
 
-.article.markdown-body h1,
-.article.markdown-body h2,
-.article.markdown-body h3,
-.article.markdown-body h4,
-.article.markdown-body h5,
-.article.markdown-body h6 {
-  color: #1d2b4c;
+h1,h2,h3,h4,h5,h6 {
+  color: #333333;
   margin-top: 24px;
   margin-bottom: 20px;
 }

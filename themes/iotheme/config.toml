@@ -1,0 +1,4 @@
+[params.syntax]
+use = "hljs"  # builtin: "prismjs", "hljs". "none" means Chroma
+theme = "tomorrow"
+webFonts = true  # builtin: 'Source Code Pro'

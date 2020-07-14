@@ -21,9 +21,9 @@
 {{- end -}}
 
 {{- $themePath := "" -}}
-{{- $theme := "dracula" -}}
+{{- $theme := "a11y-light" -}}
 {{- with site.Params.syntax -}}
-{{- $use := "none" -}}
+{{- $use := "hljs" -}}
 {{- if and (isset . "use") (ne .use "") -}}{{- $use = .use | lower -}}{{- end -}}
 {{- if and (isset . "theme") (ne .theme "") -}}{{- $theme = .theme | lower -}}{{- end -}}
 

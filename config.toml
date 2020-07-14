@@ -6,6 +6,7 @@ copyright = "©2020 Richard Chen."
 
 [params]
 logo = "images/logo.svg"
+style = "light"
 
 [params.nav]
 showCategories = true
@@ -16,3 +17,7 @@ enable = true
 author = "Richard Chen"
 article = "ff"
 code = "dd"
+
+[markup]
+  [markup.highlight]
+    codeFences = false

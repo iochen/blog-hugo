@@ -58,8 +58,8 @@
 }
 
 pre {
-  background-color: #fefefe;
-  color: #545454;
+  background-color: #fefefe !important;
+  color: #545454 !important;
 }
 
 .hljs-emphasis {
