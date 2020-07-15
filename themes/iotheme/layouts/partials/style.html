@@ -66,8 +66,10 @@
   {{- $coreCSS = slice $coreCSS $syntaxCSS | resources.Concat "css/tmp_core.css" -}}
 {{- end -}}
 
-{{- $iconfontCSS := (resources.Get "css/iconfont.css") | resources.ExecuteAsTemplate "css/tmp_iconfont.css" . -}}
-{{- $coreCSS = slice $coreCSS $iconfontCSS | resources.Concat "css/tmp_iconfont_core.css" -}}
+{{/*{{- $iconfontCSS := (resources.Get "css/iconfont.css") | resources.ExecuteAsTemplate "css/tmp_iconfont.css" . -}}*/}}
+{{/*{{- $coreCSS = slice $coreCSS $iconfontCSS | resources.Concat "css/tmp_iconfont_core.css" -}}*/}}
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"></noscript>
 
 {{- with partial "custom-css.html" . -}}
     {{- if ne . "" -}}
@@ -77,5 +79,4 @@
 
 {{- $coreCSS = slice $coreCSS ("" | resources.FromString "css/_core.css") | resources.Concat "css/core.css" -}}
 {{- $coreCSS = $coreCSS | resources.Minify | resources.Fingerprint "sha384" -}}
-
 <link rel="stylesheet" href="{{- $coreCSS.RelPermalink -}}" integrity="{{- $coreCSS.Data.Integrity -}}">

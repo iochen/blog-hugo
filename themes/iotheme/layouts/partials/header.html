@@ -1,3 +1,5 @@
+{{- $nav := site.Params.nav -}}
+
 <section id="header">
     <div class="header wrap">
         <span class="header"><a class="site home" href="{{- `/` | relLangURL -}}">
@@ -6,9 +8,29 @@
                 <img class="site logo" src="{{- $logo | relURL -}}" alt />
                 {{- end -}}
                 <span class="site name">{{- site.Title | safeHTML -}}</span></a></span>
-        <span class="header right-side">
-            {{- partial "navigation-items.html" site.Params.nav -}}
-        </span></div>
+        <span class="header right-side" >
+            {{- partial "navigation-items.html" $nav -}}
+        </span>
+
+    <span class="m-header right-side" >
+        <button  onclick="Toggle('menu')" class="menubtn"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></button>
+    </span>
+
+        {{- partial "header-menu.html" $nav -}}
+
+
+        <script>
+            function Toggle(id) {
+                var dropdown = document.getElementById(id);
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                    } else {
+                        dropdown.classList.add('show');
+                    }
+            }
+        </script>
+
+    </div>
     {{- with site.Params.slogan -}}
         <div class="site slogan"><span class="title">{{- . | safeHTML -}}</span></div>
     {{- end -}}

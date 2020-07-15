@@ -1,0 +1,59 @@
+---
+---
+<div style="
+padding-left: 5%;
+padding-top: 1em;">
+<input id="key" type="text" placeholder="Search" style="
+width: 90%;
+height: 2.5em;
+font-size: large;
+padding-left: 2%;"/>
+<i id="searchbtn" class="fa fa-search fa-lg" style="
+	position: relative;
+    left: -1.6em;
+    color: #222222;
+    cursor:pointer;"></i>
+</div>
+
+<div id="result" style="
+padding-left: 5%;
+padding-right: 5%;
+padding-bottom: 1em;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script defer>
+    function unique(arr){
+        return Array.from(new Set(arr));
+    }
+	var data
+    document.getElementById("result").innerHTML = "<p>downloading data...</p>"
+    $.getJSON('search.json', function (d) {
+		data = d
+    });
+    document.getElementById("result").innerHTML = "<p>ready to search</p>"
+	function doSearch() {
+        var list = []
+        var key = document.getElementById("key").value.toLowerCase()
+        document.getElementById("result").innerHTML = ""
+        for (var i in data.Entries)
+        {
+            entry = data.Entries[i]
+            for (var j in entry.Key)
+            {
+                if (entry.Key[j].indexOf(key) != -1) {
+                    list[list.length] = entry
+				}
+            }
+        }
+        list = unique(list)
+		var r = ""
+		for (var i in list) {
+		    r += "<li><a href="+list[i].URL+">"+list[i].Title+"</a></li>"
+		}
+        document.getElementById("result").innerHTML = r
+		if (list.length === 0) {
+            document.getElementById("result").innerHTML = "<p>no result found</p>"
+        }
+    }
+    $('#searchbtn').click(doSearch);
+</script>

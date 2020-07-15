@@ -21,3 +21,11 @@ code = "dd"
 [markup]
   [markup.highlight]
     codeFences = false
+    guessSyntax = false
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = false
+    style = false
+    tabWidth = 4

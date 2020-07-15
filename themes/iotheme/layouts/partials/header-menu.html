@@ -1,0 +1,20 @@
+{{- $nav := . -}}
+<ul id="menu" class="menu dropdown">
+    {{- if $nav.showCategories -}}
+        <li class="menu-item"><a href="{{- `/categories/` | relLangURL -}}"><br>{{- T "Categories" -}}</a></li>
+    {{- end -}}
+
+    {{- if $nav.showTags -}}
+        <li class="menu-item"><a href="{{- `/tags/` | relLangURL -}}"><br>{{- T "Tags" -}}</a></li>
+    {{- end -}}
+    {{- range $nav.custom -}}
+        {{- $url := replace .url "#" "%23" -}}
+        {{- $url = replace $url "." "%2e" -}}
+        {{- $url = $url | safeURL -}}
+        {{- if strings.HasPrefix $url "/" -}}{{- $url = $url | relLangURL -}}{{- end -}}
+        <li class="menu-item"><a href="{{- $url -}}"
+                    {{- if strings.HasPrefix $url "http" -}}target="_blank"
+                    {{- end -}}
+            ><br>{{- .title -}}</a></li>
+    {{- end -}}
+</ul>
