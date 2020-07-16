@@ -6,7 +6,7 @@
                 {{- $logo := site.Params.logo -}}
                 {{- if $logo -}}
                     {{- if ne site.Params.cdn "" -}}
-                        <img class="site logo" src="{{- (print site.Params.cdn ($logo | relURL)) -}}" alt/>
+                        <img class="site logo" src="{{- (print site.Params.cdn ($logo | relURL)) -}}" crossorigin="anonymous" alt/>
                     {{- else -}}
                         <img class="site logo" src="{{- $logo | relURL -}}" alt/>
                     {{- end -}}

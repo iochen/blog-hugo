@@ -82,7 +82,7 @@
 
 {{- if ne site.Params.cdn "" -}}
     <link rel="stylesheet" href="{{- (print site.Params.cdn $coreCSS.RelPermalink) -}}"
-          integrity="{{- $coreCSS.Data.Integrity -}}">
+          integrity="{{- $coreCSS.Data.Integrity -}}" crossorigin="anonymous">
 {{- else -}}
 <link rel="stylesheet" href="{{- $coreCSS.RelPermalink -}}" integrity="{{- $coreCSS.Data.Integrity -}}">
 {{- end -}}
