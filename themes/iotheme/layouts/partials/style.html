@@ -80,7 +80,7 @@
 {{- $coreCSS = slice $coreCSS ("" | resources.FromString "css/_core.css") | resources.Concat "css/core.css" -}}
 {{- $coreCSS = $coreCSS | resources.Minify | resources.Fingerprint "sha384" -}}
 
-{{- if ne site.Params.cdn "" -}}
+{{- if site.Params.cdn -}}
     <link rel="stylesheet" href="{{- (print site.Params.cdn $coreCSS.RelPermalink) -}}"
           integrity="{{- $coreCSS.Data.Integrity -}}" crossorigin="anonymous">
 {{- else -}}

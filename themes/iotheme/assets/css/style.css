@@ -727,14 +727,14 @@ h1,h2,h3,h4,h5,h6 {
     padding-right: 8px;
   }
 
-  .header.right-side {
-    display: none;
+  .header.right-side,.mdisnone {
+    display: none !important;
   }
 }
 
 @media (min-width: 900px) {
-  .m-header.right-side {
-    display: none;
+  .m-header.right-side,.menu {
+    display: none !important;
   }
 }
 
@@ -819,3 +819,33 @@ article h1.nocount:before, h2.nocount:before, h3.nocount:before, h4.nocount:befo
 }
 
 .show {display:contents;}
+
+.tags,.categories {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
+}
+
+.page-tags ul li,
+.page-categories ul li {
+  margin: 5px 10px;
+}
+
+.page-tags ul li {
+  display: inline-block;
+}
+
+
+/*.page-categories ul li {*/
+/*  margin: 5px 10px;*/
+/*  font-size: 1.1em;*/
+/*  color: #888;*/
+/*}*/
+
+.page-categories ul li a{
+  font-size: 1.1em;
+}
+
+.page-categories ul li a{
+  font-size: 1.2em;
+}

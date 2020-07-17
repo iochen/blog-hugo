@@ -22,7 +22,7 @@
                 {{- if eq .PageNumber $paginator.PageNumber -}}
                     {{- $active = "active" -}}
                 {{- end -}}
-                <li><a class="{{- $active -}}" href="{{- .URL -}}">{{- .PageNumber -}}</a></li>
+                <li><a class="{{- $active -}}" href="{{- .URL -}}">{{- add 1 (sub $totalPages .PageNumber) -}}</a></li>
             {{- end -}}
         {{- end -}}
 

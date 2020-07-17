@@ -4,8 +4,15 @@
 {{- if $block -}}
 <span class="image-container"><span class="link">
 {{- end -}}
-<img {{ if $block }}class="img"{{ end }} src="{{- $url -}}"
+
+{{- if site.Params.cdn -}}
+<img {{ if $block }}class="img"{{ end }} src="{{- (print site.Params.cdn $url) -}}"
         alt{{- with .Text -}}="{{- . -}}" {{- end -}} />
+{{- else -}}
+<img {{ if $block }}class="img"{{ end }} src="{{- $url -}}"
+     alt{{- with .Text -}}="{{- . -}}" {{- end -}} />
+{{- end -}}
+
 {{- if $block -}}
 </span>
   {{- if ne .Title " " -}}

@@ -13,7 +13,13 @@ padding-left: 2%;"/>
     left: -1.6em;
     color: #222222;
     cursor:pointer;"></i>
-</div>
+
+		<input type="checkbox" class="mdisnone" id="autos" style="
+height: 2em;
+width: 2em;
+vertical-align: middle;
+display: inline-block;
+" checked> </div>
 
 <div id="result" style="
 padding-left: 5%;
@@ -22,38 +28,53 @@ padding-bottom: 1em;"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script defer>
-    function unique(arr){
-        return Array.from(new Set(arr));
-    }
-	var data
-    document.getElementById("result").innerHTML = "<p>downloading data...</p>"
+    let data;
+    document.getElementById("result").innerHTML = "<p>downloading data...</p>";
     $.getJSON('search.json', function (d) {
 		data = d
     });
-    document.getElementById("result").innerHTML = "<p>ready to search</p>"
+    document.getElementById("result").innerHTML = "<p>ready to search</p>";
 	function doSearch() {
-        var list = []
-        var key = document.getElementById("key").value.toLowerCase()
-        document.getElementById("result").innerHTML = ""
-        for (var i in data.Entries)
-        {
-            entry = data.Entries[i]
-            for (var j in entry.Key)
-            {
-                if (entry.Key[j].indexOf(key) != -1) {
-                    list[list.length] = entry
-				}
+        let j;
+        const list = [];
+        const key = document.getElementById("key").value.toLowerCase();
+        if (key === "") {
+            document.getElementById("result").innerHTML = "<p>ready to search</p>";
+            return
+		}
+        document.getElementById("result").innerHTML = "";
+        let entry;
+        for (const i in data.Entries) {
+            entry = data.Entries[i];
+            for (j in entry.Key) {
+                if (entry.Key[j].indexOf(key) !== -1) {
+                    list[list.length] = entry;
+                    break
+                }
             }
         }
-        list = unique(list)
-		var r = ""
-		for (var i in list) {
-		    r += "<li><a href="+list[i].URL+">"+list[i].Title+"</a></li>"
+        let r = "";
+        for (j in list) {
+		    r += "<li><a href="+list[j].URL+">"+list[j].Title+"</a></li>"
 		}
-        document.getElementById("result").innerHTML = r
+        document.getElementById("result").innerHTML = r;
 		if (list.length === 0) {
             document.getElementById("result").innerHTML = "<p>no result found</p>"
         }
     }
     $('#searchbtn').click(doSearch);
+    $(document).keydown(function (event) {
+        if (event.keyCode === 13) {
+            $(document).keyup(function (event) {
+                if (event.keyCode === 13) {
+                    $("#searchbtn").click();
+                }
+            });
+        }
+    });
+    $("input[id=key]").on('input', function () {
+        if ($('input[id=autos]').is(':checked')) {
+            doSearch()
+		}
+    });
 </script>
