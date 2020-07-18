@@ -1,5 +1,4 @@
 {{- $paginator := . -}}
-
 {{- if gt $paginator.TotalPages 0 -}}
 {{- $dateFormat := site.Params.dateFormat -}}
 {{- if not $dateFormat -}}{{- $dateFormat = "2006-01-02" -}}{{- end -}}
@@ -7,19 +6,31 @@
     {{- range $paginator.Pages -}}
       {{- $relURL := replace .RelPermalink "#" "%23" -}}
       {{- $relURL = replace $relURL "." "%2e" -}}
-    <li class="item"><a class="note" href="{{- $relURL -}}">
-            <h1 class="note title">{{- .Title | safeHTML -}}</h1>
+    <li class="item">
+        <h1 class="note title"><a class="note" href="{{- $relURL -}}">{{- .Title | safeHTML -}}</a></h1>
+            <div class="post-meta">
             {{- if .Date -}}
-                <p class="note date">{{- .Date.Format $dateFormat -}}</p>
+                <i class="fa fa-calendar-o"></i>&nbsp;<a>{{- .Date.Format $dateFormat -}}</a>
             {{- end -}}
+             {{- if and .Date .Params.categories -}}
+                 <a> | </a>
+            {{- end -}}
+          {{- if .Params.categories -}}
+                    {{- range .Params.categories -}}
+                        {{- $category := replace . "#" "%23" -}}
+                        {{- $category = replace $category "." "%2e" -}}
+                        {{- $url := print "/categories/" ($category | urlize) "/" -}}
+                 <i class="fa fa-folder-o"></i>&nbsp;<a href="{{- $url | relLangURL -}}">{{- . -}}&nbsp;&nbsp;</a>
+           {{- end -}}
+            {{- end -}}
+            </div>
             {{- if .Summary -}}
-                <p class="note content">{{- .Summary | plainify | safeHTML -}}
-            {{- if .Truncated -}}
-                <span class="mldr">&mldr;</span>
+                <div>
+            <p class="note content">{{- .Summary | plainify | safeHTML -}}
 
-                <div style="text-align: center;"><a class="btn" href="{{- $relURL -}}">more »</a></div>
-                {{- end -}}
-                </p>
+            {{- if .Truncated -}}<span class="mldr">&mldr;</span>{{- end -}}
+            </p></div>
+            <div style="text-align: center;"><a class="btn more" href="{{- $relURL -}}">more »</a></div>
             {{- end -}}
             
             {{- $imgs := .Params.imgs -}}
@@ -35,8 +46,7 @@
                     {{- end -}}
                 </span>
             {{- end -}}
-        </a>
-        {{- partial "note-labels.html" . -}}
+        <div class="post-eof"></div>
     </li>
     {{- end -}}
 </ul>
