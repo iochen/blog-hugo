@@ -1,0 +1,72 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.74.1"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><link rel=preload href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as=font><title>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 1&nbsp;&ndash;&nbsp;Richard Chen's Blog</title><link href=https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css rel=stylesheet rel=preload as=style><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/core.min.557e0a83d4005903199dab1bea2ca687eea4e9446d981e750f1adb938250c0bf5a28160fb840e3d24c9f22bea1e66433.css integrity=sha384-VX4Kg9QAWQMZnasb6iymh+6k6URtmB51Dxrbk4JQwL9aKBYPuEDj0kyfIr6h5mQz crossorigin=anonymous><meta name=twitter:card content="summary"><meta name=twitter:title content="基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 1"><body><section id=header><div class="header wrap"><span class=header><a class="site home" href=/><img class="site logo" src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/images/logo.svg crossorigin=anonymous alt><span class="site name">Richard Chen's Blog</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/categories/>Categories</a>&nbsp;|&nbsp;<a class="nav item" href=/tags/>Tags</a>&nbsp;|&nbsp;<a class="nav item" href=/about/>About</a>&nbsp;|&nbsp;<a class="nav item" href=/links/>Links</a>&nbsp;|&nbsp;<a class="nav item" href=/search/>Search</a>&nbsp;|&nbsp;</nav></div></span><span class="m-header right-side"><button onclick="Toggle('menu')" class=menubtn><i class="fa fa-bars fa-lg" aria-hidden=true></i></button></span><ul id=menu class="menu dropdown"><li class=menu-item><a href=/categories/><br>Categories</a></li><li class=menu-item><a href=/tags/><br>Tags</a></li><li class=menu-item><a href=/about/><br>About</a></li><li class=menu-item><a href=/links/><br>Links</a></li><li class=menu-item><a href=/search/><br>Search</a></li></ul><script>function Toggle(id){var dropdown=document.getElementById(id);if(dropdown.classList.contains('show')){dropdown.classList.remove('show');}else{dropdown.classList.add('show');}}</script></div></section><section id=content><div class=article-container><section class="article header"><h2 class=title>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 1</h2><div class=post-meta><i class="fa fa-calendar-o"></i>&nbsp;<span>2018-07-21</span><a> | </a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/linux/>Linux&nbsp;&nbsp;</a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/centos/>CentOS&nbsp;&nbsp;</a></div></section><article class="article markdown-body"><p>本文将详细讲解 如何在CentOS 7下，使用Postfix & Dovecot 搭建自己的邮件服务器。<br>这是第一部分: Postfix 与 DNS各种记录。</p><h1 id=前言>前言</h1><p>在我自己搭建的时候，看了许多网络教程，但博主自己在实现过程中遇到了许多坑，比如教程本身有问题，讲解不明等，所以在此自己写一篇。</p><h1 id=实践>实践</h1><h2 id=变量设定><strong>变量设定</strong></h2><h2 id=dns记录>DNS记录</h2><h3 id=必要记录>必要记录</h3><table><thead><tr><th align=center>名称(Name)</th><th align=center>记录类型(Type)</th><th align=center>记录内容(Value)</th><th align=center>注</th></tr></thead><tbody><tr><td align=center><code>mail</code></td><td align=center>A</td><td align=center><code>8.8.8.8</code></td><td align=center>/</td></tr><tr><td align=center><code>@</code></td><td align=center>MX</td><td align=center><code>mail.example.com</code></td><td align=center>优先级(Priority)为 <code>10</code></td></tr></tbody></table><h3 id=选填记录>选填记录</h3><p>变量假设: 你的邮箱为<code> i@example.com</code></p><table><thead><tr><th align=center>名称(Name)</th><th align=center>记录类型(Type)</th><th align=center>记录内容(Value)</th><th align=center>注</th></tr></thead><tbody><tr><td align=center><code>@</code></td><td align=center>TXT</td><td align=center><code>v=spf1 mx ~all</code></td><td align=center><em><b><a href=#SPF%e8%ae%b0%e5%bd%95>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>见下&nbsp;</a></b></em></td></tr><tr><td align=center><code>_dmarc</code></td><td align=center>TXT</td><td align=center><code>v=DMARC1;p=reject;rua=i@example.com</code></td><td align=center><em><b><a href=#DMARC%e8%ae%b0%e5%bd%95>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>见下&nbsp;</a></b></em></td></tr></tbody></table><h4 id=spf记录>SPF记录</h4><p><strong>SPF记录</strong>可确定允许哪些IP 使用你的域名 来发送电子邮件。<br>SPF的设置选项可以参考：<em><b><a href=http://www.openspf.org/SPFRecordSyntax target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>SPF Record Syntax&nbsp;</a></b></em> <em>注:此链接未使用HTTPS</em><br>部分如下：<br><code>a</code>：所有该域名的<strong>A记录</strong>都为通过，a不指定的情况下为当前域名<br><code>ip4</code>：指定通过的IPv4地址<br><code>mx</code>：mx记录域名的A记录IP可以发邮件<br><code>all</code>：指其它IP该作何处理，<code>-</code>表示<strong>拒绝</strong>，<code>~</code>表示<strong>软拒绝</strong>，<code>+</code>表示<strong>通过</strong><br>这里的<code>v=spf1 mx ~all</code>，则表示允许MX记录的IP收发邮件,软拒绝其它IP发来的邮件。</p><h4 id=dmarc记录>DMARC记录</h4><p><strong>DMARC协议</strong>是有效解决信头From伪造而诞生的一种新的邮件来源验证手段，为邮件发件人地址提供强大保护，并在邮件收发双方之间建立起一个数据反馈机制。<br>具体信息可以看这里：<em><b><a href=https://dmarc.org/overview/ target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>DMARC Overview&nbsp;</a></b></em>。<br><strong>DMARC记录</strong>中常用的参数解释:<br><code>p</code>：用于告知收件方，当检测到某邮件存在伪造我（发件人）的情况，收件方要做出什么处理，处理方式从轻到重依次为：<code>none</code>为不作任何处理；<code>quarantine</code>为将邮件标记为垃圾邮件；<code>reject</code>为拒绝该邮件。<br><code>rua</code>：用于在收件方检测后，将一段时间的汇总报告，发送到哪个邮箱地址。<br><code>ruf</code>：用于当检测到伪造邮件时，收件方须将该伪造信息的报告发送到哪个邮箱地址。<br>例如我设置的是<code>v=DMARC1;p=reject;rua=i@example.com</code>，意思是拒绝伪造邮件，并且将一段时间的汇总报告发送给<code>i@example.com</code>。</p><h2 id=证书签发>证书签发</h2><p>这里使用<strong>Certbot</strong></p><h3 id=安装certbot>安装Certbot</h3><pre><code class=language-bash>$ sudo yum -y install yum-utils
+$ sudo yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
+$ sudo yum install certbot
+</code></pre><h3 id=签发证书>签发证书</h3><pre><code class=language-bash>$ sudo certbot certonly -d mail.example.com
+</code></pre><p>看提示, 使用<strong>root用户</strong>登录, 在提示的目录下会有<code>cert.pem</code> <code>chain.pem</code> <code>fullchain.pem</code> <code>privkey.pem</code><br>博主这些文件的所在目录是<code>/etc/letsencrypt/live/mail.example.com/</code><br>那么<strong>证书文件</strong>就是<code>/etc/letsencrypt/live/mail.example.com/cert.pem</code><br><strong>密钥文件</strong>是<code>/etc/letsencrypt/live/mail.example.com/privkey.pem</code><br>下文请注意替换!!!</p><h2 id=postfix>Postfix</h2><h3 id=安装postfix>安装Postfix</h3><pre><code class=language-bash>$ sudo yum -y install postfix
+</code></pre><h3 id=配置postfix>配置Postfix</h3><p>编辑<code>/etc/postfix/main.cf</code>文件</p><pre><code class=language-conf># 第75行: 取消注释并修改
+myhostname = mail.example.com
+
+# 第83行: 取消注释并修改
+mydomain = example.com
+
+# 第99行: 取消注释并修改
+myorigin = $mydomain
+
+# 第116行: 修改
+inet_interfaces = all
+
+# 第164行: 添加
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+# 第264行: 取消注释并修改为你的内网(就填下面的一般也行)
+mynetworks = 127.0.0.0/8, 10.0.0.0/24
+
+# 第419行: 修改
+home_mailbox = Mailbox/
+
+# 第574行: 添加
+smtpd_banner = $myhostname ESMTP
+
+# 把下面的内容添加到最后
+# 限制邮件大小为10M
+message_size_limit = 10485760
+# 限制邮箱大小为1G
+mailbox_size_limit = 1073741824
+# SMTP验证用内容 (为接下来的Dovecot做准备)
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_recipient_restrictions = permit_mynetworks,permit_auth_destination,permit_sasl_authenticated,reject
+# TLS/SSL内容, 注意替换路径!!!
+smtpd_use_tls = yes
+smtpd_tls_cert_file = /etc/letsencrypt/live/mail.example.com/cert.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/mail.example.com/privkey.pem
+smtpd_tls_session_cache_database = btree:/etc/postfix/smtpd_scache
+</code></pre><p>编辑<code>/etc/postfix/master.cf</code></p><pre><code># 第26~28行: 取消注释
+smtps       inet   n       -       n       -       -       smtpd
+  -o syslog_name=postfix/smtps
+  -o smtpd_tls_wrappermode=yes
+</code></pre><h3 id=重启postfix并开机自启>重启Postfix并开机自启</h3><pre><code class=language-bash>$ sudo systemctl restart postfix &amp;&amp; sudo systemctl enable postfix
+</code></pre><h3 id=firewall相应配置>firewall相应配置</h3><pre><code class=language-bash>$ sudo firewall-cmd --add-port={25/tcp,465/tcp} --permanent &amp;&amp; sudo firewall-cmd --reload
+</code></pre><p><strong>25/tcp</strong>为<strong>SMTP</strong>端口, <strong>465/tcp</strong>为<strong>SMTPS</strong>端口<br>注: 可能部分VPS未开放25端口, 请与VPS提供商联系!</p><h2 id=dkim>DKIM</h2><p><strong>DomainKeys Identified Mail</strong>的缩写，域名密钥识别邮件标准。</p><h3 id=安装>安装</h3><h4 id=下载安装epel>下载安装EPEL</h4><p>64 bit:</p><pre><code class=language-bash>$ sudo rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+</code></pre><p>32 bit:</p><pre><code class=language-bash>$ sudo rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+</code></pre><h4 id=安装opendkim>安装opendkim</h4><pre><code>$ sudo yum install opendkim
+</code></pre><h3 id=生成dkim-key-注意修改域名>生成DKIM key (注意修改域名)</h3><pre><code class=language-bash>$ export domain=example.com
+</code></pre><p>接下来请以root用户运行!!!</p><pre><code class=language-bash>$ mkdir /etc/opendkim/keys/$domain
+$ cd /etc/opendkim/keys/$domain
+$ opendkim-genkey -d $domain -s default
+$ chown -R opendkim:opendkim /etc/opendkim/keys/$domain
+$ echo &quot;default._domainkey.$domain $domain:default:/etc/opendkim/keys/$domain/default.private&quot; &gt;&gt; /etc/opendkim/KeyTable
+$ echo &quot;*@$domain default._domainkey.$domain&quot; &gt;&gt; /etc/opendkim/SigningTable
+</code></pre><p>生成之后打开``/etc/opendkim/keys/example.com/default.txt<code>，里面就是DKIM key，需要添加到DNS，主机记录为</code>default._domainkey`，记录值为括号里面的（去掉引号,换行）,<br>例如:</p><table><thead><tr><th align=center>名称(Name)</th><th align=center>记录类型(Type)</th><th align=center>记录内容(Value)</th><th align=center>注</th></tr></thead><tbody><tr><td align=center><code>default._domainkey</code></td><td align=center>TXT</td><td align=center><code>v=DKIM1; k=rsa; p=...</code></td><td align=center>/</td></tr></tbody></table><h3 id=修改opendkim配置>修改openDKIM配置</h3><p>编辑<code>/etc/opendkim.conf</code></p><ol><li>将<code>Mode</code> 改为 <code>Mode sv</code></li><li>将<code>Domain</code> 改为 <code>Domain example.com</code> (注意替换)</li><li>将所有变量前面的#去掉，但是<code>KeyFile</code>,<code>Statistics</code>,<code>ReportAddress</code>加上<code>#</code></li><li>再把<code>SigningTable /etc/opendkim/SigningTable</code>改成<code>SigningTable refile:/etc/opendkim/SigningTable</code></li></ol><h3 id=设置postfix>设置Postfix</h3><p>编辑<code>/etc/postfix/main.cf</code><br>加上下面几行</p><pre><code class=language-conf># opendkim 配置
+smtpd_milters = inet:127.0.0.1:8891
+non_smtpd_milters = inet:127.0.0.1:8891
+milter_default_action = accept
+</code></pre><h3 id=重启服务>重启服务</h3><pre><code class=language-bash>$ sudo systemctl restart postfix opendkim &amp;&amp; sudo systemctl enable opendkim
+</code></pre><p>P.S.: 第一次启动如果出现<code> Generating default DKIM keys: hostname: Unknown host</code> 可以在 <code>/etc/hosts</code> 上面加上域名，例如：</p><pre><code class=language-hosts>127.0.0.1 example.com localhost localhost.localdomain localhost4 localhost4.localdomain4
+</code></pre><h1 id=小结>小结</h1><p>这里将<strong>SMTP(S)</strong>, 即发件服务配置好了, 关于<strong>Dovecot</strong>及后续内容(Part 2),<br><strong>链接在此 -> <em><b><a href=/2018/07/27/install-email-service-on-CentOS-7-part-2-dovecot/>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 2&nbsp;</a></b></em></strong></p><h1 id=参考>参考</h1><p><em><b><a href=https://blog.csdn.net/wh211212/article/details/53040620 target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>CentOS 7.2 部署邮件服务器（Postfix）&nbsp;</a></b></em><em>注:作者未注明许可协议</em><br><em><b><a href=http://lomu.me/post/SPF-DKIM-DMARC-PTR target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>邮件服务器添加SPF、DKIM、DMARC、PTR提高送达率 &nbsp;</a></b></em><em>注:作者未注明许可协议</em> <em>注:此链接未使用HTTPS</em></p></article><section class="article license"><table class=license><tr><td><b>AUTHOR</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>Richard Chen</td></tr><tr><td><b>ARTICLE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>ff</td></tr><tr><td><b>CODE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>dd</td></tr></table></section></div><div class="article bottom"><section class="article navigation"><p>Next: <a class=link href=/post/install-email-service-on-centos-7-part-2-dovecot/><span class="iconfont icon-article"></span>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 2</a></p><p>Prev: <a class=link href=/post/get-a-plus-on-https-by-using-nginx/><span class="iconfont icon-article"></span>nginx配置HTTPS并取得A+</a></p></section></div></section><section id=footer><div class=footer-wrap><span class=copyright>©2020 Richard Chen.</span> |
+<span class=powerby><span>Powered by</span>
+<a href=/powered-by/>these</a><span> projects.</span></span></div></section></body></html>

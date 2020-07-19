@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>ExifTool on Richard Chen's Blog</title><link>/tags/exiftool/</link><description>Recent content in ExifTool on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>©2020 Richard Chen.</copyright><lastBuildDate>Tue, 04 Feb 2020 17:48:18 +0000</lastBuildDate><atom:link href="/tags/exiftool/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux下使用ExifTool对EXIF的操作</title><link>/post/view-edit-remove-exif-data-with-exiftool/</link><pubDate>Tue, 04 Feb 2020 17:48:18 +0000</pubDate><guid>/post/view-edit-remove-exif-data-with-exiftool/</guid><description>前言 EXIF数据可以包括你的相机信息，快门，光圈，ISO，创建时间，编辑信息，GPS信息等信息，他们会在无心之中泄漏你的隐私，特别是上传照片到互联网上时，那更是有极大的泄漏风险。因此，在上传照片到网路上时，请务必删除EXIF信息。
+本篇文章就是要教你在Linux下，如何使用ExifTool查看、修改与删除图片的EXIF数据
+安装ExifTool openSUSE zypper in exiftool Ubuntu apt-get install libimage-exiftool-perl CentOS yum install perl-Image-ExifTool Others 到&amp;nbsp;ExifTool官网&amp;nbsp;下载二进制包，解压并进入。如有需要，请链接到/usr/bin/
+使用ExifTool 查看EXIF 直接查看 exiftool {{InputFile}} 可选参数：
+-a 查看所有metadata，但博主实测并没有增加多少新的数据，还重复了很多 导出为HTML exiftool -h {{InputFile}} &amp;gt; {{OutputFile}} 可选参数：
+-a 查看所有metadata 导出为json exiftool -j {{InputFile}} &amp;gt; {{OutputFile}} 可选参数：
+-a 查看所有metadata 编辑EXIF 写入到单文件 exiftool -{{TAG}}={{Content}} {{InputFile}} example:
+exiftool -comment=&amp;quot;Good Quality&amp;quot; -artist=&amp;quot;Richard Chen&amp;quot; input.png 写入到多文件或文件夹 exiftool -{{TAG}}={{Content}} {{InputFile1}} {{InputFile2}} {{Folder}} example:</description></item></channel></rss>

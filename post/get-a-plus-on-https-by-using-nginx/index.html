@@ -1,0 +1,68 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.74.1"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><link rel=preload href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as=font><title>nginx配置HTTPS并取得A+&nbsp;&ndash;&nbsp;Richard Chen's Blog</title><link href=https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css rel=stylesheet rel=preload as=style><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/core.min.557e0a83d4005903199dab1bea2ca687eea4e9446d981e750f1adb938250c0bf5a28160fb840e3d24c9f22bea1e66433.css integrity=sha384-VX4Kg9QAWQMZnasb6iymh+6k6URtmB51Dxrbk4JQwL9aKBYPuEDj0kyfIr6h5mQz crossorigin=anonymous><meta name=twitter:card content="summary"><meta name=twitter:title content="nginx配置HTTPS并取得A+"><body><section id=header><div class="header wrap"><span class=header><a class="site home" href=/><img class="site logo" src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/images/logo.svg crossorigin=anonymous alt><span class="site name">Richard Chen's Blog</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/categories/>Categories</a>&nbsp;|&nbsp;<a class="nav item" href=/tags/>Tags</a>&nbsp;|&nbsp;<a class="nav item" href=/about/>About</a>&nbsp;|&nbsp;<a class="nav item" href=/links/>Links</a>&nbsp;|&nbsp;<a class="nav item" href=/search/>Search</a>&nbsp;|&nbsp;</nav></div></span><span class="m-header right-side"><button onclick="Toggle('menu')" class=menubtn><i class="fa fa-bars fa-lg" aria-hidden=true></i></button></span><ul id=menu class="menu dropdown"><li class=menu-item><a href=/categories/><br>Categories</a></li><li class=menu-item><a href=/tags/><br>Tags</a></li><li class=menu-item><a href=/about/><br>About</a></li><li class=menu-item><a href=/links/><br>Links</a></li><li class=menu-item><a href=/search/><br>Search</a></li></ul><script>function Toggle(id){var dropdown=document.getElementById(id);if(dropdown.classList.contains('show')){dropdown.classList.remove('show');}else{dropdown.classList.add('show');}}</script></div></section><section id=content><div class=article-container><section class="article header"><h2 class=title>nginx配置HTTPS并取得A+</h2><div class=post-meta><i class="fa fa-calendar-o"></i>&nbsp;<span>2018-07-11</span><a> | </a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/apps/>Apps&nbsp;&nbsp;</a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/nginx/>nginx&nbsp;&nbsp;</a></div></section><article class="article markdown-body"><p>主要是我自己的nginx配置, 并且HTTPS取得<strong>A+</strong>.</p><p>先来展示一下:</p><p><img src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/get-A-plus-on-https-by-using-nginx/58b2543b-5fc7-43a3-9473-f30cf6218ced.png alt=58b2543b-5fc7-43a3-9473-f30cf6218ced></p><h1 id=直接上配置>直接上配置!</h1><pre><code class=language-nginx>server {
+    listen 80;
+    listen [::]:80;
+    server_name domain.ltd; # 你的域名
+    return 301 https://domain.ltd$request_uri; # 你的域名
+    error_page 497 =301 https://domain.ltd$request_uri; # 你的域名
+}
+
+server {
+    listen 443  ssl http2;
+    listen [::]:443  ssl http2;
+    server_name domain.ltd; # 你的域名
+    add_header Strict-Transport-Security &quot;max-age=63072000; includeSubDomains; preload&quot;;
+    ssl        on;
+    ssl_certificate /etc/certificate_path/file.pem ; # 你的证书路径
+    ssl_certificate_key /etc/certificate_key_path/file.pem ; # 你的证书key路径
+    ssl_protocols TLSv1.3 TLSv1.2;
+    ssl_stapling on;
+    ssl_ciphers &quot;ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA&quot;;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+    ssl_dhparam /etc/myssl/dhparam.pem; # 你的DH证书路径,下面会说
+    charset utf-8;
+    access_log  /var/log/nginx/access.log; # 可自行修改
+    error_log   /var/log/nginx/error.log; # 可自行修改
+
+    location / {
+         root   /usr/share/nginx/path; # 你的网站根目录
+         try_files $uri $uri/ /index.php?$uri;
+         index  index.php index.html;
+    }
+
+    # ERROR pages
+    error_page  404        /404.html;
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/path; # 你的网站根目录
+    }
+
+    # GZIP
+    gzip on;
+    gzip_min_length 1k;
+    gzip_comp_level 2;
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png image/jpg;
+    gzip_vary on;
+    gzip_disable &quot;MSIE [1-6]\.&quot;;
+
+    # PHP
+    location ~ \.php$ {
+        root           html;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME /usr/share/nginx/path/$fastcgi_script_name; # 你的网站根目录
+        include        fastcgi_params;
+    }
+}
+</code></pre><h1 id=必要修改说明>必要修改&&说明</h1><h2 id=必要替换>必要替换:</h2><pre><code>domain.ltd    =&gt; 你的域名
+/etc/certificate_path/file.pem    =&gt; 你的证书路径
+/etc/certificate_key_path/file.pem    =&gt; 你的证书key路径
+/etc/myssl/dhparam.pem    =&gt; 你的DH证书路径,下面会说
+/usr/share/nginx/path    =&gt; 你的网站文件根目录
+</code></pre><h2 id=个别说明>个别说明</h2><p>DH证书: 请先安装<code>openssl</code></p><pre><code>openssl dhparam -dsaparam -out dhparam.pem 4096
+</code></pre><p>建议使用<strong>nohup</strong>,生成会花费一定时间.<br><em><b><a href=#nohup>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i><em>nohup ?</em>&nbsp;</a></b></em></p><h1 id=附>附</h1><h2 id=nohup>nohup</h2><p>nohup使用:</p><pre><code class=language-bash>$ nohup [应该的命令] &amp;
+</code></pre><p>会将屏幕输出内容存放在本地目录下<code>nohup.out</code>文件内</p></article><section class="article license"><table class=license><tr><td><b>AUTHOR</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>Richard Chen</td></tr><tr><td><b>ARTICLE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>ff</td></tr><tr><td><b>CODE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>dd</td></tr></table></section></div><div class="article bottom"><section class="article navigation"><p>Next: <a class=link href=/post/install-email-service-on-centos-7-part-1-postfix/><span class="iconfont icon-article"></span>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 1</a></p><p>Prev: <a class=link href=/post/firewall-of-centos/><span class="iconfont icon-article"></span>CentOS7防火墙的使用</a></p></section></div></section><section id=footer><div class=footer-wrap><span class=copyright>©2020 Richard Chen.</span> |
+<span class=powerby><span>Powered by</span>
+<a href=/powered-by/>these</a><span> projects.</span></span></div></section></body></html>

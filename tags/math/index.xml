@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>math on Richard Chen's Blog</title><link>/tags/math/</link><description>Recent content in math on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>©2020 Richard Chen.</copyright><lastBuildDate>Mon, 23 Mar 2020 10:25:04 +0000</lastBuildDate><atom:link href="/tags/math/index.xml" rel="self" type="application/rss+xml"/><item><title>[已证伪]柯拉兹猜想轮数规律</title><link>/post/collatz/</link><pubDate>Mon, 23 Mar 2020 10:25:04 +0000</pubDate><guid>/post/collatz/</guid><description>[已证伪]
+另 \(n​\) 为 $(0, 1ek]$ 中 一值，使得$CollatzRound(n)$ 为最大值，
+那么$$\frac{n - 2^{k+1} + 1}{2^{k + 1}}$$ 为正整数
+[已证伪]
+数据：
+range round number 0..1e1 19 9 0..1e2 118 97 0..1e3 178 871 0..1e4 261 6171 0..1e5 350 77031 0..1e6 524 837799 0..1e7 685 8400511 0..1e8 949 63728127 0..1e9 986 670617279</description></item></channel></rss>

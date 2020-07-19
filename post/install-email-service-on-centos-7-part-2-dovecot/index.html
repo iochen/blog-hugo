@@ -1,0 +1,37 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.74.1"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><link rel=preload href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as=font><title>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 2&nbsp;&ndash;&nbsp;Richard Chen's Blog</title><link href=https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css rel=stylesheet rel=preload as=style><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/core.min.557e0a83d4005903199dab1bea2ca687eea4e9446d981e750f1adb938250c0bf5a28160fb840e3d24c9f22bea1e66433.css integrity=sha384-VX4Kg9QAWQMZnasb6iymh+6k6URtmB51Dxrbk4JQwL9aKBYPuEDj0kyfIr6h5mQz crossorigin=anonymous><meta name=twitter:card content="summary"><meta name=twitter:title content="基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 2"><body><section id=header><div class="header wrap"><span class=header><a class="site home" href=/><img class="site logo" src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/images/logo.svg crossorigin=anonymous alt><span class="site name">Richard Chen's Blog</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/categories/>Categories</a>&nbsp;|&nbsp;<a class="nav item" href=/tags/>Tags</a>&nbsp;|&nbsp;<a class="nav item" href=/about/>About</a>&nbsp;|&nbsp;<a class="nav item" href=/links/>Links</a>&nbsp;|&nbsp;<a class="nav item" href=/search/>Search</a>&nbsp;|&nbsp;</nav></div></span><span class="m-header right-side"><button onclick="Toggle('menu')" class=menubtn><i class="fa fa-bars fa-lg" aria-hidden=true></i></button></span><ul id=menu class="menu dropdown"><li class=menu-item><a href=/categories/><br>Categories</a></li><li class=menu-item><a href=/tags/><br>Tags</a></li><li class=menu-item><a href=/about/><br>About</a></li><li class=menu-item><a href=/links/><br>Links</a></li><li class=menu-item><a href=/search/><br>Search</a></li></ul><script>function Toggle(id){var dropdown=document.getElementById(id);if(dropdown.classList.contains('show')){dropdown.classList.remove('show');}else{dropdown.classList.add('show');}}</script></div></section><section id=content><div class=article-container><section class="article header"><h2 class=title>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 2</h2><div class=post-meta><i class="fa fa-calendar-o"></i>&nbsp;<span>2018-07-27</span><a> | </a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/linux/>Linux&nbsp;&nbsp;</a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/centos/>CentOS&nbsp;&nbsp;</a></div></section><article class="article markdown-body"><p>本文将详细讲解 如何在CentOS 7下，使用Postfix & Dovecot 搭建自己的邮件服务器。<br>这是第二部分: Dovecot 与 其它优化。</p><h1 id=前言>前言</h1><p>在我自己搭建的时候，看了许多网络教程，但博主自己在实现过程中遇到了许多坑，比如教程本身有问题，讲解不明等，所以在此自己写一篇。</p><p>关于<strong>Postfix</strong>及前面内容(Part 1),<br><strong>链接在此 -> <em><b><a href=/2018/07/21/install-email-service-on-CentOS-7-part-1-postfix/>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 1&nbsp;</a></b></em></strong></p><h1 id=实践>实践</h1><h2 id=变量设定><strong>变量设定</strong></h2><h2 id=dovecot>Dovecot</h2><h3 id=安装>安装</h3><pre><code class=language-bash>$ sudo yum -y install dovecot
+</code></pre><h3 id=配置>配置</h3><p>编辑<code>/etc/dovecot/dovecot.conf</code></p><pre><code># 第24行 : 取消注释并修改
+protocols = imap pop3 lmtp
+# 第30行: 取消注释并修改
+listen = *, ::
+</code></pre><p>编辑<code>/etc/dovecot/conf.d/10-auth.conf</code></p><pre><code># 第10行: 取消注释并修改
+disable_plaintext_auth = yes
+# 第100行: 修改
+auth_mechanisms = plain login
+</code></pre><p>编辑<code>/etc/dovecot/conf.d/10-mail.conf</code></p><pre><code># 第30行: 取消注释并修改
+mail_location = maildir:~/Mailbox
+</code></pre><p>编辑<code>/etc/dovecot/conf.d/10-master.conf</code></p><pre><code># 第89~93行: 全部注释!!!
+# unix_listener auth-userdb {
+   #mode = 0666
+   #user =
+   #group =
+# }
+
+# 第96~98行: 取消注释并修改
+unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+    user = postfix
+    group = postfix
+}
+</code></pre><p>编辑<code>/etc/dovecot/conf.d/10-ssl.conf</code></p><pre><code># 第8行: 修改
+ssl = required
+
+# 第14~15行: 取消注释并修改,注意替换路径!!! 路径见本文前面 变量设定 部分
+ssl_cert = &lt;/etc/letsencrypt/live/mail.example.com/cert.pem
+ssl_key = &lt;/etc/letsencrypt/live/mail.example.com/privkey.pem
+</code></pre><h3 id=重启dovecot>重启Dovecot</h3><pre><code class=language-bash>$ sudo systemctl restart dovecot &amp;&amp; sudo systemctl enable dovecot
+</code></pre><h2 id=firewall相应配置>firewall相应配置</h2><pre><code class=language-bash>$ sudo firewall-cmd --add-port={110/tcp,143/tcp,995/tcp,993/tcp} --permanent &amp;&amp; sudo firewall-cmd --reload
+</code></pre><p><strong>110/tcp</strong>为<strong>POP3</strong>端口, <strong>143/tcp</strong>为<strong>IMAP</strong>端口, <strong>995/tcp</strong>为<strong>POP3S</strong>端口, <strong>993/tcp</strong>为<strong>IMAPS</strong>端口</p><h1 id=检验>检验</h1><p>假设你的Linux服务器中, 你的用户名为<code>user</code>, 则可按下方配置操作:
+<img src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/install-email-service-on-CentOS-7-part-2-dovecot/68eee113-65c4-4cd9-9347-1b1cf2c608e8.png alt="email for user"></p><h1 id=参考>参考</h1><p><em><b><a href=https://blog.csdn.net/wh211212/article/details/53040620 target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>CentOS 7.2 部署邮件服务器（Postfix）&nbsp;</a></b></em><em>注:作者未注明许可协议</em><br><em><b><a href=http://lomu.me/post/SPF-DKIM-DMARC-PTR target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>邮件服务器添加SPF、DKIM、DMARC、PTR提高送达率 &nbsp;</a></b></em><em>注:作者未注明许可协议</em> <em>注:此链接未使用HTTPS</em></p></article><section class="article license"><table class=license><tr><td><b>AUTHOR</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>Richard Chen</td></tr><tr><td><b>ARTICLE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>ff</td></tr><tr><td><b>CODE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>dd</td></tr></table></section></div><div class="article bottom"><section class="article navigation"><p>Next: <a class=link href=/post/solved-problem-about-sd-card-formart-on-linux/><span class="iconfont icon-article"></span>Linux上SD卡问题的解决</a></p><p>Prev: <a class=link href=/post/install-email-service-on-centos-7-part-1-postfix/><span class="iconfont icon-article"></span>基于CentOS 7,使用Postfix & Dovecot搭建邮件服务器 -Part 1</a></p></section></div></section><section id=footer><div class=footer-wrap><span class=copyright>©2020 Richard Chen.</span> |
+<span class=powerby><span>Powered by</span>
+<a href=/powered-by/>these</a><span> projects.</span></span></div></section></body></html>
