@@ -1,5 +1,5 @@
 <section class="article header">
-    <h1 class="article title">{{- .Title | safeHTML -}}</h1>
+    <h2 class="title">{{- .Title | safeHTML -}}</h2>
     {{- $dateFormat := site.Params.dateFormat -}}
     {{- if not $dateFormat -}}{{- $dateFormat = "2006-01-02" -}}{{- end -}}
     {{- $lastmodFormat := "" -}}
@@ -7,22 +7,20 @@
     {{- if $lastmod -}}
         {{- $lastmodFormat = $lastmod.Format $dateFormat -}}
     {{- end -}}
-    {{- if .Date -}}
-        {{- $dateFormat := .Date.Format $dateFormat -}}
-        <p class="article date">{{- $dateFormat -}}
-            {{- if and ($lastmod.After .Date) (ne $lastmodFormat $dateFormat) -}}
-                <span class="lastmod">{{- printf (T "edited") $lastmodFormat -}}</span>
+    <div class="post-meta">
+        {{- if .Date -}}
+            <i class="fa fa-calendar-o"></i>&nbsp;<span>{{- .Date.Format $dateFormat -}}</span>
+        {{- end -}}
+        {{- if and .Date .Params.categories -}}
+            <a> | </a>
+        {{- end -}}
+        {{- if .Params.categories -}}
+            {{- range .Params.categories -}}
+                {{- $category := replace . "#" "%23" -}}
+                {{- $category = replace $category "." "%2e" -}}
+                {{- $url := print "/categories/" ($category | urlize) "/" -}}
+                <i class="fa fa-folder-o"></i>&nbsp;<a class="post-meta" href="{{- $url | relLangURL -}}">{{- . -}}&nbsp;&nbsp;</a>
             {{- end -}}
-            {{- if or (eq .Params.readingTime true) (and (not (eq .Params.readingTime false)) (eq site.Params.readingTime true)) -}}
-            <span class="reading-time">{{ T "readingTime" .ReadingTime }}</span>
-            {{- end -}}
-            {{- if .IsTranslated -}}
-            <span class="langs">
-                {{- range .Translations -}}
-                <span class="lang"><a href="{{- .RelPermalink -}}">{{- .Lang -}}</a></span>
-                {{- end -}}
-            </span>
-            {{- end -}}
-        </p>
-    {{- end -}}
+        {{- end -}}
+    </div>
 </section>

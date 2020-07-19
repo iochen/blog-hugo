@@ -1,7 +1,6 @@
-{{- if gt (len site.DisqusShortname) 0 -}}
-    {{- if or (eq .Params.comments true) (and (ne .Params.comments false) (eq site.Params.comments.enable true)) -}}
-        <section class="article discussion">
-            {{- template "_internal/disqus.html" . -}}
-        </section>
-    {{- end -}}
+{{/*
+Since it is a self-use theme, I don't want to config it in config.toml now :)
+*/}}
+{{- if eq .Params.comments "true" -}}
+
 {{- end -}}

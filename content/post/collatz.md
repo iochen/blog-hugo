@@ -1,13 +1,14 @@
 ---
-title: "[已证伪]柯拉兹猜想轮数规律"
-typora-root-url: ../
-date: 2020-03-23 10:25:04
+title: "[已证伪]柯拉兹猜想轮数规律"  
+typora-root-url: ../  
+date: 2020-03-23 10:25:04  
 tags: 
 - math
 - collatz
 categories:
-- math
-description:
+- math  
+description:    
+math: true
 ---
 
 [已证伪]
@@ -31,11 +32,3 @@ description:
 | 0..1e7 | 685   | 8400511   |
 | 0..1e8 | 949   | 63728127  |
 | 0..1e9 | 986   | 670617279 |
-
-
-
-{{< raw >}}  
-
-<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax = {tex: {inlineMath: [['$', '$'], ['\\(','\\)']]}};</script>
-
-{{< /raw >}}  

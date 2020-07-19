@@ -7,10 +7,10 @@
       {{- $relURL := replace .RelPermalink "#" "%23" -}}
       {{- $relURL = replace $relURL "." "%2e" -}}
     <li class="item">
-        <h1 class="note title"><a class="note" href="{{- $relURL -}}">{{- .Title | safeHTML -}}</a></h1>
+        <h2 class="title"><a class="note" href="{{- $relURL -}}">{{- .Title | safeHTML -}}</a></h2>
             <div class="post-meta">
             {{- if .Date -}}
-                <i class="fa fa-calendar-o"></i>&nbsp;<a>{{- .Date.Format $dateFormat -}}</a>
+                <i class="fa fa-calendar-o"></i>&nbsp;<span>{{- .Date.Format $dateFormat -}}</span>
             {{- end -}}
              {{- if and .Date .Params.categories -}}
                  <a> | </a>
@@ -20,7 +20,7 @@
                         {{- $category := replace . "#" "%23" -}}
                         {{- $category = replace $category "." "%2e" -}}
                         {{- $url := print "/categories/" ($category | urlize) "/" -}}
-                 <i class="fa fa-folder-o"></i>&nbsp;<a href="{{- $url | relLangURL -}}">{{- . -}}&nbsp;&nbsp;</a>
+                 <i class="fa fa-folder-o"></i>&nbsp;<a class="post-meta" href="{{- $url | relLangURL -}}">{{- . -}}&nbsp;&nbsp;</a>
            {{- end -}}
             {{- end -}}
             </div>
@@ -30,7 +30,7 @@
 
             {{- if .Truncated -}}<span class="mldr">&mldr;</span>{{- end -}}
             </p></div>
-            <div style="text-align: center;"><a class="btn more" href="{{- $relURL -}}">more »</a></div>
+            <div style="text-align: center;"><a class="btn more" href="{{- $relURL -}}#more">more »</a></div>
             {{- end -}}
             
             {{- $imgs := .Params.imgs -}}

@@ -345,7 +345,6 @@ a.btn.more {
 }
 
 .title {
-  color: #222222;
   font-size: 2.0em;
 }
 
@@ -404,13 +403,13 @@ a.btn.more {
 .post-meta {
   font-size: 0.6em;
   text-align: center;
+  color: #888888;
+  margin: 3px 0 60px;
 }
 
-.note.title,
+.title,
 .article.header {
   text-align: center;
-  margin-top: 0px;
-  margin-bottom: 0px;
 }
 
 .article.date {
@@ -549,6 +548,7 @@ h1,h2,h3,h4,h5,h6 {
   color: #333333;
   margin-top: 24px;
   margin-bottom: 20px;
+  font-weight: 400;
 }
 
 .article.markdown-body h1,

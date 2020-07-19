@@ -8,6 +8,7 @@ copyright = "©2020 Richard Chen."
 logo = "images/logo.svg"
 style = "light"
 #cdn = "https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public" # FOR_CDN
+comments = true
 
 [params.nav]
 showCategories = true
@@ -19,7 +20,7 @@ url = "/about/"
 
 [[params.nav.custom]]
 title = "Links"
-url = "/Links/"
+url = "/links/"
 
 [[params.nav.custom]]
 title = "Search"

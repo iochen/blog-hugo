@@ -13,4 +13,7 @@ justify = false  # text-align: justify;
 single = false  # display as a single page, hide navigation on bottom, like as about page.
 license = ""  # CC License
 draft = true
+code = true
+math = false
+typora-root-url = ../
 +++

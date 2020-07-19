@@ -1,5 +1,5 @@
 {{- if or (eq site.Params.math.enable true) (eq .Params.math true) -}}
-    {{- $use := "katex" -}}
+    {{- $use := "mathjax" -}}
 
     {{- with site.Params.math -}}
         {{- if and (isset . "use") (eq (.use | lower) "mathjax") -}}
@@ -8,11 +8,7 @@
     {{- end -}}
 
     {{- if eq $use "mathjax" -}}
-        {{- $url := "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML" -}}
-        {{- $hash := "sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" -}}
-        <script defer type="text/javascript" src="{{- $url -}}" integrity="{{- $hash -}}" crossorigin="anonymous"></script>
-        <script
-            type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script>
+        <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax = {tex: {inlineMath: [['$', '$'], ['\\(','\\)']]}};</script>
     {{- else -}}
         {{- $url := "https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" -}}
         {{- $hash := "sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" -}}

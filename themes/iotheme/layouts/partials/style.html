@@ -68,8 +68,7 @@
 
 {{/*{{- $iconfontCSS := (resources.Get "css/iconfont.css") | resources.ExecuteAsTemplate "css/tmp_iconfont.css" . -}}*/}}
 {{/*{{- $coreCSS = slice $coreCSS $iconfontCSS | resources.Concat "css/tmp_iconfont_core.css" -}}*/}}
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"></noscript>
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" rel="preload" as="style">
 
 {{- with partial "custom-css.html" . -}}
     {{- if ne . "" -}}
