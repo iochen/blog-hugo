@@ -9,7 +9,8 @@ tags:
 - gParted
 
 categories: 
-- Linux
+- Issues
+comments: true
 ---
 
 这篇文章主要会写Linux下格式化SD卡后，一些设备无法识别的问题。

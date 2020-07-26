@@ -132,6 +132,8 @@ pre samp {
 table {
   border-spacing: 0;
   border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
 }
 
 td,
@@ -143,8 +145,8 @@ table thead {
   color: #2b2b2b;
 }
 
-table tr:nth-child(even) {
-  background-color: #f3f6fa;
+table>tbody>tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
 }
 
 a {
@@ -630,7 +632,6 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .article.markdown-body table {
-  display: block;
   width: 100%;
   overflow: auto;
 }
@@ -720,6 +721,11 @@ h1,h2,h3,h4,h5,h6 {
   .m-header.right-side,.menu {
     display: none !important;
   }
+
+  .article-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
 
 @media (min-width: 1300px) {
@@ -780,21 +786,14 @@ h1,h2,h3,h4,h5,h6 {
   border-right: 1px dashed #e6e6e6;
 }
 
-body {counter-reset: h1}
-article h1 {counter-reset: h2}
-article h2 {counter-reset: h3}
-article h3 {counter-reset: h4}
-article h4 {counter-reset: h5}
-article h5 {counter-reset: h6}
-
-article h1:before {counter-increment: h1; content: counter(h1) ". "}
-article h2:before {counter-increment: h2; content: counter(h1) "." counter(h2) ". "}
-article h3:before {counter-increment: h3; content: counter(h1) "." counter(h2) "." counter(h3) ". "}
-article h4:before {counter-increment: h4; content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) ". "}
-article h5:before {counter-increment: h5; content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". "}
-article h6:before {counter-increment: h6; content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". "}
-article h1.nocount:before, h2.nocount:before, h3.nocount:before, h4.nocount:before, h5.nocount:before, h6.nocount:before { content: ""; counter-increment: none }
-
+article h1{text-align: center; padding-top: 1em}
+article h1{counter-reset: h2}
+article h2:before {content: counter(h2) ". "}
+article h2{counter-increment: h2;counter-reset: h3}
+article h3:before {content: counter(h2) "." counter(h3) ". "}
+article h3{counter-increment: h3;counter-reset: h4}
+article h4:before {content: counter(h2) "." counter(h3) "." counter(h4) ". "}
+article h4{counter-increment: h4;}
 
 .menubtn {
   float: right;

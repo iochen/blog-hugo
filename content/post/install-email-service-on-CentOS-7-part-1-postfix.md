@@ -14,8 +14,8 @@ tags:
 - DMARC记录
 - MX记录
 categories:
-- Linux
-- CentOS
+- Tutorials
+comments: true
 ---
 
 本文将详细讲解 如何在CentOS 7下，使用Postfix & Dovecot 搭建自己的邮件服务器。  

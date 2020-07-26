@@ -2,13 +2,23 @@
 title: Linux下使用FFmpeg,将mp4等格式转mp3格式
 date: 2019-08-18 11:09:08
 tags:
+- FFmpeg
+- App Tutorials
+categories:
+- Tutorials
+description: Linux下mp4等格式转mp3格式
+keywords:
 - Linux
 - FFmpeg
-categories:
-- Apps
-- FFmpeg
-description: Linux下mp4等格式转mp3格式
+- 格式转换
+- mp4
+- mp3
+- 教程
+description: "Linux下使用FFmpeg,将mp4等格式转换为mp3格式"  
+comments: true  
 ---
+
+
 本文章将介绍 Linux下使用FFmpeg,将各类格式互相转换，以及如何批量转换
 <!--more-->
 # 单个转换

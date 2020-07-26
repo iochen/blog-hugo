@@ -7,8 +7,9 @@ tags:
 - V2Gen
 - Vmess
 categories:
-- MyApps
+- Tutorials
 description: V2Gen的使用说明
+comments: true
 ---
 
 

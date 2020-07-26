@@ -8,9 +8,9 @@ tags:
 - HTTPS
 - safe
 categories:
-- Apps
-- nginx
+- Tutorials
 typora-root-url: ../
+comments: true
 ---
 主要是我自己的nginx配置, 并且HTTPS取得**A+**.  
 

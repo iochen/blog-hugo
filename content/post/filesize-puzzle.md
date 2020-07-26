@@ -1,22 +1,19 @@
 ---
-title: "[Unsolved] Wrong file size"
-
+title: "wrong file size"
 typora-root-url: ../
 date: 2020-02-03 14:30:22
 tags:
-- Issue
 - Linux
 categories:
-- Linux
-- openSUSE
-description: wrong file size shown on kde
+- Issues
+description: "wrong file size on kde"
+comments: true
 ---
 
 # Environment
 
 * System: **openSUSE** *15.1*
 * Desktop: **KDE** *Plasma*
-
 
 
 # Details

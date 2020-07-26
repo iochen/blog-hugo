@@ -9,6 +9,9 @@ logo = "images/logo.svg"
 style = "light"
 #cdn = "https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public" # FOR_CDN
 comments = true
+keywords = ["iochen","RichardChen","blog","tech","博客","技术"]
+description = "Richard Chen's Blog"
+
 
 [params.nav]
 showCategories = true
@@ -29,8 +32,8 @@ url = "/search/"
 [params.license]
 enable = true
 author = "Richard Chen"
-article = "ff"
-code = "dd"
+article = "CC BY-SA 4.0"
+code = "MIT"
 
 [markup]
   [markup.highlight]
@@ -43,3 +46,5 @@ code = "dd"
     noClasses = false
     style = false
     tabWidth = 4
+  [markup.goldmark.renderer]
+	unsafe = true

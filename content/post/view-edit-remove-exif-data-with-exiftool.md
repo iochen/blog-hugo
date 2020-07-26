@@ -7,9 +7,9 @@ tags:
 - EXIF
 - Linux
 categories:
-- Apps
-- ExifTool
+- Tutorials
 description: Linux下使用ExifTool查看、修改与删除图片的EXIF数据
+comments: true
 ---
 
 # 前言

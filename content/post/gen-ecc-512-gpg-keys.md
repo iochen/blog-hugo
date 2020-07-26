@@ -8,8 +8,8 @@ tags:
 - PGP 
 - ECC-512
 categories:
-- Crypto
-- ECC
+- Tutorials
+comments: true
 ---
 此文章主要讲解
 - 如何在GPG中创建ECC-512公私钥

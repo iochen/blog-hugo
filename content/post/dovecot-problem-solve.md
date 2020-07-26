@@ -1,15 +1,19 @@
 ---
-title: "出现 doveconf: Fatal: Error in ... ssl_cert: ... Can not open file: Permission denied 的解决办法"
+title: "dovecot permission denied 的解决办法"
 date: 2019-07-01 11:15:45
+description: "出现 doveconf: Fatal: Error in ... ssl_cert: ... Can not open file: Permission denied 的解决办法" 
 tags:
 - openSUSE
-- server
 - dovecot
-- error
-- solve
+- issue
 categories:
-- Linux
-- openSUSE
+- Issues
+keywords:
+- dovecot
+- permission denied
+- 错误
+- 解决方案
+comments: true
 ---
 
 

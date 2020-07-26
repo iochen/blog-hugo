@@ -4,10 +4,10 @@ date: 2018-06-02 18:28:52
 tags:
 - CentOS
 - Linux
-- firewall
+- Firewall
 categories:
-- Linux
-- CentOS
+- Tutorials
+comments: true
 ---
 记录**CentOS7**下**firewall(firewalld)**的用法，包括*开启*、*关闭*、*查看*等操作。
 <!--more-->

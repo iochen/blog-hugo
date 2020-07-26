@@ -1,53 +1,53 @@
-{{- $paginator := . -}}
-{{- if gt $paginator.TotalPages 0 -}}
-{{- $dateFormat := site.Params.dateFormat -}}
-{{- if not $dateFormat -}}{{- $dateFormat = "2006-01-02" -}}{{- end -}}
+{{ $paginator := . }}
+{{ if gt $paginator.TotalPages 0 }}
+{{ $dateFormat := site.Params.dateFormat }}
+{{ if not $dateFormat }}{{ $dateFormat = "2006-01-02" }}{{ end }}
 <ul class="note list">
-    {{- range $paginator.Pages -}}
-      {{- $relURL := replace .RelPermalink "#" "%23" -}}
-      {{- $relURL = replace $relURL "." "%2e" -}}
+    {{ range $paginator.Pages }}
+      {{ $relURL := replace .RelPermalink "#" "%23" }}
+      {{ $relURL = replace $relURL "." "%2e" }}
     <li class="item">
-        <h2 class="title"><a class="note" href="{{- $relURL -}}">{{- .Title | safeHTML -}}</a></h2>
+        <h1 class="title"><a class="note" href="{{ $relURL }}">{{ .Title | safeHTML }}</a></h1>
             <div class="post-meta">
-            {{- if .Date -}}
-                <i class="fa fa-calendar-o"></i>&nbsp;<span>{{- .Date.Format $dateFormat -}}</span>
-            {{- end -}}
-             {{- if and .Date .Params.categories -}}
+            {{ if .Date }}
+                <i class="fa fa-calendar-o"></i>&nbsp;<span>{{ .Date.Format $dateFormat }}</span>
+            {{ end }}
+             {{ if and .Date .Params.categories }}
                  <a> | </a>
-            {{- end -}}
-          {{- if .Params.categories -}}
-                    {{- range .Params.categories -}}
-                        {{- $category := replace . "#" "%23" -}}
-                        {{- $category = replace $category "." "%2e" -}}
-                        {{- $url := print "/categories/" ($category | urlize) "/" -}}
-                 <i class="fa fa-folder-o"></i>&nbsp;<a class="post-meta" href="{{- $url | relLangURL -}}">{{- . -}}&nbsp;&nbsp;</a>
-           {{- end -}}
-            {{- end -}}
+            {{ end }}
+          {{ if .Params.categories }}
+                    {{ range .Params.categories }}
+                        {{ $category := replace . "#" "%23" }}
+                        {{ $category = replace $category "." "%2e" }}
+                        {{ $url := print "/categories/" ($category | urlize) "/" }}
+                 <i class="fa fa-folder-o"></i>&nbsp;<a class="post-meta" href="{{ $url | relLangURL }}">{{ . }}&nbsp;&nbsp;</a>
+           {{ end }}
+            {{ end }}
             </div>
-            {{- if .Summary -}}
+            {{ if .Summary }}
                 <div>
-            <p class="note content">{{- .Summary | plainify | safeHTML -}}
+            <p class="note content">{{ replace (replace (.Summary | plainify) "\n" "<br>") " " "&nbsp;" | safeHTML }}
 
-            {{- if .Truncated -}}<span class="mldr">&mldr;</span>{{- end -}}
+            {{ if .Truncated }}<span class="mldr">&mldr;</span>{{ end }}
             </p></div>
-            <div style="text-align: center;"><a class="btn more" href="{{- $relURL -}}#more">more »</a></div>
-            {{- end -}}
+            <div style="text-align: center;"><a class="btn more" href="{{ $relURL }}#more">more »</a></div>
+            {{ end }}
             
-            {{- $imgs := .Params.imgs -}}
-            {{- with $imgs -}}
+            {{ $imgs := .Params.imgs }}
+            {{ with $imgs }}
                 <span class="note imgs">
-                    {{- $imgCount := len $imgs -}}
-                    {{- range $imgs -}}
-                    {{- $imgurl := lower . -}}
-                    {{- if and (not (hasPrefix $imgurl "http://")) (not (hasPrefix $imgurl "https://")) -}}
-                    {{- $imgurl = path.Join $relURL . -}}
-                    {{- end -}}
-                    <img class="img" src="{{- $imgurl -}}" alt />
-                    {{- end -}}
+                    {{ $imgCount := len $imgs }}
+                    {{ range $imgs }}
+                    {{ $imgurl := lower . }}
+                    {{ if and (not (hasPrefix $imgurl "http://")) (not (hasPrefix $imgurl "https://")) }}
+                    {{ $imgurl = path.Join $relURL . }}
+                    {{ end }}
+                    <img class="img" src="{{ $imgurl }}" alt />
+                    {{ end }}
                 </span>
-            {{- end -}}
+            {{ end }}
         <div class="post-eof"></div>
     </li>
-    {{- end -}}
+    {{ end }}
 </ul>
-{{- end -}}
+{{ end }}

@@ -8,7 +8,8 @@ tags:
 - gzip
 - tar
 categories:
-- Linux
+- Tutorials
+comments: true
 ---
 此文章将介绍 如何在Linux命令行下，压缩，解压，打包一个或多个文件
 <!--more-->

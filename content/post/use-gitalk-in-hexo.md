@@ -2,10 +2,11 @@
 title: Hexo中Gitalk配置使用教程-可能是目前最详细的教程
 date: 2018-01-06 19:22:20
 categories:
-- Blog build
+- Tutorials
 tags:
 - hexo
 - gitalk
+comments: true
 ---
 
 **Gitalk**的详细配置与示例

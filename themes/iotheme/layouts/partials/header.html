@@ -1,26 +1,26 @@
-{{- $nav := site.Params.nav -}}
+{{ $nav := site.Params.nav }}
 
 <section id="header">
     <div class="header wrap">
-        <span class="header"><a class="site home" href="{{- `/` | relLangURL -}}">
-                {{- $logo := site.Params.logo -}}
-                {{- if $logo -}}
-                    {{- if site.Params.cdn -}}
-                        <img class="site logo" src="{{- (print site.Params.cdn ($logo | relURL)) -}}" crossorigin="anonymous" alt/>
-                    {{- else -}}
-                        <img class="site logo" src="{{- $logo | relURL -}}" alt/>
-                    {{- end -}}
-                {{- end -}}
-                <span class="site name">{{- site.Title | safeHTML -}}</span></a></span>
+        <span class="header"><a class="site home" href="{{ `/` | relLangURL }}">
+                {{ $logo := site.Params.logo }}
+                {{ if $logo }}
+                    {{ if site.Params.cdn }}
+                        <img class="site logo" src="{{ (print site.Params.cdn ($logo | relURL)) }}" crossorigin="anonymous" alt/>
+                    {{ else }}
+                        <img class="site logo" src="{{ $logo | relURL }}" alt/>
+                    {{ end }}
+                {{ end }}
+                <span class="site name">{{ site.Title | safeHTML }}</span></a></span>
         <span class="header right-side" >
-            {{- partial "navigation-items.html" $nav -}}
+            {{ partial "navigation-items.html" $nav }}
         </span>
 
     <span class="m-header right-side" >
         <button  onclick="Toggle('menu')" class="menubtn"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></button>
     </span>
 
-        {{- partial "header-menu.html" $nav -}}
+        {{ partial "header-menu.html" $nav }}
 
 
         <script>
@@ -35,7 +35,7 @@
         </script>
 
     </div>
-    {{- with site.Params.slogan -}}
-        <div class="site slogan"><span class="title">{{- . | safeHTML -}}</span></div>
-    {{- end -}}
+    {{ with site.Params.slogan }}
+        <div class="site slogan"><span class="title">{{ . | safeHTML }}</span></div>
+    {{ end }}
 </section>

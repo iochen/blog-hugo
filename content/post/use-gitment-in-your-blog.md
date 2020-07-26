@@ -2,7 +2,7 @@
 title: hexo评论系统——Gitment
 date: 2018-01-05 19:22:56
 categories:
-- Blog build
+- Tutorials
 tags:
 - hexo
 - gitment
