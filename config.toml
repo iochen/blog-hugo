@@ -48,3 +48,4 @@ code = "MIT"
     tabWidth = 4
   [markup.goldmark.renderer]
 	unsafe = true
+
