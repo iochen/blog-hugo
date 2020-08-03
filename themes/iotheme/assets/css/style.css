@@ -58,11 +58,52 @@ h6 {
   font-size: .85em;
 }
 
-blockquote,
-q {
+blockquote {
   quotes: none;
   margin: 0;
 }
+
+
+
+q{
+  font-size: 1.4em;
+  font-weight: 700;
+  color: #2b2b2b;
+  padding-top:1.2em;
+  padding-left: 2em;
+  padding-bottom: 0.8em;
+  border-left:8px solid rgba(68, 68, 68, 0.8);
+  line-height:1.6;
+  position: relative;
+  background: rgba(158, 158, 158, 0.11);
+  display: block;
+}
+
+q::before{
+  content: "\201C";
+  color: rgba(136, 136, 136, 0.5);
+  font-size:2em;
+  position: absolute;
+  left: 15px;
+  top: 2px;
+}
+
+q::after{
+  content: '';
+}
+
+q span{
+  font-size: 0.9em;
+  display: block;
+  color: rgba(68, 68, 68, 0.68);
+  font-style: normal;
+  margin-top:0.5em;
+  text-align: right;
+  margin-right: 1.2em;
+}
+
+
+
 
 ::selection {
   background-color: #313131;
@@ -589,29 +630,13 @@ h1,h2,h3,h4,h5,h6 {
   transition: transform 0.25s ease-in-out 0s;
 }
 
-.article.markdown-body blockquote,
-.article.markdown-body q {
+.article.markdown-body blockquote{
   color: #6a737d;
 }
 
 .article.markdown-body blockquote {
   padding: 0 1em;
   border-left: .25em solid #dfe2e5;
-}
-
-.article.markdown-body q::before,
-.article.markdown-body q::after {
-  opacity: .6;
-}
-
-.article.markdown-body q::before {
-  /* ❝ */
-  content: "\275D";
-}
-
-.article.markdown-body q::after {
-  /* ❞ */
-  content: "\275E";
 }
 
 .article.markdown-body ol,

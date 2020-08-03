@@ -11,17 +11,17 @@ description: "我自接触互联网以来的一些感想"
 date: 2020-07-26T09:26:32+08:00  
 imgs:
 cover:  
-comments: true  
+comments: false  
 single: false
 code: false  
 math: false  
 typora-root-url: ../  
-draft: true
+// draft: true
 ---  
-{{% pquote %}}
-你喜欢互联网吗？我非常非常喜欢。但是，所有的一切都在不断改变着。
-{{% /pquote %}}  
-     
+
+{{% quote author=CLANNAD %}}  
+你喜欢这所学校吗？我非常非常喜欢。但是，所有的一切都在不断改变着。 
+{{% /quote %}}
 <!--more-->  
 ## 互联网  
 我最早接触互联网还是在很小的时候，那时的 ISP 还用的是今天已被并购的 铁通，
@@ -54,5 +54,14 @@ SUSE, V2Ray 等优秀的平台以及组织，使我得到了蜕变与升华，�
 更重要的是，我第一次意识到互联网的意义。  
 
 ## 时光的流逝
+{{% quote author=CLANNAD %}}  
+无论是多么愉快的事。还是多么开心的事，一切，所有的一切，都在不断改变着。即便如此，你还是会喜欢这里吗？
+{{% /quote %}}  
+
 
 ## 人
+
+
+{{% quote author=CLANNAD %}}
+只要找到不就好了吗？只要找到下一件愉快和开心的事不就好了吗？
+{{% /quote %}}
