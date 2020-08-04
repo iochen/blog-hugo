@@ -22,6 +22,14 @@
     <meta name="keywords" content="{{- delimit site.Params.Keywords "," -}}" />
 {{- end -}}
 
+{{ $title := (.Title | title ) }}
+{{ $siteTitle := (.Site.Title) }}
+
+{{- if eq $siteTitle $title -}}
+    <meta name="description" content="{{- site.Params.Description -}}" />
+
+{{- else -}}
+
 {{- if .Params.Description -}}
     <meta name="description" content="{{- .Params.Description -}}" />
 {{- else if .Title -}}
@@ -29,6 +37,8 @@
 {{- else -}}
     <meta name="description" content="{{- site.Params.Description -}}" />
 {{- end -}}
+{{- end -}}
+
 {{- partial "style.html" . -}}
 {{- partial "rss-feed.html" . -}}
 {{- partial "twitter-card.html" . -}}

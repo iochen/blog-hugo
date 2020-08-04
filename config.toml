@@ -1,6 +1,6 @@
 baseURL = "https://iochen.com/"
 languageCode = "en-us"
-title = "Richard Chen's Blog -  A blog with love"
+title = "Richard Chen's Blog"
 theme = "iotheme"
 copyright = "©2020 Richard Chen."
 
@@ -9,8 +9,8 @@ logo = "images/logo.svg"
 style = "light"
 #cdn = "https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public" # FOR_CDN
 comments = true
-keywords = ["iochen","RichardChen","blog","tech","博客","技术"]
-description = "Richard Chen's Blog"
+keywords = ["iochen","RichardChen","blog","tech","博客","技术","网络","算法","伺服器","演算法"]
+description = "Richard Chen's Blog - 又一个技术博客"
 
 
 [params.nav]

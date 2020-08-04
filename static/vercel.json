@@ -1,25 +1,7 @@
 {
-  "rewrites": [
-    {
-      "source": "/v2gen/(.*)",
-      "destination": "/v2gen/"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/(2020|2019|2018)/\\d{2}/\\d{2}/(.*)",
-      "destination": "/post/($2)"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        }
-      ]
-    }
+  "routes": [
+    { "src": "/v2gen/(.*)", "dest": "/v2gen/", "status": 200},
+    { "src": "/(2020|2019|2018)/\\d{2}/\\d{2}/(.*)", "status": 301, "headers": { "Location": "/post/$2" } },
+    { "src": "/(.*)", "headers": { "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload" } }
   ]
 }
