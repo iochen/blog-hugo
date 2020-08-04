@@ -1,21 +1,21 @@
-{{ if site.Params.license.enable }}
+{{- if site.Params.license.enable -}}
 <section class="article license">
     <table class="license">
         <tr>
             <td><b>AUTHOR</b></td>
             <td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td>
-            <td>{{ site.Params.license.author }}</td>
+            <td>{{- site.Params.license.author -}}</td>
         </tr>
         <tr>
             <td><b>ARTICLE LICENSE</b></td>
             <td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td>
-            <td>{{ site.Params.license.article }}</td>
+            <td>{{- site.Params.license.article -}}</td>
         </tr>
         <tr>
             <td><b>CODE LICENSE</b></td>
             <td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td>
-            <td>{{ site.Params.license.code }}</td>
+            <td>{{- site.Params.license.code -}}</td>
         </tr>
     </table>
 </section>
-{{ end }}
+{{- end -}}

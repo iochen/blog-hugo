@@ -9,180 +9,89 @@ tags:
 categories:
 - Tutorials
 description: V2Gen的使用说明
-comments: true
+comments: true  
+code: true
 ---
 
+本文章讲述了 v2gen 的实际使用用例，从订阅以及 `vmess://XXXXXXXXXXXX` 链接
+中生成 V2Ray json 文件。
 
-
-# V2Gen
-
-从订阅以及 `vmess://XXXXXXXXXXXX` 链接中生成 V2Ray json 文件
-
-
+<!-- more -->
 
 ## 项目地址
-
+详细说明：
 [***github.com/iochen/v2gen***](https://github.com/iochen/v2gen/)
 
-
-
-## 使用预览
-
-```bash
-richard@openSUSE~> v2gen -u "https://example.ltd/xxxxxx"
-[0]     中继香港G1 Media (HK)(1)        [21.00ms (cu2.example.ltd)]
-[1]     中继香港G2 Media (HK)(1)        [21.02ms (cu1.example.ltd)]
-[2]     中继香港C1 Media (HK)(1)        [34.36ms (hkc1.example.ltd)]
-[3]     中继香港C2 Media (HK)(1)        [39.67ms (hkc2.example.ltd)]
-[4]     中继香港C3 Media (HK)(1)        [43.59ms (hkc3.example.ltd)]
-[5]     中继香港C4 Media (HK)(1)        [35.71ms (hkc4.example.ltd)]
-...(节点过多，不一一展示)
-[47]    美国GIA 3 Media (US)(0.7)       [140.48ms (us3.example.ltd)]
-[48]    香港 8 (HK)(1)                  [70.38ms (hk9.example.ltd)]
-[49]    香港 9 (HK)(1)                  [72.74ms (hk10.example.ltd)]
-[50]    香港负载均衡 1 Test (HK)(1)      [16.41ms (1.1.1.1)]
+## 预览
+```data
+[ 0] 中继香港C1 Media (HK)(1)      [518ms  (0 errors)]
+[ 1] 中继香港C3 Media (HK)(1)      [527ms  (0 errors)]
+[ 2] 中继香港C2 Media (HK)(1)      [536ms  (0 errors)]
+[ 3] 中继香港C5 Media (HK)(1)      [451ms  (0 errors)]
+[ 4] 中继香港C6 Media (HK)(1)      [452ms  (0 errors)]
+[ 5] 中继香港G2 Media (HK)(1)      [904ms  (0 errors)]
+[ 6] BGP中继香港 2 Media (HK)(1)   [468ms  (0 errors)]
+[ 7] BGP中继香港 3 Media (HK)(1)   [778ms  (0 errors)]
+[ 8] BGP中继香港 1 Media (HK)(1)   [881ms  (0 errors)]
+[ 9] 中继香港G1 Media (HK)(1)      [1.35s  (1 errors)]
+...
+[50] 日本中继 3 Media (JP)(1)      [641ms  (0 errors)]
 =====================
 Please Select:
 ```
 
-你可以到[***这里***](/donate/)使用博主的AFF
+## 安装
+请注意，本程序并没有**GUI**（图形）界面
+### 方法一：从Release中下载
+- [Linux AMD64](https://github.com/iochen/v2gen/releases/latest/download/v2gen_amd64_linux)
+- [Linux 386](https://github.com/iochen/v2gen/releases/latest/download/v2gen_386_linux)
+- [Linux ARM64](https://github.com/iochen/v2gen/releases/latest/download/v2gen_arm64_linux)
+- [Linux ARM](https://github.com/iochen/v2gen/releases/latest/download/v2gen_arm_linux)
 
 
-
-## 如何安装
-
-编译它（请确保您的`$GOPATH/bin/`已添加至`$PATH`中）
-
-```sh
-go get -u github.com/iochen/v2gen/cmd
+- [Windows AMD64](https://github.com/iochen/v2gen/releases/latest/download/v2gen_amd64_windows.exe)
+- [Windows 386](https://github.com/iochen/v2gen/releases/latest/download/v2gen_386_windows.exe)  
+然后请将相应文件加以执行权限并放入到**PATH**中，命名为`v2gen`
+### 方法二：从源码自行编译
+```shell
+$ go get -u -v iochen.com/v2gen/cmd/v2gen
 ```
 
-或者到 [***GitHub Release***](https://github.com/iochen/v2gen/releases) 下载
-
-
-
-## 常用情景
-
-```bash
-v2gen -u "https://example.ltd/xxxxxx" -o <V2Ray配置文件路径> # -o 参数不加，为默认路径
-v2gen -u "https://example.ltd/xxxxxx" -r  # 随机节点
-v2gen -u "https://example.ltd/xxxxxx" -n <节点编号> -o "-" | jq .  # 使用管道进行进阶操作（此处为举例）
+## 常用命令
+### 测速并选择
+```shell
+$ v2gen -u 订阅链接 -o V2Ray配置文件路径 
 ```
 
-
-
-## 参数
-
-```Usage
-Usage of v2gen:
-  -c string
-        v2gen配置文件路径 (default "/etc/v2ray/v2gen.ini")
-  -init
-        初始化v2gen配置文件
-  -n int
-        节点引索 (default -1)
-  -np
-        不ping
-  -o string
-        输出路径 (default "/etc/v2ray/config.json")
-  -r    随机节点引索
-  -tpl string
-        V2Ray模板路径
-  -u string
-        订阅链接
-  -v    展示版本
-  -vmess string
-        vmess 链接
+### 测速并排序与选择
+```shell
+$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -sort
 ```
 
-## V2Gen 用户配置
-
-你可以使用 `v2gen --init` 来生成一个新的
-
-```yaml
-# V2Ray 日志等级
-# ( debug | info | warning | error | none )
-loglevel: warning
-
-# Socks 端口
-socksPort: 1080
-
-# Http 端口
-httpPort: 1081
-
-# 是否允许UDP流量
-# ( true | false )
-udp: true
-
-# 安全
-# ( aes-128-gcm | aes-256-gcm | chacha20-poly1305 | auto | none )
-security: aes-256-gcm
-
-# 是否开启 mux
-# ( true | false )
-mux: true
-
-# Mux 并发数
-concurrency: 8
-
-# DNS 服务器
-dns1: 9.9.9.9
-dns2: 1.1.1.1
-
-# 中国IP与网站是否直连
-# ( true | false )
-china: true
-
+### 测速并采用最优节点
+```shell
+$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -best
 ```
 
-下面的配置可能不会在所有节点上生效
-
-```yaml
-# 是否允许不安全连接 ( true | false )
-allowInsecure: false
-
-# KCP mtu 值
-mtu: 1350
-
-# KCP tti 值
-tti: 20
-
-# KCP 最大上行速度
-# 单位: MB/s
-up: 5
-
-# KCP 最大下行速度
-# 单位: MB/s
-down: 20
-
-# 是否开启 UDP 拥堵控制 ( true | false )
-congestion: false
-
-# 读缓冲区大小
-# 单位: MB
-readBufferSize: 1
-
-# 写缓冲区大小
-# 单位: MB
-writeBufferSize: 1
+### 随机节点
+```shell
+$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -r
 ```
 
-## 版本
+### 设置测速（或延时）目标链接
+```shell
+$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -dest 目标链接
+```
 
-*V1.1.2*
+### 打印到控制台以进行管道操作
+```shell
+$ v2gen -u 订阅链接 -o "-" -n 序号 | jq .
+```
 
-
+## 进阶操作
+请到 [GitHub README](https://github.com/iochen/v2gen/blob/master/README_zh_cn.md) 
+文件中继续探索！
 
 ## TODO
-* *V1.2.1*:    **VmessPing**
-
-
-
-
-## 协议
-
-MIT LICENSE
-
-## 注意
-
-不支持第一版本格式
+- 重构 v2gen
+- 优化多参数时的逻辑判断

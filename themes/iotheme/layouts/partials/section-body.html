@@ -1,5 +1,9 @@
-{{ if .Content }}
+{{- if .Content -}}
 <article class="article markdown-body">
-    {{ .Content }}
+    {{- .Content -}}
 </article>
-{{ end }}
+{{- end -}}
+<div class="article bottom">
+    {{- partial "article-bottom-navigation.html" . -}}
+    {{- partial "article-comments.html" . -}}
+</div>

@@ -22,12 +22,17 @@ title = "About"
 url = "/about/"
 
 [[params.nav.custom]]
+title = "Contact"
+url = "/contact/"
+
+[[params.nav.custom]]
 title = "Links"
 url = "/links/"
 
 [[params.nav.custom]]
 title = "Search"
 url = "/search/"
+
 
 [params.license]
 enable = true

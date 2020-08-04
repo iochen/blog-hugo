@@ -1,7 +1,7 @@
 {{/*
 Since it is a self-use theme, I don't want to config it in config.toml now :)
 */}}
-{{ if eq .Params.comments true }}
+{{- if eq .Params.comments true -}}
 	<div id="gitalk-container" style="padding-top: 2em"></div>
 	<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 	<script type="text/javascript">
@@ -19,4 +19,4 @@ Since it is a self-use theme, I don't want to config it in config.toml now :)
         });
         gitalk.render("gitalk-container");
 	</script>
-{{ end }}
+{{- end -}}

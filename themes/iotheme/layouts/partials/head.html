@@ -1,38 +1,38 @@
 <meta charset="utf-8">
-{{ hugo.Generator }}
+{{- hugo.Generator -}}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as="font" crossorigin="anonymous">
-{{ define "title" }}
-    {{ $title := .Title }}
-    {{ if and (ne $title "") (ne $title site.Title) }}
-        <title>{{ $title | safeHTML }} &nbsp;&ndash;&nbsp; {{ site.Title | safeHTML }}</title>
-    {{ else }}
-        {{ $slogan := site.Params.slogan }}
-        <title>{{ site.Title | safeHTML }}{{ if and (isset site.Params "slogan") (ne $slogan "") }} &nbsp;&ndash;&nbsp;
-            {{ $slogan | safeHTML }}{{ end }}</title>
-    {{ end }}
-{{ end }}
-{{ block "title" . }}{{ end }}
+{{- define "title" -}}
+    {{- $title := .Title -}}
+    {{- if and (ne $title "") (ne $title site.Title) -}}
+        <title>{{- $title | safeHTML -}} &nbsp;&ndash;&nbsp; {{- site.Title | safeHTML -}}</title>
+    {{- else -}}
+        {{- $slogan := site.Params.slogan -}}
+        <title>{{- site.Title | safeHTML -}}{{- if and (isset site.Params "slogan") (ne $slogan "") -}} &nbsp;&ndash;&nbsp;
+            {{- $slogan | safeHTML -}}{{- end -}}</title>
+    {{- end -}}
+{{- end -}}
+{{- block "title" . -}}{{- end -}}
 
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-mrchen.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-mrchen.png">
 
-{{ if .Params.Keywords }}
-<meta name="keywords" content="{{ delimit .Params.Keywords "," }}" />
-{{ else }}
-    <meta name="keywords" content="{{ delimit site.Params.Keywords "," }}" />
-{{ end }}
+{{- if .Params.Keywords -}}
+<meta name="keywords" content="{{- delimit .Params.Keywords "," -}}" />
+{{- else -}}
+    <meta name="keywords" content="{{- delimit site.Params.Keywords "," -}}" />
+{{- end -}}
 
-{{ if .Params.Description }}
-    <meta name="description" content="{{ .Params.Description }}" />
-{{ else if .Title }}
-    <meta name="description" content="{{ .Title | safeHTML }}" />
-{{ else }}
-    <meta name="description" content="{{ site.Params.Description }}" />
-{{ end }}
-{{ partial "style.html" . }}
-{{ partial "rss-feed.html" . }}
-{{ partial "twitter-card.html" . }}
-{{ if .Params.Robots }}
-<meta name="robots" content="{{ .Params.robots }}" />
-{{ end }}
-{{ partial "head-extra.html" . }}
+{{- if .Params.Description -}}
+    <meta name="description" content="{{- .Params.Description -}}" />
+{{- else if .Title -}}
+    <meta name="description" content="{{- .Title | safeHTML -}}" />
+{{- else -}}
+    <meta name="description" content="{{- site.Params.Description -}}" />
+{{- end -}}
+{{- partial "style.html" . -}}
+{{- partial "rss-feed.html" . -}}
+{{- partial "twitter-card.html" . -}}
+{{- if .Params.Robots -}}
+<meta name="robots" content="{{- .Params.robots -}}" />
+{{- end -}}
+{{- partial "head-extra.html" . -}}

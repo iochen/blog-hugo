@@ -16,7 +16,7 @@ single: false
 code: false  
 math: false  
 typora-root-url: ../  
-// draft: true
+draft: true
 ---  
 
 {{% quote author=CLANNAD %}}  

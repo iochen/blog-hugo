@@ -1,26 +1,26 @@
 <section class="article header">
-    <h1 class="title">{{ .Title | safeHTML }}</h1>
-    {{ $dateFormat := site.Params.dateFormat }}
-    {{ if not $dateFormat }}{{ $dateFormat = "2006-01-02" }}{{ end }}
-    {{ $lastmodFormat := "" }}
-    {{ $lastmod := .Lastmod }}
-    {{ if $lastmod }}
-        {{ $lastmodFormat = $lastmod.Format $dateFormat }}
-    {{ end }}
+    <h1 class="title">{{- .Title | safeHTML -}}</h1>
+    {{- $dateFormat := site.Params.dateFormat -}}
+    {{- if not $dateFormat -}}{{- $dateFormat = "2006-01-02" -}}{{- end -}}
+    {{- $lastmodFormat := "" -}}
+    {{- $lastmod := .Lastmod -}}
+    {{- if $lastmod -}}
+        {{- $lastmodFormat = $lastmod.Format $dateFormat -}}
+    {{- end -}}
     <div class="post-meta">
-        {{ if .Date }}
-            <i class="fa fa-calendar-o"></i>&nbsp;<span>{{ .Date.Format $dateFormat }}</span>
-        {{ end }}
-        {{ if and .Date .Params.categories }}
+        {{- if .Date -}}
+            <i class="fa fa-calendar-o"></i>&nbsp;<span>{{- .Date.Format $dateFormat -}}</span>
+        {{- end -}}
+        {{- if and .Date .Params.categories -}}
             <a> | </a>
-        {{ end }}
-        {{ if .Params.categories }}
-            {{ range .Params.categories }}
-                {{ $category := replace . "#" "%23" }}
-                {{ $category = replace $category "." "%2e" }}
-                {{ $url := print "/categories/" ($category | urlize) "/" }}
-                <i class="fa fa-folder-o"></i>&nbsp;<a class="post-meta" href="{{ $url | relLangURL }}">{{ . }}&nbsp;&nbsp;</a>
-            {{ end }}
-        {{ end }}
+        {{- end -}}
+        {{- if .Params.categories -}}
+            {{- range .Params.categories -}}
+                {{- $category := replace . "#" "%23" -}}
+                {{- $category = replace $category "." "%2e" -}}
+                {{- $url := print "/categories/" ($category | urlize) "/" -}}
+                <i class="fa fa-folder-o"></i>&nbsp;<a class="post-meta" href="{{- $url | relLangURL -}}">{{- . -}}&nbsp;&nbsp;</a>
+            {{- end -}}
+        {{- end -}}
     </div>
 </section>

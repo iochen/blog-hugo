@@ -1,5 +1,5 @@
-{{ $author := .Get "author" }}
+{{- $author := .Get "author" -}}
 
 <q>
-	{{ .Inner | markdownify }}{{ if $author }}<span>- {{ $author }}</span>{{ end }}
+	{{- .Inner | markdownify -}}{{- if $author -}}<span>- {{- $author -}}</span>{{- end -}}
 </q>

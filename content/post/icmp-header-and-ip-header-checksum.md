@@ -1,5 +1,5 @@
 ---
-title: "ICMP首部与 IP首部 校验和的计算"
+title: "ICMP首部 与 IP首部 校验和的计算"
 tags:
   - network
   - icmp

@@ -1,15 +1,15 @@
-{{ if or (eq site.Params.code.enable true) (eq .Params.code true) }}
-    {{ with site.Params.syntax }}
-    {{ $use := "none" }}
-    {{ if and (isset . "use") (ne .use "") }}
-        {{ $use = .use | lower }}
-    {{ end }}
+{{- if or (eq site.Params.code.enable true) (eq .Params.code true) -}}
+    {{- with site.Params.syntax -}}
+    {{- $use := "none" -}}
+    {{- if and (isset . "use") (ne .use "") -}}
+        {{- $use = .use | lower -}}
+    {{- end -}}
 
-    {{ $syntaxJS := "" }}
-    {{ if eq $use "hljs" }}
+    {{- $syntaxJS := "" -}}
+    {{- if eq $use "hljs" -}}
         <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.1/build/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
-    {{ else if eq $use "prismjs" }}
-    {{ end }}
-{{ end }}
-{{ end }}
+    {{- else if eq $use "prismjs" -}}
+    {{- end -}}
+{{- end -}}
+{{- end -}}

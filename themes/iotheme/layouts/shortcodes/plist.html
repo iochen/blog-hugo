@@ -1,13 +1,13 @@
-{{ with .Params }}
+{{- with .Params -}}
 <table class="plstable">
-{{ range . }}
-{{ $arg := split . ":" }}
-{{ $key := index $arg 0 }}
-{{ $value := index $arg 1 }}
+{{- range . -}}
+{{- $arg := split . ":" -}}
+{{- $key := index $arg 0 -}}
+{{- $value := index $arg 1 -}}
   <tr>
-    <th>{{ $key | markdownify }}</th>
-    <td>{{ $value | markdownify }}</td>
+    <th>{{- $key | markdownify -}}</th>
+    <td>{{- $value | markdownify -}}</td>
   </tr>
-{{ end }}
+{{- end -}}
 </table>
-{{ end }}
+{{- end -}}

@@ -1,52 +1,52 @@
-{{ define "main" }}
-{{ $justify := false }}
-{{ if eq .Params.justify true }} {{ $justify = true }} {{ end }}
+{{- define "main" -}}
+{{- $justify := false -}}
+{{- if eq .Params.justify true -}} {{- $justify = true -}} {{- end -}}
 <div class="article-container">
-    {{ partial "article-header.html" . }}
-    <article class="article markdown-body" {{ if $justify }}style="text-align: justify;" {{ end }}>
-        {{ with .Params.cover }}<p><img class="cover" src="{{ . | safeURL }}" alt></p>{{ end }}
+    {{- partial "article-header.html" . -}}
+    <article class="article markdown-body" {{- if $justify -}}style="text-align: justify;" {{- end -}}>
+        {{- with .Params.cover -}}<p><img class="cover" src="{{- . | safeURL -}}" alt></p>{{- end -}}
 
         {{/* https://github.com/gohugoio/hugo/issues/1778 */}}
         {{/* ignore empty links with + */}}
-        {{ $headers := findRE "<h[2-4].*?>(.|\n])+?</h[2-4]>" .Content }}
-        {{ .Scratch.Set "last_level" 1 }}
+        {{- $headers := findRE "<h[2-4].*?>(.|\n])+?</h[2-4]>" .Content -}}
+        {{- .Scratch.Set "last_level" 1 -}}
         {{/* at least one header to link to */}}
-        {{ $has_headers := ge (len $headers) 1 }}
-        {{ if $has_headers }}
+        {{- $has_headers := ge (len $headers) 1 -}}
+        {{- if $has_headers -}}
             <aside class="table-of-contents">
                 <details>
                     <summary>
                         <b>Table of Contents</b>
                     </summary>
-                    {{ range $headers }}
-                        {{ $header := . }}
-                        {{ $base := ($.Page.File.LogicalName) }}
-                        {{ $anchorId := ($header | plainify | htmlUnescape | anchorize) }}
-                        {{ $href := delimit (slice $base $anchorId) "#" | string }}
-                        {{ range findRE "[2-4]" . 1 }}
-                            {{ $next_heading := (int .) }}
-                            {{ if gt $next_heading ($.Scratch.Get "last_level") }}
-                                <ul class="toc toc-h{{ . }}">
-                            {{ else if lt $next_heading ($.Scratch.Get "last_level") }}
+                    {{- range $headers -}}
+                        {{- $header := . -}}
+                        {{- $base := ($.Page.File.LogicalName) -}}
+                        {{- $anchorId := ($header | plainify | htmlUnescape | anchorize) -}}
+                        {{- $href := delimit (slice $base $anchorId) "#" | string -}}
+                        {{- range findRE "[2-4]" . 1 -}}
+                            {{- $next_heading := (int .) -}}
+                            {{- if gt $next_heading ($.Scratch.Get "last_level") -}}
+                                <ul class="toc toc-h{{- . -}}">
+                            {{- else if lt $next_heading ($.Scratch.Get "last_level") -}}
                                 </ul>
-                            {{ end }}
-                            <li><a href="{{ relref $.Page $href }}">{{ $header | plainify | htmlUnescape }}</a></li>
-                            {{ $.Scratch.Set "last_level" $next_heading }}
-                        {{ end }}
-                    {{ end }}
+                            {{- end -}}
+                            <li><a href="{{- relref $.Page $href -}}">{{- $header | plainify | htmlUnescape -}}</a></li>
+                            {{- $.Scratch.Set "last_level" $next_heading -}}
+                        {{- end -}}
+                    {{- end -}}
                 </details>
             </aside>
-        {{ end }}
+        {{- end -}}
 
 
-        {{ .Content }}
+        {{- .Content -}}
     </article>
-    {{ partial "article-share.html" . }}
-    {{ partial "article-license.html" . }}
-    {{ partial "article-author.html" . }}
+    {{- partial "article-share.html" . -}}
+    {{- partial "article-license.html" . -}}
+    {{- partial "article-author.html" . -}}
 </div>
 <div class="article bottom">
-  {{ partial "article-bottom-navigation.html" . }}
-  {{ partial "article-comments.html" . }}
+  {{- partial "article-bottom-navigation.html" . -}}
+  {{- partial "article-comments.html" . -}}
 </div>
-{{ end }}
+{{- end -}}
