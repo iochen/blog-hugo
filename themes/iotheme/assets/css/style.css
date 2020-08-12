@@ -22,6 +22,17 @@ body {
   word-wrap: break-word;
 }
 
+hide {
+  color:black;
+  background: black;
+}
+
+hide:hover {
+  color:black;
+  background-color: white;
+  transition: background-color .2s linear;
+}
+
 h1,
 h2,
 h3,

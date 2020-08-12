@@ -15,12 +15,14 @@ typora-root-url: ../
 * [GitHub](https://github.com/iochen)
 * [Twitter](https://twitter.com/realRichardChen)
 * [Telegram](https://t.me/iochen)
-  
+
+​       
+
 ## E-Mail
-### Primary
-[i@iochen.com](mailto:i@iochen.com)  
-### Secondary
-[iochen.com@gmail.com](mailto:iochen.com@gmail.com)
+Primary: [i@iochen.com](mailto:i@iochen.com)  
+
+Secondary: [iochen.com@gmail.com](mailto:iochen.com@gmail.com)
+
 ### GPG
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -50,6 +52,8 @@ mDZ7Jol1z24PGMGJSninlM3LuDuvDxjHdFcqg+5+i0oJDa9r2ZOO64s=
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 signature:`D8EFF6C7250CF7379710A680BD81B3FB9AEC3951`
+
+​    
 
 ## Others
 Comment below

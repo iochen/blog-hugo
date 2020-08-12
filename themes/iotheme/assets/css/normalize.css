@@ -137,9 +137,8 @@ h6 {
     font-weight: 600;
 }
 
-strong,
-b {
-    font-weight: 600;
+strong, b {
+    font-weight: bold;
 }
 
 mark {
