@@ -30,10 +30,15 @@
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
-      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{ $date := .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}
+      {{ if ne $date "Mon, 01 Jan 0001 00:00:00 +0000" }}
+      <pubDate>{{- $date -}}</pubDate>
+      {{ else }}
+      <pubDate>Mon, 02 Jan 2006 15:04:05 -0700</pubDate>
+      {{ end }}
       {{ with .Site.Author.email }}<author>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</author>{{end}}
       <guid>{{ .Permalink }}</guid>
-      <description>{{ .Content }}</description>
+      <description>{{ .Content | html }}</description>
     </item>
     {{ end }}
   </channel>
