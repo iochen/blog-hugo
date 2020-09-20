@@ -1,0 +1,80 @@
+---
+title: "Record"  
+tags:  
+categories:  
+keywords:
+description: "Record"  
+comments: false    
+single: true  
+code: false   
+math: false
+typora-root-url: ../  
+
+---
+
+
+
+关于这里：
+
+主页上是没有跳到此页面的链接的，所以恭喜你，发现了这里
+
+但这里并没有宝藏，有的只是我的一些既不适合发篇博文，也不适合发推记录的繁杂的文字罢了
+
+祝玩得开心～
+
+
+
+
+
+
+
+---
+
+- <a href="#2020">2020</a>
+  - <a href="#202009">09</a>
+
+---
+
+
+
+<a id=2020></a> <!--2020 START-->
+
+<a id=202009></a> <!--2020-09 START-->
+
+# 2020.09.19
+
+10天前的样子，通了苍线，导致现在一度低迷，没有信心继续下去了，甚至连电脑都不想开了 （加上刚开学比较忙，有一个 GitHub Issue 花了总共一个月才解决；还有一些邮件都不想回复了，所以相关人士请见谅）
+
+虽然我也清楚一般Key的主线重点在后头，但苍线实在是太打击我了... 
+
+<hide>怎么说我也算是被 Charlotte，Angel Beats，CLANNAD，Little Busters(动画) 和 Tomoyo After(游戏) 洗礼过的啊</hide>
+
+本以为（担心）这些看多了会免疫，结果却只是换了一种形式
+
+泪水已经没有刚开始多了，有的只是挥之不去的压抑
+
+其实还不如一场泪过后放下一切，重新开始
+
+为什么我的眼里常含泪水？因为我对这世界爱得深沉。
+
+[Related music: 虹の蝶](https://music.youtube.com/watch?v=GQHr5-BBIZ4&feature=share)
+
+
+
+# 2020.09.20
+
+
+
+<!--2020-09 END-->
+
+<a id=202010></a> <!--2020-10 START-->
+
+<!--2020-10 END-->
+
+<!--2020 END-->
+
+
+
+<a id=2021></a> <!--2021 START-->
+
+<!--2021 END-->

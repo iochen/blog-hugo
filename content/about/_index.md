@@ -19,4 +19,4 @@ Hi there!
 
 至于为什么是`iochen`，只是因为当时看到苹果产品命名都是`iFoobar`就完事了，于是就开始模仿，`i`既然被用了，那就用`io`吧，以后命名直接用`ioFoobar`就好了 :) ~~结果现在却在用化学元素命名~~
 
-~~凑巧的是后来认识了 **Ushio**(CLANNAD)<hide>，既然 **Ushio** 是个中性名</hide>，所以也可以看作是 **UshioChen**~~
+~~也可以看作是 **UshioChen**~~
