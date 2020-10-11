@@ -20,6 +20,8 @@ typora-root-url: ../
 
 但这里并没有宝藏，有的只是我的一些既不适合发篇博文，也不适合发推记录的繁杂的文字罢了
 
+也有可能某一天自己发现以前写的太羞耻，挪到 GitHub Private 仓库，或者用 AES 加个密什么的
+
 祝玩得开心～
 
 
@@ -87,6 +89,12 @@ typora-root-url: ../
 预计寒假时会把 AIR 动画看掉，因为我看视觉小说实在太慢了，估计到寒假 Summer Pockets RB 都没结束
 
 先晚安了，Good Night~
+
+# 2020.10.05
+
+看了 AIR 的 OP，感觉一下子就有点喜欢上了观铃，特别是 https://www.youtube.com/watch?v=SD1yCQsjOQw 的 1:53 和 2:13-2:20
+
+在结束 Summer Pockets RB 后就开始AIR吧，成神之日 什么的就先往后推推吧 :)
 
 <!--2020-10 END-->
 
