@@ -23,7 +23,6 @@ typora-root-url: ../
 <!--more-->
 
 <center>
-
 与回到重症监护室的他重逢，已是两天后了  
 虽仍无法交谈  
 但却听见了仅有一词的呼唤  
@@ -112,18 +111,18 @@ typora-root-url: ../
 一起找寻到的宝物    
 name：林中的熊宝宝  
 <br>
+
 <hr>  
 <br>
 …谢谢  
 …幸好有你  
 才有这段美好的人生  
-  
 来，走吧  
 世界是如此美好  
 同时  
 人生更是如此精彩  
 It's a Wonderful Life
-  
+
 </center>
 
 <br><br>

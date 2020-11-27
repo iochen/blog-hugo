@@ -39,7 +39,7 @@
                     {{- $imgCount := len $imgs -}}
                     {{- range $imgs -}}
                     {{- $imgurl := lower . -}}
-                    {{- if and (not (hasPrefix $imgurl "http://")) (not (hasPrefix $imgurl "https://")) -}}
+                    {{- if and (not (hasPrefix $imgurl "http://")) (not (hasPrefix $imgurl "https://")) (not (hasPrefix $imgurl "/")) -}}
                     {{- $imgurl = path.Join $relURL . -}}
                     {{- end -}}
                     <img class="img" src="{{- $imgurl -}}" alt />
