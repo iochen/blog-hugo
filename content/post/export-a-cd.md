@@ -10,6 +10,7 @@ comments: true
 single: false
 code: true  
 math: false  
+draft: true
 typora-root-url: ../  
 ---
 
