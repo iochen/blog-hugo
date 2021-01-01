@@ -19,9 +19,13 @@ typora-root-url: ../
 ​       
 
 ## E-Mail
-Primary: [i@iochen.com](mailto:i@iochen.com)  
+Primary: [i@iochen.com](mailto:i@iochen.com) or [iochen@tuta.io](mailto:iochen@tuta.io)
 
 Secondary: [iochen.com@gmail.com](mailto:iochen.com@gmail.com)
+
+由于我的 Primary 邮箱托管在 Tutanota，所以如果你也在用 Tutanota，发到我的 Primary 邮箱就可以自动 End-to-End 加密了～
+
+当然，如果不嫌麻烦，也可以使用 GPG 加密
 
 ### GPG
 ```
