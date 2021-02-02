@@ -874,3 +874,14 @@ article h4{counter-increment: h4;}
 .page-categories ul li a{
   font-size: 1.2em;
 }
+
+.black-and-white { 
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    
+    filter: grayscale(100%);
+	
+    filter: gray;
+}
