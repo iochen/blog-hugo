@@ -6,10 +6,10 @@
 {{- end -}}
 
 {{- if site.Params.cdn -}}
-<img {{- if $block -}}class="img"{{- end -}} src="{{- (print site.Params.cdn $url) -}}"
+<img {{ if $block }}class="img"{{ end }} src="{{- (print site.Params.cdn $url) -}}"
         alt{{- with .Text -}}="{{- . -}}" {{- end -}} />
 {{- else -}}
-<img {{- if $block -}}class="img"{{- end -}} src="{{- $url -}}"
+<img {{ if $block }}class="img"{{ end }} src="{{- $url -}}"
      alt{{- with .Text -}}="{{- . -}}" {{- end -}} />
 {{- end -}}
 
