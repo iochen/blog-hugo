@@ -5,14 +5,14 @@ categories:
 keywords:
 description: "Build a Simple Marx Generator"  
 
-date: 2021-02-04T16:00:21+08:00  
+date: 2021-04-18T10:00:21+08:00  
 imgs:
-cover:  
+cover:
 comments: true  
 typora-root-url: ../
 single: false
 code: true  
-draft: true
+draft: false
 math: false  
 ---
 
@@ -32,7 +32,7 @@ math: false
 
 ![](/img/build-a-simple-marx-generator/FNP7CAFFKB3DRCR.jpg)
 
-![](/img/build-a-simple-marx-generator/FIMRNEOFKB3DRCT.jpg)
+![](/../../../../../Desktop/FIMRNEOFKB3DRCT.jpg)
 
 ![](/img/build-a-simple-marx-generator/FWBV587FKB3DRCS.jpg)
 
@@ -72,7 +72,82 @@ math: false
 
 ## 工具
 
+![Also You Need the Tools!](/img/build-a-simple-marx-generator/FSA2723FITUIXBN.jpg)
+
+你需要一把顺手的电烙铁，否则构建一个马克思发生器将十分困难，并且由于电晕放电，得到的结果会远远不如预期。别忘了，助焊剂也是你的好帮手。
+
+热胶枪也非常方便，它可以固定几乎所有东西。
+
+当然，除此之外，常用工具也很必要，这里不再赘述。
+
+## 电源
+
+![Power Supply](/img/build-a-simple-marx-generator/FG9UBFOFKB3DRCU.jpg)
+
+<details><summary>more pictures</summary>
+
+![Power Supply](/img/build-a-simple-marx-generator/FV09JCIFKB3DRCV.jpg)
+
+![Power Supply](/img/build-a-simple-marx-generator/F67VW5QFLJJUT9K.jpg)
+
+</details>
+
+马克思发生器需要 4-8kV 的电压，但只需很小的电流。这种电源可在空气净化器，复印机和激光打印机中找到。
+
+我自己制作了一个的 6kV 的电源。它采用了一个小型自制 450V 逆变器，后方连接 18级电压倍增器，可得到约 7kV 的电压。
+
+马克思发生器也没有正负极之分，所以直接连接上去即可。
+
+## 组装
+
+![The Construction of the Marx Generator.](/img/build-a-simple-marx-generator/F3G1YQAFK917303.jpg)
+
+<details><summary>more pictures</summary>
+
+![The Construction of the Marx Generator.](/img/build-a-simple-marx-generator/FPDHNBGFK917302.jpg)
+
+![The Construction of the Marx Generator.](/img/build-a-simple-marx-generator/FQTXHZRFK917301.jpg)
+
+![The Construction of the Marx Generator.](/img/build-a-simple-marx-generator/F9D56RAFK917300.jpg)
+
+![The Construction of the Marx Generator.](/img/build-a-simple-marx-generator/F78CEL5FK9172ZX.jpg)
+
+![The Construction of the Marx Generator.](/img/build-a-simple-marx-generator/F7Q5U2JFK9172ZZ.jpg)
+
+</details>
+
+每个人的方式都会有所不同，而我将把自己的方式告诉你：
+
+我先将电容用热熔胶粘在基座上。
+
+然后，我电烙铁将 1M 的电阻焊到电容上，并剪断多余的脚。但是我没有剪断电容的引脚，待会你就知道为什么了
+
+之后，我将 4.7M 电阻焊了上去。
+
+最后，请确保焊点完美，并确保除放电处外，没有突出的尖端。 否则，会发生尖端放电，削弱电弧强度。
+
+## 火花隙
+
+![Spark Gaps](/img/build-a-simple-marx-generator/FOU392NFK9172ZY.jpg)
+
+这就是为什么之前我说不要剪掉电容的引脚，因为我们要用它构成火花隙
+
+将引脚弯曲成**V**形，并使**V**形引脚的末端靠在一起，大约2毫米的距离。
+
+但是不要将末端靠在一起，否则会导致大量放电，使得马克思发生器无法正常工作
+
+## 成果
+
+![Testing... Testing...](/img/build-a-simple-marx-generator/FSYXZVIFKB3DRD8.jpg)
+
+![Testing... Testing...](/img/build-a-simple-marx-generator/FAHXS7LFKB3DRCQ.jpg)
+
+![img](/img/build-a-simple-marx-generator/FG4G5C1FKB3DRCL.jpg)
 
 
 
+## 译者注
 
+本文原文、图片来自 [Build a Simple Marx Generator](https://www.instructables.com/Build-a-simple-Marx-Generator/)，由 [Richard Chen's Blog](https://iochen.com/) 翻译
+
+本文以 **CC BY-NC-SA 4.0** 许可进行分发
