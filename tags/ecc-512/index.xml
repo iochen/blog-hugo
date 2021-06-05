@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ECC-512 on Richard Chen's Blog</title><link>https://iochen.com/tags/ecc-512/</link><description>Recent content in ECC-512 on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Sun, 18 Aug 2019 12:09:56 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/ecc-512/index.xml" rel="self" type="application/rss+xml"/><item><title>GPG中创建ECC-512公私钥</title><link>https://iochen.com/post/gen-ecc-512-gpg-keys/</link><pubDate>Sun, 18 Aug 2019 12:09:56 +0000</pubDate><guid>https://iochen.com/post/gen-ecc-512-gpg-keys/</guid><description>&lt;p>此文章主要讲解&lt;/p>
+&lt;ul>
+&lt;li>如何在GPG中创建ECC-512公私钥&lt;/li>
+&lt;li>解决创建过程中的错误&lt;/li>
+&lt;/ul>
+&lt;p>错误：&lt;/p>
+&lt;pre>&lt;code class="language-error">gpg: signing failed: Invalid length
+gpg: make_keysig_packet failed: Invalid length
+Key generation failed: Invalid length
+&lt;/code>&lt;/pre>
+&lt;h1 id="创建">创建&lt;/h1>
+&lt;pre>&lt;code>gpg --expert --full-gen-key
+&lt;/code>&lt;/pre>
+&lt;p>选择&lt;code>ECC and ECC&lt;/code>以及加密方式
+按提示输入即可&lt;/p>
+&lt;h1 id="错误">错误&lt;/h1>
+&lt;pre>&lt;code class="language-error">gpg: signing failed: Invalid length
+gpg: make_keysig_packet failed: Invalid length
+Key generation failed: Invalid length
+&lt;/code>&lt;/pre>
+&lt;h2 id="解决方案">解决方案&lt;/h2>
+&lt;p>编辑&lt;code>~/.gpg/gpg.conf&lt;/code>文件
+修改（或添加）&lt;code>cert-digest-algo&lt;/code>为：&lt;/p>
+&lt;pre>&lt;code class="language-conf">cert-digest-algo SHA256
+&lt;/code>&lt;/pre>
+&lt;p>即可&lt;/p></description></item></channel></rss>

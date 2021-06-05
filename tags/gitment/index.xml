@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>gitment on Richard Chen's Blog</title><link>https://iochen.com/tags/gitment/</link><description>Recent content in gitment on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Fri, 05 Jan 2018 19:22:56 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/gitment/index.xml" rel="self" type="application/rss+xml"/><item><title>hexo评论系统——Gitment</title><link>https://iochen.com/post/use-gitment-in-your-blog/</link><pubDate>Fri, 05 Jan 2018 19:22:56 +0000</pubDate><guid>https://iochen.com/post/use-gitment-in-your-blog/</guid><description>&lt;p>由于&lt;strong>hexo&lt;/strong>生成的是静态博客，所以有些功能是无法附加上去的，就比如说评论系统。&lt;br>
+我用过的评论系统不多，也只有&lt;strong>Disqus&lt;/strong>和&lt;strong>Gitment&lt;/strong>，其他的也只是了解一些，我就来谈谈为什么要用&lt;strong>Gitment&lt;/strong>吧！&lt;br>
+国内之前是有&lt;strong>多说&lt;/strong>的，但由于一些“原因”被迫关闭了。现在国内比较流行的是&lt;strong>畅言&lt;/strong>，但毕竟这还是要经过审查的，所以我没有用。&lt;br>
+之所以之前使用&lt;strong>Disqus&lt;/strong>，是因为它在国外的应用很广，自己也试用了用，感觉不错，所以之前一直用的是&lt;strong>Disqus&lt;/strong>。&lt;br>
+&lt;strong>Gitment&lt;/strong>用下来我个人感觉整体还不错，下面，我就来说说应该怎样配置&lt;strong>Gitment&lt;/strong>吧。&lt;/p>
+&lt;h1>&lt;font color="red">&lt;b>！！由于Gitment不再维护，建议使用&lt;a href="https://iochen.com/2018/01/06/use-gitalk-in-hexo/">Gitalk&lt;/a>！！&lt;/b>&lt;/font>&lt;/h1>
+&lt;h2 id="配置gitment">配置&lt;strong>Gitment&lt;/strong>&lt;/h2>
+&lt;p>首先，你得有一个&lt;strong>Github&lt;/strong>账号（这个就不多说了吧），下面，打开&lt;em>&lt;b>&lt;a href="https://github.com/settings/applications/new"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>&lt;strong>这个链接&lt;/strong>&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>，具体填法如下：&lt;/p>
+&lt;pre>&lt;code class="language-cpp">Application name //应用名称，随便填
+Homepage URL //没有过多要求，可以填自己的博客地址
+Application description //应用描述，描述一下，无要求
+Authorization callback URL //这个就有要求了，填自己要使用Gitment的博客地址，不可乱填
+&lt;/code>&lt;/pre>
+&lt;p>接着，你就可以得到&lt;code>Client ID&lt;/code>和&lt;code>Client Secret&lt;/code>，之后会用到的。接下来，我们回到hexo的主题配置里继续！&lt;/p>
+&lt;h3 id="如何配置">如何配置&lt;/h3>
+&lt;p>如果在主题的配置文件里有&lt;code>gitment&lt;/code> ，就继续往下看吧！如果没有，请翻到底部，或点击左边的&lt;code>附：如何添加Gitment功能&lt;/code>。
+（我只用过&lt;strong>Next&lt;/strong>主题，只知道&lt;strong>NexT&lt;/strong>主题是有的）&lt;br>
+怎么填呢？见下面&lt;/p>
+&lt;pre>&lt;code class="language-cpp">gitment:
+enable: true //是否打开
+count: true //是否计数
+cleanly: false //是否隐藏'Powered by Gitment'字样
+language: zh-Hans //语言
+github_user: geedme //你的GitHub用户名或ID
+github_repo: gitment //你要存放的库，下文会详细写
+client_id: xxxxx //上文的的Client Id
+client_secret: xxxxxx //上文的Client Secret
+&lt;/code>&lt;/pre>
+&lt;p>*如需复制，请删除 // 及后方内容，或将 // 改为 # *&lt;br>
+&lt;em>我之前踩过一个坑，就是 冒号 和后面的内容之间一定要加空格！否则会出错的！！&lt;/em>&lt;/p>
+&lt;p>至于还有几个选项没有写，一是因为不常用，二是因为……我也没用过……不能误导大家。&lt;br>
+可能&lt;code>repo&lt;/code>说的不太明白（其实是我第一次没搞懂），我这里详细说一下。其实&lt;strong>Gitment&lt;/strong>是基于&lt;strong>GitHub&lt;/strong>的&lt;strong>issues&lt;/strong>功能的，所以，你要为他建一个库或用现成的库，我个人建议新建一个，而&lt;code>repo&lt;/code>就是你要用的库的名称。 比如，我就为&lt;strong>Gitment&lt;/strong>专门建了一个叫&lt;code>gitment&lt;/code>的库，所以在&lt;code>github_repo: &lt;/code>处填&lt;code>gitment&lt;/code>。&lt;/p>
+&lt;h3 id="附如何添加gitment功能">附：如何添加Gitment功能&lt;/h3>
+&lt;p>&lt;em>附加内容未亲自实验过，内容来源于网络&lt;/em>&lt;/p>
+&lt;p>见&lt;em>&lt;b>&lt;a href="https://dj9399.github.io/post/Gitment%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>此网站&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>(懒得写了……)&lt;/p>
+&lt;h2 id="其它">其它&lt;/h2>
+&lt;p>这是我写的第一篇&amp;quot;有意义&amp;quot;的博文，欢迎大家在下方评论！&lt;/p></description></item></channel></rss>

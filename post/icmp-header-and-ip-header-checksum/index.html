@@ -1,0 +1,50 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.83.1"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel=preload href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as=font crossorigin=anonymous><title>ICMP首部 与 IP首部 校验和的计算&nbsp;&ndash;&nbsp;Richard Chen's Blog</title><link rel=icon type=image/png sizes=32x32 href=/images/favicon-32x32-mrchen.png><link rel=icon type=image/png sizes=16x16 href=/images/favicon-16x16-mrchen.png><meta name=keywords content="checksum,icmp,header,ip,详细,校验和,算法,计算,方法,Go,golang"><meta name=description content="ICMP首部 与 IP首部 校验和的计算"><link href=https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css rel=stylesheet rel=preload as=style><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/core.min.9c101c701585d7d8a6035683becffa0d0ac3ab87a210677e2db7ed70b53b9ff9a1fcef30a6e0cd7c402ccd9d35425af5.css integrity=sha384-nBAccBWF19imA1aDvs/6DQrDq4eiEGd+LbftcLU7n/mh/O8wpuDNfEAszZ01Qlr1 crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/gitalk.min.css><meta name=twitter:card content="summary"><meta name=twitter:title content="ICMP首部 与 IP首部 校验和的计算"><script async src="https://www.googletagmanager.com/gtag/js?id=UA-110143160-2"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-110143160-2')</script><body><section id=header><div class="header wrap"><span class=header><a class="site home" href=/><img class="site logo" src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/images/logo.svg crossorigin=anonymous alt><span class="site name">Richard Chen's Blog</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/categories/>Categories</a>&nbsp;|&nbsp;<a class="nav item" href=/tags/>Tags</a>&nbsp;|&nbsp;<a class="nav item" href=/about/>About</a>&nbsp;|&nbsp;<a class="nav item" href=/contact/>Contact</a>&nbsp;|&nbsp;<a class="nav item" href=/links/>Links</a>&nbsp;|&nbsp;<a class="nav item" href=/search/>Search</a>&nbsp;|&nbsp;<a href=/index.xml>&nbsp;<i class="fa fa-rss fa-lg" aria-hidden=true></i>&nbsp;</a></nav></div></span><span class="m-header right-side"><button onclick="Toggle('menu')" class=menubtn><i class="fa fa-bars fa-lg" aria-hidden=true></i></button></span><ul id=menu class="menu dropdown"><li class=menu-item><a href=/categories/><br>Categories</a></li><li class=menu-item><a href=/tags/><br>Tags</a></li><li class=menu-item><a href=/about/><br>About</a></li><li class=menu-item><a href=/contact/><br>Contact</a></li><li class=menu-item><a href=/links/><br>Links</a></li><li class=menu-item><a href=/search/><br>Search</a></li><li class=menu-item><a href=/index.xml><br><i class="fa fa-rss fa-lg" aria-hidden=true></i></a></li></ul><script>function Toggle(b){var a=document.getElementById(b);a.classList.contains('show')?a.classList.remove('show'):a.classList.add('show')}</script></div></section><section id=content><div class=article-container><section class="article header"><h1 class=title>ICMP首部 与 IP首部 校验和的计算</h1><div class=post-meta><i class="fa fa-calendar-o"></i>&nbsp;<span>2020-08-03</span><a> | </a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/algorithm/>Algorithm&nbsp;&nbsp;</a></div></section><article class="article markdown-body"><aside class=table-of-contents><details><summary><b>Table of Contents</b></summary><ul class="toc toc-h2"><li><a href=/post/icmp-header-and-ip-header-checksum/#%e5%bc%80%e5%a4%b4>开头</a></li><li><a href=/post/icmp-header-and-ip-header-checksum/#%e7%ac%ac%e4%b8%80%e6%ad%a5>第一步</a></li><ul class="toc toc-h3"><li><a href=/post/icmp-header-and-ip-header-checksum/#go%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0>Go代码实现</a></li></ul><li><a href=/post/icmp-header-and-ip-header-checksum/#%e7%ac%ac%e4%ba%8c%e6%ad%a5>第二步</a></li><ul class="toc toc-h3"><li><a href=/post/icmp-header-and-ip-header-checksum/#%e6%9e%81%e7%ab%af%e6%83%85%e5%86%b5>极端情况</a></li><li><a href=/post/icmp-header-and-ip-header-checksum/#go%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0>Go代码实现</a></li></ul><li><a href=/post/icmp-header-and-ip-header-checksum/#%e7%ac%ac%e4%b8%89%e6%ad%a5>第三步</a></li><ul class="toc toc-h3"><li><a href=/post/icmp-header-and-ip-header-checksum/#go%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0>Go代码实现</a></li></ul><li><a href=/post/icmp-header-and-ip-header-checksum/#%e6%80%bb%e7%bb%93>总结</a></li><ul class="toc toc-h3"><li><a href=/post/icmp-header-and-ip-header-checksum/#go%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0>Go代码实现</a></li></details></aside><p>本篇文章详细讲解了计算 <strong>ICMP 首部</strong> 与 <strong>IP 首部</strong> 的计算方法，以及其校验方法</p><h2 id=开头>开头</h2><p>以下内容是一段 <strong>IPv4</strong> 的示例首部数据包</p><pre><code class=language-hex>4500 0073 0000 4000 4011 *B861* C0A8 0001
+C0A8 00C7
+</code></pre><p><em>注：被<code>*</code>引起的部分为需要计算的校验和</em></p><p>既然是要计算校验和，那开始肯定是不知道的，所以我们默认为<code>0000</code>，所以，我么就是要对下面这一串数据进行校验和操作。</p><pre><code class=language-hex>4500 0073 0000 4000 4011 0000 C0A8 0001
+C0A8 00C7
+</code></pre><h2 id=第一步>第一步</h2><p>每<strong>16</strong>字节相加求和，于是我们就有了</p><p>$$\mathtt{0x4500}+\mathtt{0x0073}+\mathtt{0x0000}+&mldr;+\mathtt{0x00C7}=\mathtt{0x2479C}$$</p><h3 id=go代码实现><strong>Go</strong>代码实现</h3><p>注：传入<code>data []byte</code>，大端编码</p><pre><code class=language-go>var	sum    uint32
+var	length = len(data)
+var	index  int
+for length &gt; 1 {
+	sum += uint32(data[index])&lt;&lt;8 + uint32(data[index+1])
+	index += 2
+	length -= 2
+}
+// 如果len(data)为奇数
+if length &gt; 0 {
+	sum += uint32(data[index])
+}
+</code></pre><h2 id=第二步>第二步</h2><p>由于我们的校验码只有<strong>16</strong>bit，所以我们就要把上面的$\mathtt{0x2479C}$转为<strong>16</strong>bit<br><code>2479C</code>可以转化为</p><pre><code>0002 479C
+</code></pre><p>那我们可以将两个相加，即</p><p>$$\mathtt{0x0002}+\mathtt{0x479C}=\mathtt{0x479E}$$</p><p>如果这样算下来还是超过<strong>16</strong>bit，则需再次进行此运算。
+那么最多需要几次运算呢，我们可以算一下。</p><h3 id=极端情况>极端情况</h3><p>由谷歌可知，<strong>TCP</strong>包最大为<code>65535 bytes</code>，以<strong>16</strong>bit 为一个小节的话，也就是<code>32767.5</code>个小节。
+假设每个小节都是$\mathtt{0xFFFF}$（剩余的半个小节以$\mathtt{0x00FF}$计算）。<br>已知<code>32767</code>的十六进制为$\mathtt{0x7FFF}$，那求和最大是</p><p>$$\mathtt{0x7FFF}\times{}\mathtt{0xFFFF}+\mathtt{0x00FF}=\mathtt{0x7FFE8100}
+$$</p><p>第一次进行第二步运算后结果为$\mathtt{0x100FE
+}$，第二次为$\mathtt{0x00FF}$<br>所以不难看出，最多需要<mark><strong>两次</strong></mark>第二步的运算即可。</p><h3 id=go代码实现-1><strong>Go</strong>代码实现</h3><pre><code class=language-go>sum = (sum &gt;&gt; 16) + (sum &amp; 0xFFFF)
+// 与上一行代码作用相同，
+// 超过16bit的部分会在最后被舍弃掉
+sum += sum &gt;&gt; 16
+</code></pre><h2 id=第三步>第三步</h2><p>取反运算，这一步的目的是为了验证的方便。</p><p>$$\overline{\mathtt{0x479E}} = \mathtt{0xB861}$$</p><h3 id=go代码实现-2><strong>Go</strong>代码实现</h3><pre><code class=language-go>return uint16(^sum)
+</code></pre><h2 id=总结>总结</h2><h3 id=go代码实现-3><strong>Go</strong>代码实现</h3><pre><code class=language-go>func Checksum(data []byte) uint16 {
+    var	sum    uint32
+    var	length = len(data)
+    var	index  int
+    for length &gt; 1 {
+    	sum += uint32(data[index])&lt;&lt;8 + uint32(data[index+1])
+    	index += 2
+    	length -= 2
+    }
+    // 如果len(data)为奇数
+    if length &gt; 0 {
+    	sum += uint32(data[index])
+    }
+
+    sum = (sum &gt;&gt; 16) + (sum &amp; 0xFFFF)
+    // 与上一行代码作用相同，
+    // 超过16bit的部分会在最后被舍弃掉
+    sum += sum &gt;&gt; 16
+    return uint16(^sum)
+}
+</code></pre></article><section class="article license"><table class=license><tr><td><b>AUTHOR</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>Richard Chen</td></tr><tr><td><b>ARTICLE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>CC BY-SA 4.0</td></tr><tr><td><b>CODE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>MIT</td></tr></table></section></div><div class="article bottom"><section class="article navigation"><p>Next: <a class=link href=/post/tomoyo-after-its-a-wonderful-life/><span class="iconfont icon-article"></span>Tomoyo After</a></p><p>Prev: <a class=link href=/post/get-go-path-in-go/><span class="iconfont icon-article"></span>在 Go 中获取 GOPATH 的最佳方案</a></p></section><div id=gitalk-container style=padding-top:2em></div><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js></script><script type=text/javascript>const gitalk=new Gitalk({clientID:"52081976b7a07be56acc",clientSecret:"d8e81c383c5ffc349ddf1b5af168e6608cd1a42d",repo:"gitalk",owner:"iosite",admin:["iosite","iochen"],id:location.pathname,perPage:15,pagerDirection:"last",createIssueManually:!0,distractionFreeMode:!0});gitalk.render("gitalk-container")</script></div></section><section id=footer><div class=footer-wrap><span class=copyright>©2020-2021 Richard Chen.</span> |
+<span class=powerby><span>Powered by</span>
+<a href=/powered-by/>these</a><span> projects.</span></span></div></section><script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.1/build/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script></body></html>

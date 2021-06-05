@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>encrypt on Richard Chen's Blog</title><link>https://iochen.com/tags/encrypt/</link><description>Recent content in encrypt on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Sat, 10 Feb 2018 11:44:49 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/encrypt/index.xml" rel="self" type="application/rss+xml"/><item><title>openssl RSA简单使用</title><link>https://iochen.com/post/openssl-rsa-1/</link><pubDate>Sat, 10 Feb 2018 11:44:49 +0000</pubDate><guid>https://iochen.com/post/openssl-rsa-1/</guid><description>&lt;p>最近看到的关于TLS的文章比较多啊，我也来凑凑热闹，来一篇关于非对称加密用法的博客。当然了，这篇文章对不懂的人也没什么用，懂的人也不会看这篇，还是写给自己看吧&lt;/p>
+&lt;p>这里的非对称加密用的是&lt;strong>RSA&lt;/strong>&lt;/p>
+&lt;h1 id="基本">基本&lt;/h1>
+&lt;p>非对称加密密钥的用法主要是如下几种：&lt;/p>
+&lt;pre>&lt;code>加密 → 公钥
+解密 → 私钥
+签名 → 私钥
+解密 → 私钥
+&lt;/code>&lt;/pre>
+&lt;h1 id="用法">用法&lt;/h1>
+&lt;h2 id="生成密钥">生成密钥&lt;/h2>
+&lt;h3 id="生成私钥">生成私钥&lt;/h3>
+&lt;p>比如我要生成一个叫&lt;code>pr.pem&lt;/code>的私钥文件，直接&lt;/p>
+&lt;pre>&lt;code>openssl genrsa -out pr.pem
+&lt;/code>&lt;/pre>
+&lt;p>就可以了，就像这样：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/f05d8842-7080-4b4c-bcc2-bbc07ceaefc5.png"
+alt="生成私钥"/>&lt;/p>
+&lt;h3 id="提取公钥">提取公钥&lt;/h3>
+&lt;p>比如我要从&lt;code>pr.pem&lt;/code>里提取&lt;code>pu.pem&lt;/code>的公钥，直接&lt;/p>
+&lt;pre>&lt;code>openssl rsa -pubout -in pr.pem -out pu.pem
+&lt;/code>&lt;/pre>
+&lt;p>即可，可以看到：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/6ed6724b-1fac-415e-bd11-8403680fe04c.png"
+alt="提取公钥"/>&lt;/p>
+&lt;h3 id="小结">小结&lt;/h3>
+&lt;p>至此，公钥和私钥就生成好了，来看看吧！&lt;br>
+私钥：&lt;br>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/b567d11b-55c7-4e2e-9629-32a406427301.png"
+alt="私钥"/>
+公钥：&lt;br>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/4f6e2b69-034f-4bdd-a02a-52ef9310e0bd.png"
+alt="公钥"/>&lt;/p>
+&lt;h2 id="加解密">加解密&lt;/h2>
+&lt;h3 id="加密">加密&lt;/h3>
+&lt;p>我们先创建一个叫&lt;code>test&lt;/code>的文件，写点什么
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/35036b25-44cf-4565-a645-ff2719ce065e.png"
+alt="测试文件"/>
+接下来加密&lt;/p>
+&lt;pre>&lt;code>openssl rsautl -pubin -encrypt -in test -inkey pu.pem -out test_en
+&lt;/code>&lt;/pre>
+&lt;p>来看看加密后的文件：&lt;br>
+&lt;em>注：现在用&lt;code>cat&lt;/code>是看不了的，只是一堆乱码，所以我用&lt;code>hexdump&lt;/code>查看二进制文件&lt;/em>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/a0caf393-a88d-4c94-83d5-4493d6278fa9.png"
+alt="加密后"/>&lt;/p>
+&lt;h3 id="解密">解密&lt;/h3>
+&lt;p>简单！输入&lt;/p>
+&lt;pre>&lt;code>openssl rsautl -decrypt -in test_en -inkey pr.pem -out test_dn
+&lt;/code>&lt;/pre>
+&lt;p>又回来了不是吗！&lt;br>
+来看看解密后的文件：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/ed16ca35-cee3-44ff-a71d-fbcdfd57b0eb.png"
+alt="解密后"/>
+完全一样！&lt;/p>
+&lt;h2 id="签名与验证">签名与验证&lt;/h2>
+&lt;h3 id="签名">签名&lt;/h3>
+&lt;p>我想为&lt;code>test&lt;/code>文件签名，直接&lt;/p>
+&lt;pre>&lt;code>openssl dgst -sha256 -sign pr.pem -out test_sign test
+&lt;/code>&lt;/pre>
+&lt;p>即可生成签名文件&lt;code>test_sign&lt;/code>&lt;/p>
+&lt;h3 id="验证签名">验证签名&lt;/h3>
+&lt;p>一样，一句命令！&lt;/p>
+&lt;pre>&lt;code>openssl dgst -sha256 -verify pu.pem -signature test_sign test
+&lt;/code>&lt;/pre>
+&lt;p>好的，得到一句
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/e3b95074-4eee-4d75-907e-682898c8d55f.png"
+alt="验证通过"/>
+这就是验证通过了&lt;/p>
+&lt;p>如果这个原来数据被一些人修改后，比如：&lt;br>
+&lt;em>这里我为&lt;code>test&lt;/code>文件加了一行&lt;/em>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/a9569407-189a-411c-9ebe-a9a19031e2c7.png"
+alt="修改后"/>
+就会出现：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/d0ce75e7-7750-4b53-b574-069953fbc965.png"
+alt="验证失败"/>&lt;/p>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>这里我有一些没有说，因为写着写着就写的很详细很长了，具体可以参考&lt;em>&lt;b>&lt;a href="https://www.cnblogs.com/gordon0918/p/5382541.html"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>这位&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>的博客。&lt;/p>
+&lt;h1 id="个人总结">个人总结&lt;/h1>
+&lt;p>其实，我只要记6段代码就好了&lt;/p>
+&lt;pre>&lt;code>openssl genrsa -out pr.pem //生成
+openssl rsa -pubout -in pr.pem -out pu.pem //提取
+openssl rsautl -pubin -encrypt -in test -inkey pu.pem -out test_en //加密
+openssl rsautl -decrypt -in test_en -inkey pr.pem -out test_dn //解密
+openssl dgst -sha256 -sign pr.pem -out test_sign test //签名
+openssl dgst -sha256 -verify pu.pem -signature test_sign test //验证
+&lt;/code>&lt;/pre>
+&lt;h1 id="其它">其它&lt;/h1>
+&lt;ul>
+&lt;li>这里的密钥对不会在任何地方使用！&lt;/li>
+&lt;li>&lt;del>博主的正式公钥：地址：&lt;em>&lt;b>&lt;a href="https://mega.nz/#!sM4GDIxY"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>https://mega.nz/#!sM4GDIxY&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 密钥：&lt;code>!0bW3hOti7GQHtkXYgXY52o8IK9RZVos7hzdZV8fA4uc&lt;/code>&lt;/del> 已弃用&lt;/li>
+&lt;/ul>
+&lt;p>有问题请在下面问！（至于我会不会……😭）&lt;/p></description></item></channel></rss>

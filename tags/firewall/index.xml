@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Firewall on Richard Chen's Blog</title><link>https://iochen.com/tags/firewall/</link><description>Recent content in Firewall on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Sat, 02 Jun 2018 18:28:52 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/firewall/index.xml" rel="self" type="application/rss+xml"/><item><title>CentOS7防火墙的使用</title><link>https://iochen.com/post/firewall-of-centos/</link><pubDate>Sat, 02 Jun 2018 18:28:52 +0000</pubDate><guid>https://iochen.com/post/firewall-of-centos/</guid><description>&lt;p>记录&lt;strong>CentOS7&lt;/strong>下**firewall(firewalld)**的用法，包括&lt;em>开启&lt;/em>、&lt;em>关闭&lt;/em>、&lt;em>查看&lt;/em>等操作。&lt;/p>
+&lt;h1 id="命令">命令&lt;/h1>
+&lt;p>直接上命令&lt;/p>
+&lt;h2 id="开启">开启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>&lt;b>&lt;a href="#%e9%87%8d%e5%90%af">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>注：执行此条命令后不会立即生效，请参阅此处&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;br>
+这里是开启&lt;strong>TCP&lt;/strong>的&lt;strong>80&lt;/strong>端口，下方是详解&lt;/p>
+&lt;pre>&lt;code>--zone=public 操作的域
+--add-port=80/tcp 要开启的端口，格式为`端口/协议`
+--permanent 指的是永久生效，去除即临时生效
+&lt;/code>&lt;/pre>
+&lt;h2 id="关闭">关闭&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --remove-port=80/tcp --permanent
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>&lt;b>&lt;a href="#%e9%87%8d%e5%90%af">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>注：执行此条命令后不会立即生效，请参阅此处&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;br>
+这里是关闭&lt;strong>TCP&lt;/strong>的&lt;strong>80&lt;/strong>端口，下方是详解&lt;/p>
+&lt;pre>&lt;code>--zone=public 操作的域
+--remove-port=80/tcp 要开启的端口，格式为`端口/协议`
+--permanent 指的是永久生效，去除即临时生效
+&lt;/code>&lt;/pre>
+&lt;h2 id="查看">查看&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --list-ports
+&lt;/code>&lt;/pre>
+&lt;h2 id="重启">重启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --reload
+&lt;/code>&lt;/pre>
+&lt;h1 id="启用or关闭firewallfirewalld服务">启用or关闭**firewall(firewalld)**服务&lt;/h1>
+&lt;h2 id="关闭-1">关闭&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl stop firewalld.service
+&lt;/code>&lt;/pre>
+&lt;h2 id="开启-1">开启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl start firewalld.service
+&lt;/code>&lt;/pre>
+&lt;h2 id="重启-1">重启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl restart firewalld.service
+&lt;/code>&lt;/pre>
+&lt;h2 id="状态">状态&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl status firewalld.service
+&lt;/code>&lt;/pre>
+&lt;p>我自己的示例(开启状态):
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@publichttps://img.iochen.com/AJ5Ssm0L.png"
+alt/>&lt;/p></description></item></channel></rss>

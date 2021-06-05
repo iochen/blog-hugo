@@ -1,0 +1,26 @@
+{
+  "rewrites": [
+    {
+      "source": "/v2gen/(.*)",
+      "destination": "/v2gen/"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/(2020|2019|2018)/\\d{2}/\\d{2}/(.*)",
+      "destination": "/post/($2)"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    }
+  ]
+}
+

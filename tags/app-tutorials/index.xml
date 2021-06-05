@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>App Tutorials on Richard Chen's Blog</title><link>https://iochen.com/tags/app-tutorials/</link><description>Recent content in App Tutorials on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Sun, 18 Aug 2019 11:09:08 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/app-tutorials/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux下使用FFmpeg,将mp4等格式转mp3格式</title><link>https://iochen.com/post/convert-videos-to-audio-on-linux/</link><pubDate>Sun, 18 Aug 2019 11:09:08 +0000</pubDate><guid>https://iochen.com/post/convert-videos-to-audio-on-linux/</guid><description>&lt;p>本文章将介绍 Linux下使用FFmpeg,将各类格式互相转换，以及如何批量转换&lt;/p>
+&lt;h1 id="单个转换">单个转换&lt;/h1>
+&lt;h2 id="命令">命令&lt;/h2>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i {输入文件} {输出文件}
+&lt;/code>&lt;/pre>
+&lt;h2 id="示例">示例&lt;/h2>
+&lt;h3 id="mp4-转-mp3">mp4 转 mp3&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.mp4 foobar.mp3
+&lt;/code>&lt;/pre>
+&lt;h3 id="flv-转-mp3">flv 转 mp3&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.flv foobar.mp3
+&lt;/code>&lt;/pre>
+&lt;h3 id="mp4-转-wav">mp4 转 wav&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.mp4 foobar.wav
+&lt;/code>&lt;/pre>
+&lt;h3 id="wav-转-mp3">wav 转 mp3&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.wav foobar.mp3
+&lt;/code>&lt;/pre>
+&lt;h1 id="批量转换">批量转换&lt;/h1>
+&lt;p>比如，文件夹下有&lt;code>*.mp4&lt;/code>文件，要批量转换为&lt;code>XX.mp3&lt;/code>文件，可以用如下方法&lt;/p>
+&lt;pre>&lt;code class="language-bash">for i in ./*.mp4
+do
+ffmpeg -i $i ${i}.mp3
+done
+&lt;/code>&lt;/pre>
+&lt;p>再比如，文件夹下所有文件文件，都要批量转换为&lt;code>XX.mp3&lt;/code>文件，可以用如下方法&lt;/p>
+&lt;pre>&lt;code class="language-bash">for i in ./*
+do
+ffmpeg -i $i ${i}.mp3
+done
+&lt;/code>&lt;/pre></description></item></channel></rss>

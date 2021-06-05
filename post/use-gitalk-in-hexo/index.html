@@ -1,0 +1,91 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.83.1"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel=preload href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as=font crossorigin=anonymous><title>Hexo中Gitalk配置使用教程-可能是目前最详细的教程&nbsp;&ndash;&nbsp;Richard Chen's Blog</title><link rel=icon type=image/png sizes=32x32 href=/images/favicon-32x32-mrchen.png><link rel=icon type=image/png sizes=16x16 href=/images/favicon-16x16-mrchen.png><meta name=keywords content="iochen,RichardChen,blog,tech,博客,技术,网络,算法,伺服器,演算法"><meta name=description content="Hexo中Gitalk配置使用教程-可能是目前最详细的教程"><link href=https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css rel=stylesheet rel=preload as=style><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/core.min.9c101c701585d7d8a6035683becffa0d0ac3ab87a210677e2db7ed70b53b9ff9a1fcef30a6e0cd7c402ccd9d35425af5.css integrity=sha384-nBAccBWF19imA1aDvs/6DQrDq4eiEGd+LbftcLU7n/mh/O8wpuDNfEAszZ01Qlr1 crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/gitalk.min.css><meta name=twitter:card content="summary"><meta name=twitter:title content="Hexo中Gitalk配置使用教程-可能是目前最详细的教程"><script async src="https://www.googletagmanager.com/gtag/js?id=UA-110143160-2"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-110143160-2')</script><body><section id=header><div class="header wrap"><span class=header><a class="site home" href=/><img class="site logo" src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/images/logo.svg crossorigin=anonymous alt><span class="site name">Richard Chen's Blog</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/categories/>Categories</a>&nbsp;|&nbsp;<a class="nav item" href=/tags/>Tags</a>&nbsp;|&nbsp;<a class="nav item" href=/about/>About</a>&nbsp;|&nbsp;<a class="nav item" href=/contact/>Contact</a>&nbsp;|&nbsp;<a class="nav item" href=/links/>Links</a>&nbsp;|&nbsp;<a class="nav item" href=/search/>Search</a>&nbsp;|&nbsp;<a href=/index.xml>&nbsp;<i class="fa fa-rss fa-lg" aria-hidden=true></i>&nbsp;</a></nav></div></span><span class="m-header right-side"><button onclick="Toggle('menu')" class=menubtn><i class="fa fa-bars fa-lg" aria-hidden=true></i></button></span><ul id=menu class="menu dropdown"><li class=menu-item><a href=/categories/><br>Categories</a></li><li class=menu-item><a href=/tags/><br>Tags</a></li><li class=menu-item><a href=/about/><br>About</a></li><li class=menu-item><a href=/contact/><br>Contact</a></li><li class=menu-item><a href=/links/><br>Links</a></li><li class=menu-item><a href=/search/><br>Search</a></li><li class=menu-item><a href=/index.xml><br><i class="fa fa-rss fa-lg" aria-hidden=true></i></a></li></ul><script>function Toggle(b){var a=document.getElementById(b);a.classList.contains('show')?a.classList.remove('show'):a.classList.add('show')}</script></div></section><section id=content><div class=article-container><section class="article header"><h1 class=title>Hexo中Gitalk配置使用教程-可能是目前最详细的教程</h1><div class=post-meta><i class="fa fa-calendar-o"></i>&nbsp;<span>2018-01-06</span><a> | </a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/tutorials/>Tutorials&nbsp;&nbsp;</a></div></section><article class="article markdown-body"><aside class=table-of-contents><details><summary><b>Table of Contents</b></summary><ul class="toc toc-h2"><li><a href=/post/use-gitalk-in-hexo/#swig%e6%96%87%e4%bb%b6%e4%bf%ae%e6%94%b9%e6%b3%95>swig文件修改法</a></li><ul class="toc toc-h3"><li><a href=/post/use-gitalk-in-hexo/#%e6%b7%bb%e5%8a%a0swig%e4%bb%a3%e7%a0%81>添加swig代码</a></li><li><a href=/post/use-gitalk-in-hexo/#%e8%bf%9b%e8%a1%8c%e9%85%8d%e7%bd%ae>进行配置</a></li><li><a href=/post/use-gitalk-in-hexo/#%e6%a0%b7%e5%bc%8f%e4%bf%ae%e6%94%b9>样式修改</a></li></ul><li><a href=/post/use-gitalk-in-hexo/#ejs%e6%96%87%e4%bb%b6%e4%bf%ae%e6%94%b9%e6%b3%95>ejs文件修改法</a></li><ul class="toc toc-h3"><li><a href=/post/use-gitalk-in-hexo/#%e4%bf%ae%e6%94%b9%e6%ba%90%e7%a0%81>修改源码</a></li></details></aside><p><strong>Gitalk</strong>的详细配置与示例</p><h1 id=github部分>GitHub部分</h1><p>首先，你得有一个<strong>Github</strong>账号（这个就不多说了吧），下面，打开<em><b><a href=https://github.com/settings/applications/new target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i><em><strong>github.com/settings/applications/new</strong></em>&nbsp;</a></b></em>，具体填法如下：</p><pre><code class=language-cpp>Application name //应用名称，随便填
+Homepage URL //没有过多要求，可以填自己的博客地址
+Application description //应用描述，描述一下，无要求
+Authorization callback URL //这个就有要求了，填自己要使用Gitalk的博客地址，不可乱填
+</code></pre><p>接着，你就可以得到<code>Client ID</code>和<code>Client Secret</code>，之后会用到的。接下来，我们回到hexo的主题配置里。</p><h1 id=文件修改>文件修改</h1><h2 id=swig文件修改法>swig文件修改法</h2><p>在这里，我以<strong>NexT</strong>主题做示范，如果发现你的主题大部分以<code>.ejs</code> 结尾 请见 <em><b><a href=#ejs%e6%96%87%e4%bb%b6%e4%bf%ae%e6%94%b9%e6%b3%95>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>ejs文件修改法&nbsp;</a></b></em></p><h3 id=添加swig代码>添加swig代码</h3><p>在主题的<code>\layout\_third-party\comments</code>目录中，新建一个<code>gitalk.swig</code>文件，文件内容如下：</p><pre><code class=language-java>{% if page.comments &amp;&amp; theme.gitalk.enable %}
+
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/gitalk/dist/gitalk.css&quot;&gt;
+
+  &lt;script src=&quot;https://unpkg.com/gitalk/dist/gitalk.min.js&quot;&gt;&lt;/script&gt;
+
+   &lt;script type=&quot;text/javascript&quot;&gt;
+        var gitalk = new Gitalk({
+          clientID: '{{ theme.gitalk.ClientID }}',
+          clientSecret: '{{ theme.gitalk.ClientSecret }}',
+          repo: '{{ theme.gitalk.repo }}',
+          owner: '{{ theme.gitalk.owner }}',
+          admin: {{ theme.gitalk.adminUser }},
+          id: {{ theme.gitalk.ID }},
+          labels: {{ theme.gitalk.labels }},
+          perPage: {{ theme.gitalk.perPage }},
+          pagerDirection: '{{ theme.gitalk.pagerDirection }}',
+          createIssueManually: {{ theme.gitalk.createIssueManually }},
+          distractionFreeMode: {{ theme.gitalk.distractionFreeMode }}
+        })
+        gitalk.render('gitalk-container')           
+       &lt;/script&gt;
+{% endif %}
+
+</code></pre><p>还是，在主题的<code>\layout\_third-party\comments</code>目录中，找到一个<code>index.swig</code>的文件，打开，添加这一行代码：</p><pre><code class=language-java>{% include 'gitalk.swig' %}
+</code></pre><p>接着，在主题的<code>\layout\_partials</code>目录中，找到<code>comments.swig</code>文件，打开，找到</p><pre><code class=language-java>{% elseif theme.valine.appid and theme.valine.appkey %}
+  &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;
+  &lt;/div&gt;  
+{% endif %}
+</code></pre><p>在空了一行的地方加上以下代码：</p><pre><code class=language-java>{% elseif theme.gitalk.enable %}
+&lt;div id=&quot;gitalk-container&quot;&gt;&lt;/div&gt;
+</code></pre><h3 id=进行配置>进行配置</h3><p>接下来，转到主题的配置文件里，加上这一段：</p><pre><code class=language-js>gitalk:
+  enable: true
+  ClientID: xxxxxx
+  ClientSecret: xxxxxxxxxxxx
+  repo: gitalk
+  owner: iosite
+  adminUser: &quot;['iosite']&quot;
+  ID: location.pathname
+  labels: &quot;['Gitalk']&quot;
+  perPage: 15
+  pagerDirection: last
+  createIssueManually: true
+  distractionFreeMode: false
+</code></pre><p>*部分功能未添加，因为大部分人应该也用不到，这里就不多说了，如果需要更多，请见<em><b><a href=https://github.com/gitalk/gitalk target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>官方文档&nbsp;</a></b></em></p><p>各个功能：</p><pre><code class=language-js>  enable: true #指的是是否开启Gitalk
+  ClientID: xxxxxx #之前的Client ID
+  ClientSecret: xxxxxxxxxxxx #之前的Client Secret
+  repo: gitalk #你要存放的项目名，下文会详细再说
+  owner: iosite #这个项目名的拥有者（GitHub账号或组织）
+  adminUser: &quot;['iosite']&quot; #管理员用户，下文也会详细讲
+  ID: location.pathname #页面ID，不知道就默认的就好了
+  labels: &quot;['Gitalk']&quot; #GitHub issues的标签，下面会详细说
+  perPage: 15 #每页多少个评论
+  pagerDirection: last #排序方式是从旧到新（first）还是从新到旧（last）
+  createIssueManually: true #如果当前页面没有相应的 isssue ，且登录的用户属于 admin，则会自动创建 issue。如果设置为 true，则显示一个初始化页面，创建 issue 需要点击 init 按钮。
+  distractionFreeMode: false #是否启用快捷键(cmd|ctrl + enter) 提交评论.
+</code></pre><p>详细说明：</p><ul><li><p>repo<br><strong>Gitalk</strong>是基于<strong>GitHub</strong>的<strong>issues</strong>功能的，所以，你要为他建一个库或用现成的库，我个人建议新建一个，而<code>repo</code>就是你要用的库的名称。 比如，我就为<strong>Gitalk</strong>专门建了一个叫<code>gitalk</code>的库，所以在<code>repo: </code>处填<code>gitalk</code>。</p></li><li><p>adminUser<br>即管理员帐号。如果你是个人账号，那么这=里就填你的账户名和协作者的账户名。</p><p>以数组形式，外面再加一层引号</p></li><li><p>labels<br>主要是说一下，如果你之前用的是<strong>Gitment</strong>，又有评论，把这里改成<code>gitment</code>即可，如果没有，默认的就可以啦！以数组形式，外面再加一层引号</p></li></ul><h3 id=样式修改>样式修改</h3><p>最后，在<code>layout/_third-party/comments/index.swig</code>中添加这样一行：</p><pre><code class=language-css>.gt-container a{border-bottom: none;}
+</code></pre><p>完成！</p><h2 id=ejs文件修改法>ejs文件修改法</h2><h3 id=修改源码>修改源码</h3><p>添加<code>layout/_partial/post/gitalk.ejs</code></p><pre><code class=language-html>  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/gitalk/dist/gitalk.css&quot;&gt;
+  
+  &lt;script src=&quot;https://unpkg.com/gitalk/dist/gitalk.min.js&quot;&gt;&lt;/script&gt;
+
+   &lt;script type=&quot;text/javascript&quot;&gt;
+        var gitalk = new Gitalk({
+          clientID: '&lt;%=theme.gitalk.ClientID%&gt;',
+          clientSecret: '&lt;%=theme.gitalk.ClientSecret%&gt;',
+          repo: '&lt;%=theme.gitalk.repo%&gt;',
+          owner: '&lt;%=theme.gitalk.owner%&gt;',
+          admin: &lt;%=theme.gitalk.adminUser%&gt;,
+          id: &lt;%=theme.gitalk.ID%&gt;,
+          labels: &lt;%=theme.gitalk.labels%&gt;,
+          perPage: &lt;%=theme.gitalk.perPage%&gt;,
+          pagerDirection: '&lt;%=theme.gitalk.pagerDirection%&gt;',
+          createIssueManually: &lt;%=theme.gitalk.createIssueManually%&gt;,
+          distractionFreeMode: &lt;%=theme.gitalk.distractionFreeMode%&gt;
+        })
+
+        gitalk.render('gitalk-container')
+       &lt;/script&gt;
+</code></pre><p>在 <code>layout/_partial/article.ejs</code> 倒数第二行加入</p><pre><code class=language-html>  &lt;% if (theme.gitalk.enable){ %&gt;
+       &lt;div id=&quot;gitalk-container&quot;&gt;&lt;/div&gt;
+       &lt;%- include post/gitalk.ejs %&gt;
+  &lt;% } %&gt;
+
+</code></pre><p>配置修改法见<em><b><a href=#%e8%bf%9b%e8%a1%8c%e9%85%8d%e7%bd%ae>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>上文&nbsp;</a></b></em>，与swig格式大同小异</p><p>Demo就在下面，欢迎留言评论！</p></article><section class="article license"><table class=license><tr><td><b>AUTHOR</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>Richard Chen</td></tr><tr><td><b>ARTICLE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>CC BY-SA 4.0</td></tr><tr><td><b>CODE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>MIT</td></tr></table></section></div><div class="article bottom"><section class="article navigation"><p>Next: <a class=link href=/post/openssl-rsa-1/><span class="iconfont icon-article"></span>openssl RSA简单使用</a></p><p>Prev: <a class=link href=/post/use-gitment-in-your-blog/><span class="iconfont icon-article"></span>hexo评论系统——Gitment</a></p></section><div id=gitalk-container style=padding-top:2em></div><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js></script><script type=text/javascript>const gitalk=new Gitalk({clientID:"52081976b7a07be56acc",clientSecret:"d8e81c383c5ffc349ddf1b5af168e6608cd1a42d",repo:"gitalk",owner:"iosite",admin:["iosite","iochen"],id:location.pathname,perPage:15,pagerDirection:"last",createIssueManually:!0,distractionFreeMode:!0});gitalk.render("gitalk-container")</script></div></section><section id=footer><div class=footer-wrap><span class=copyright>©2020-2021 Richard Chen.</span> |
+<span class=powerby><span>Powered by</span>
+<a href=/powered-by/>these</a><span> projects.</span></span></div></section></body></html>

@@ -1,0 +1,81 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.83.1"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel=preload href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as=font crossorigin=anonymous><title>在 Go 中获取 GOPATH 的最佳方案&nbsp;&ndash;&nbsp;Richard Chen's Blog</title><link rel=icon type=image/png sizes=32x32 href=/images/favicon-32x32-mrchen.png><link rel=icon type=image/png sizes=16x16 href=/images/favicon-16x16-mrchen.png><meta name=keywords content="Go,golang,GOPATH,获取GOPATH,教程"><meta name=description content="在 Go 中获取 GOPATH 的最佳方案"><link href=https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css rel=stylesheet rel=preload as=style><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/core.min.9c101c701585d7d8a6035683becffa0d0ac3ab87a210677e2db7ed70b53b9ff9a1fcef30a6e0cd7c402ccd9d35425af5.css integrity=sha384-nBAccBWF19imA1aDvs/6DQrDq4eiEGd+LbftcLU7n/mh/O8wpuDNfEAszZ01Qlr1 crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/css/gitalk.min.css><meta name=twitter:card content="summary"><meta name=twitter:title content="在 Go 中获取 GOPATH 的最佳方案"><script async src="https://www.googletagmanager.com/gtag/js?id=UA-110143160-2"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-110143160-2')</script><body><section id=header><div class="header wrap"><span class=header><a class="site home" href=/><img class="site logo" src=https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/images/logo.svg crossorigin=anonymous alt><span class="site name">Richard Chen's Blog</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/categories/>Categories</a>&nbsp;|&nbsp;<a class="nav item" href=/tags/>Tags</a>&nbsp;|&nbsp;<a class="nav item" href=/about/>About</a>&nbsp;|&nbsp;<a class="nav item" href=/contact/>Contact</a>&nbsp;|&nbsp;<a class="nav item" href=/links/>Links</a>&nbsp;|&nbsp;<a class="nav item" href=/search/>Search</a>&nbsp;|&nbsp;<a href=/index.xml>&nbsp;<i class="fa fa-rss fa-lg" aria-hidden=true></i>&nbsp;</a></nav></div></span><span class="m-header right-side"><button onclick="Toggle('menu')" class=menubtn><i class="fa fa-bars fa-lg" aria-hidden=true></i></button></span><ul id=menu class="menu dropdown"><li class=menu-item><a href=/categories/><br>Categories</a></li><li class=menu-item><a href=/tags/><br>Tags</a></li><li class=menu-item><a href=/about/><br>About</a></li><li class=menu-item><a href=/contact/><br>Contact</a></li><li class=menu-item><a href=/links/><br>Links</a></li><li class=menu-item><a href=/search/><br>Search</a></li><li class=menu-item><a href=/index.xml><br><i class="fa fa-rss fa-lg" aria-hidden=true></i></a></li></ul><script>function Toggle(b){var a=document.getElementById(b);a.classList.contains('show')?a.classList.remove('show'):a.classList.add('show')}</script></div></section><section id=content><div class=article-container><section class="article header"><h1 class=title>在 Go 中获取 GOPATH 的最佳方案</h1><div class=post-meta><i class="fa fa-calendar-o"></i>&nbsp;<span>2020-07-17</span><a> | </a><i class="fa fa-folder-o"></i>&nbsp;<a class=post-meta href=/categories/tutorials/>Tutorials&nbsp;&nbsp;</a></div></section><article class="article markdown-body"><aside class=table-of-contents><details><summary><b>Table of Contents</b></summary><ul class="toc toc-h2"><li><a href=/post/get-go-path-in-go/#%e5%88%9d%e7%ba%a7>初级</a></li><li><a href=/post/get-go-path-in-go/#%e4%b8%ad%e7%ba%a7>中级</a></li><li><a href=/post/get-go-path-in-go/#%e9%ab%98%e7%ba%a7>高级</a></li><li><a href=/post/get-go-path-in-go/#%e7%9b%b8%e5%85%b3>相关</a></li></details></aside><p>此文章主要讲述了在 golang 程序中完美获取 GOPATH 的方法</p><h2 id=初级>初级</h2><p>golang 的最初几个版本都是依赖于环境变量中的 <strong>GOPATH</strong> 来进行判断的，
+所以在这种情况下，只需要</p><pre><code class=language-go>os.Getenv(&quot;GOPATH&quot;) // import &quot;os&quot;
+</code></pre><p>即可，最多再解析一下</p><pre><code class=language-go>sep := string(filepath.ListSeparator)
+pathList := strings.Split(path, sep) // import &quot;strings&quot;
+</code></pre><h2 id=中级>中级</h2><p>我们有时发现，即使是没有 <strong>GOPATH</strong> 这个 env，也是可以正常运行。
+经阅读 golang 源代码后，不难发现，其有默认值。<br><em><b><a href=https://golang.org/src/go/build/build.go#L273 target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>golang 源代码&nbsp;</a></b></em>:</p><pre><code class=language-go>c.GOPATH = envOr(&quot;GOPATH&quot;, defaultGOPATH())
+</code></pre><p>不难发现，其实我们 <strong>build</strong> 包中就已有 envOr 的实现，于是，
+现在的我们只需要</p><pre><code class=language-go>build.Default.GOPATH // import &quot;go/build&quot;
+</code></pre><p>即可</p><h2 id=高级>高级</h2><p>我们发现</p><pre><code class=language-shell>$ go env -w GOPATH=/foo/bar
+</code></pre><p>时，并未将 <code>/foo/bar</code> 写入环境变量，而是写入了 env 文件，经
+查看源代码后，不难发现 <em><b><a href=https://github.com/golang/go/blob/c4f2a9788a7be04daf931ac54382fbe2cb754938/src/cmd/go/internal/cfg/cfg.go#L151 target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>EnvFile 的实现&nbsp;</a></b></em></p><pre><code class=language-go>// EnvFile returns the name of the Go environment configuration file.
+func EnvFile() (string, error) {
+	if file := os.Getenv(&quot;GOENV&quot;); file != &quot;&quot; {
+		if file == &quot;off&quot; {
+			return &quot;&quot;, fmt.Errorf(&quot;GOENV=off&quot;)
+		}
+		return file, nil
+	}
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		return &quot;&quot;, err
+	}
+	if dir == &quot;&quot; {
+		return &quot;&quot;, fmt.Errorf(&quot;missing user-config dir&quot;)
+	}
+	return filepath.Join(dir, &quot;go/env&quot;), nil
+}
+</code></pre><p>于是，最终我们有了</p><pre><code class=language-go>func envFile() (string, error) {
+	if file := os.Getenv(&quot;GOENV&quot;); file != &quot;&quot; {
+		if file == &quot;off&quot; {
+			return &quot;&quot;, fmt.Errorf(&quot;GOENV=off&quot;)
+		}
+		return file, nil
+	}
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		return &quot;&quot;, err
+	}
+	if dir == &quot;&quot; {
+		return &quot;&quot;, fmt.Errorf(&quot;missing user-config dir&quot;)
+	}
+	return filepath.Join(dir, &quot;go&quot;, &quot;env&quot;), nil
+}
+
+func getRuntimeEnv(key string) (string, error) {
+	file, err := envFile()
+	if err != nil {
+		return &quot;&quot;, err
+	}
+	if file == &quot;&quot; {
+		return &quot;&quot;, fmt.Errorf(&quot;missing runtime env file&quot;)
+	}
+	var data []byte
+	var runtimeEnv string
+	data, err = ioutil.ReadFile(file)
+	envStrings := strings.Split(string(data), &quot;\n&quot;)
+	for _, envItem := range envStrings {
+		envItem = strings.TrimSuffix(envItem, &quot;\r&quot;)
+		envKeyValue := strings.Split(envItem, &quot;=&quot;)
+		if strings.ToLower(envKeyValue[0]) == strings.ToLower(key) {
+			runtimeEnv = envKeyValue[1]
+		}
+	}
+	return runtimeEnv, nil
+}
+
+goPath, envErr := getRuntimeEnv(&quot;GOPATH&quot;)
+if envErr != nil {
+	fmt.Println(&quot;Failed: please set '$GOPATH' manually, or use 'datapath' option to specify the path to your custom 'data' directory&quot;)
+	return
+}
+if goPath == &quot;&quot; {
+	goPath = build.Default.GOPATH
+}
+
+sep := string(filepath.ListSeparator)
+pathList := strings.Split(path, sep)
+</code></pre><h2 id=相关>相关</h2><p>Related Pull Request: <em><b><a href=https://github.com/v2ray/domain-list-community/pull/637 target=_blank>&nbsp;<i class="fa fa-external-link" aria-hidden=true style=font-size:small></i>https://github.com/v2ray/domain-list-community/pull/637&nbsp;</a></b></em></p></article><section class="article license"><table class=license><tr><td><b>AUTHOR</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>Richard Chen</td></tr><tr><td><b>ARTICLE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>CC BY-SA 4.0</td></tr><tr><td><b>CODE LICENSE</b></td><td><b>&nbsp;&nbsp;:&nbsp;&nbsp;</b></td><td>MIT</td></tr></table></section></div><div class="article bottom"><section class="article navigation"><p>Next: <a class=link href=/post/icmp-header-and-ip-header-checksum/><span class="iconfont icon-article"></span>ICMP首部 与 IP首部 校验和的计算</a></p><p>Prev: <a class=link href=/post/view-edit-remove-exif-data-with-exiftool/><span class="iconfont icon-article"></span>Linux下使用ExifTool对EXIF的操作</a></p></section><div id=gitalk-container style=padding-top:2em></div><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js></script><script type=text/javascript>const gitalk=new Gitalk({clientID:"52081976b7a07be56acc",clientSecret:"d8e81c383c5ffc349ddf1b5af168e6608cd1a42d",repo:"gitalk",owner:"iosite",admin:["iosite","iochen"],id:location.pathname,perPage:15,pagerDirection:"last",createIssueManually:!0,distractionFreeMode:!0});gitalk.render("gitalk-container")</script></div></section><section id=footer><div class=footer-wrap><span class=copyright>©2020-2021 Richard Chen.</span> |
+<span class=powerby><span>Powered by</span>
+<a href=/powered-by/>these</a><span> projects.</span></span></div></section><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.1/build/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script></body></html>

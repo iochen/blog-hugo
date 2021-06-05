@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>gitalk on Richard Chen's Blog</title><link>https://iochen.com/tags/gitalk/</link><description>Recent content in gitalk on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Sat, 06 Jan 2018 19:22:20 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/gitalk/index.xml" rel="self" type="application/rss+xml"/><item><title>Hexo中Gitalk配置使用教程-可能是目前最详细的教程</title><link>https://iochen.com/post/use-gitalk-in-hexo/</link><pubDate>Sat, 06 Jan 2018 19:22:20 +0000</pubDate><guid>https://iochen.com/post/use-gitalk-in-hexo/</guid><description>&lt;p>&lt;strong>Gitalk&lt;/strong>的详细配置与示例&lt;/p>
+&lt;h1 id="github部分">GitHub部分&lt;/h1>
+&lt;p>首先，你得有一个&lt;strong>Github&lt;/strong>账号（这个就不多说了吧），下面，打开&lt;em>&lt;b>&lt;a href="https://github.com/settings/applications/new"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>&lt;strong>github.com/settings/applications/new&lt;/strong>&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>，具体填法如下：&lt;/p>
+&lt;pre>&lt;code class="language-cpp">Application name //应用名称，随便填
+Homepage URL //没有过多要求，可以填自己的博客地址
+Application description //应用描述，描述一下，无要求
+Authorization callback URL //这个就有要求了，填自己要使用Gitalk的博客地址，不可乱填
+&lt;/code>&lt;/pre>
+&lt;p>接着，你就可以得到&lt;code>Client ID&lt;/code>和&lt;code>Client Secret&lt;/code>，之后会用到的。接下来，我们回到hexo的主题配置里。&lt;/p>
+&lt;h1 id="文件修改">文件修改&lt;/h1>
+&lt;h2 id="swig文件修改法">swig文件修改法&lt;/h2>
+&lt;p>在这里，我以&lt;strong>NexT&lt;/strong>主题做示范，如果发现你的主题大部分以&lt;code>.ejs&lt;/code> 结尾 请见 &lt;em>&lt;b>&lt;a href="#ejs%e6%96%87%e4%bb%b6%e4%bf%ae%e6%94%b9%e6%b3%95">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>ejs文件修改法&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h3 id="添加swig代码">添加swig代码&lt;/h3>
+&lt;p>在主题的&lt;code>\layout\_third-party\comments&lt;/code>目录中，新建一个&lt;code>gitalk.swig&lt;/code>文件，文件内容如下：&lt;/p>
+&lt;pre>&lt;code class="language-java">{% if page.comments &amp;amp;&amp;amp; theme.gitalk.enable %}
+&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.css&amp;quot;&amp;gt;
+&amp;lt;script src=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+var gitalk = new Gitalk({
+clientID: '{{ theme.gitalk.ClientID }}',
+clientSecret: '{{ theme.gitalk.ClientSecret }}',
+repo: '{{ theme.gitalk.repo }}',
+owner: '{{ theme.gitalk.owner }}',
+admin: {{ theme.gitalk.adminUser }},
+id: {{ theme.gitalk.ID }},
+labels: {{ theme.gitalk.labels }},
+perPage: {{ theme.gitalk.perPage }},
+pagerDirection: '{{ theme.gitalk.pagerDirection }}',
+createIssueManually: {{ theme.gitalk.createIssueManually }},
+distractionFreeMode: {{ theme.gitalk.distractionFreeMode }}
+})
+gitalk.render('gitalk-container')
+&amp;lt;/script&amp;gt;
+{% endif %}
+&lt;/code>&lt;/pre>
+&lt;p>还是，在主题的&lt;code>\layout\_third-party\comments&lt;/code>目录中，找到一个&lt;code>index.swig&lt;/code>的文件，打开，添加这一行代码：&lt;/p>
+&lt;pre>&lt;code class="language-java">{% include 'gitalk.swig' %}
+&lt;/code>&lt;/pre>
+&lt;p>接着，在主题的&lt;code>\layout\_partials&lt;/code>目录中，找到&lt;code>comments.swig&lt;/code>文件，打开，找到&lt;/p>
+&lt;pre>&lt;code class="language-java">{% elseif theme.valine.appid and theme.valine.appkey %}
+&amp;lt;div class=&amp;quot;comments&amp;quot; id=&amp;quot;comments&amp;quot;&amp;gt;
+&amp;lt;/div&amp;gt;
+{% endif %}
+&lt;/code>&lt;/pre>
+&lt;p>在空了一行的地方加上以下代码：&lt;/p>
+&lt;pre>&lt;code class="language-java">{% elseif theme.gitalk.enable %}
+&amp;lt;div id=&amp;quot;gitalk-container&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h3 id="进行配置">进行配置&lt;/h3>
+&lt;p>接下来，转到主题的配置文件里，加上这一段：&lt;/p>
+&lt;pre>&lt;code class="language-js">gitalk:
+enable: true
+ClientID: xxxxxx
+ClientSecret: xxxxxxxxxxxx
+repo: gitalk
+owner: iosite
+adminUser: &amp;quot;['iosite']&amp;quot;
+ID: location.pathname
+labels: &amp;quot;['Gitalk']&amp;quot;
+perPage: 15
+pagerDirection: last
+createIssueManually: true
+distractionFreeMode: false
+&lt;/code>&lt;/pre>
+&lt;p>*部分功能未添加，因为大部分人应该也用不到，这里就不多说了，如果需要更多，请见&lt;em>&lt;b>&lt;a href="https://github.com/gitalk/gitalk"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>官方文档&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>各个功能：&lt;/p>
+&lt;pre>&lt;code class="language-js"> enable: true #指的是是否开启Gitalk
+ClientID: xxxxxx #之前的Client ID
+ClientSecret: xxxxxxxxxxxx #之前的Client Secret
+repo: gitalk #你要存放的项目名，下文会详细再说
+owner: iosite #这个项目名的拥有者（GitHub账号或组织）
+adminUser: &amp;quot;['iosite']&amp;quot; #管理员用户，下文也会详细讲
+ID: location.pathname #页面ID，不知道就默认的就好了
+labels: &amp;quot;['Gitalk']&amp;quot; #GitHub issues的标签，下面会详细说
+perPage: 15 #每页多少个评论
+pagerDirection: last #排序方式是从旧到新（first）还是从新到旧（last）
+createIssueManually: true #如果当前页面没有相应的 isssue ，且登录的用户属于 admin，则会自动创建 issue。如果设置为 true，则显示一个初始化页面，创建 issue 需要点击 init 按钮。
+distractionFreeMode: false #是否启用快捷键(cmd|ctrl + enter) 提交评论.
+&lt;/code>&lt;/pre>
+&lt;p>详细说明：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>repo&lt;br>
+&lt;strong>Gitalk&lt;/strong>是基于&lt;strong>GitHub&lt;/strong>的&lt;strong>issues&lt;/strong>功能的，所以，你要为他建一个库或用现成的库，我个人建议新建一个，而&lt;code>repo&lt;/code>就是你要用的库的名称。 比如，我就为&lt;strong>Gitalk&lt;/strong>专门建了一个叫&lt;code>gitalk&lt;/code>的库，所以在&lt;code>repo: &lt;/code>处填&lt;code>gitalk&lt;/code>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>adminUser&lt;br>
+即管理员帐号。如果你是个人账号，那么这=里就填你的账户名和协作者的账户名。&lt;/p>
+&lt;p>以数组形式，外面再加一层引号&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>labels&lt;br>
+主要是说一下，如果你之前用的是&lt;strong>Gitment&lt;/strong>，又有评论，把这里改成&lt;code>gitment&lt;/code>即可，如果没有，默认的就可以啦！以数组形式，外面再加一层引号&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="样式修改">样式修改&lt;/h3>
+&lt;p>最后，在&lt;code>layout/_third-party/comments/index.swig&lt;/code>中添加这样一行：&lt;/p>
+&lt;pre>&lt;code class="language-css">.gt-container a{border-bottom: none;}
+&lt;/code>&lt;/pre>
+&lt;p>完成！&lt;/p>
+&lt;h2 id="ejs文件修改法">ejs文件修改法&lt;/h2>
+&lt;h3 id="修改源码">修改源码&lt;/h3>
+&lt;p>添加&lt;code>layout/_partial/post/gitalk.ejs&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-html"> &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.css&amp;quot;&amp;gt;
+&amp;lt;script src=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+var gitalk = new Gitalk({
+clientID: '&amp;lt;%=theme.gitalk.ClientID%&amp;gt;',
+clientSecret: '&amp;lt;%=theme.gitalk.ClientSecret%&amp;gt;',
+repo: '&amp;lt;%=theme.gitalk.repo%&amp;gt;',
+owner: '&amp;lt;%=theme.gitalk.owner%&amp;gt;',
+admin: &amp;lt;%=theme.gitalk.adminUser%&amp;gt;,
+id: &amp;lt;%=theme.gitalk.ID%&amp;gt;,
+labels: &amp;lt;%=theme.gitalk.labels%&amp;gt;,
+perPage: &amp;lt;%=theme.gitalk.perPage%&amp;gt;,
+pagerDirection: '&amp;lt;%=theme.gitalk.pagerDirection%&amp;gt;',
+createIssueManually: &amp;lt;%=theme.gitalk.createIssueManually%&amp;gt;,
+distractionFreeMode: &amp;lt;%=theme.gitalk.distractionFreeMode%&amp;gt;
+})
+gitalk.render('gitalk-container')
+&amp;lt;/script&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>在 &lt;code>layout/_partial/article.ejs&lt;/code> 倒数第二行加入&lt;/p>
+&lt;pre>&lt;code class="language-html"> &amp;lt;% if (theme.gitalk.enable){ %&amp;gt;
+&amp;lt;div id=&amp;quot;gitalk-container&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;%- include post/gitalk.ejs %&amp;gt;
+&amp;lt;% } %&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>配置修改法见&lt;em>&lt;b>&lt;a href="#%e8%bf%9b%e8%a1%8c%e9%85%8d%e7%bd%ae">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>上文&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>，与swig格式大同小异&lt;/p>
+&lt;p>Demo就在下面，欢迎留言评论！&lt;/p></description></item></channel></rss>

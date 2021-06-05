@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>EXIF on Richard Chen's Blog</title><link>https://iochen.com/tags/exif/</link><description>Recent content in EXIF on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Tue, 04 Feb 2020 17:48:18 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/exif/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux下使用ExifTool对EXIF的操作</title><link>https://iochen.com/post/view-edit-remove-exif-data-with-exiftool/</link><pubDate>Tue, 04 Feb 2020 17:48:18 +0000</pubDate><guid>https://iochen.com/post/view-edit-remove-exif-data-with-exiftool/</guid><description>&lt;h1 id="前言">前言&lt;/h1>
+&lt;p>&lt;strong>EXIF&lt;/strong>数据可以包括你的相机信息，快门，光圈，ISO，创建时间，编辑信息，GPS信息等信息，他们会在无心之中泄漏你的隐私，特别是上传照片到互联网上时，那更是有极大的泄漏风险。因此，在上传照片到网路上时，请务必删除&lt;strong>EXIF&lt;/strong>信息。&lt;/p>
+&lt;p>本篇文章就是要教你在&lt;strong>Linux&lt;/strong>下，如何使用&lt;strong>ExifTool&lt;/strong>查看、修改与删除图片的&lt;strong>EXIF&lt;/strong>数据&lt;/p>
+&lt;h1 id="安装exiftool">安装&lt;strong>ExifTool&lt;/strong>&lt;/h1>
+&lt;h2 id="opensuse">openSUSE&lt;/h2>
+&lt;pre>&lt;code class="language-bash">zypper in exiftool
+&lt;/code>&lt;/pre>
+&lt;h2 id="ubuntu">Ubuntu&lt;/h2>
+&lt;pre>&lt;code class="language-bash">apt-get install libimage-exiftool-perl
+&lt;/code>&lt;/pre>
+&lt;h2 id="centos">CentOS&lt;/h2>
+&lt;pre>&lt;code class="language-bash">yum install perl-Image-ExifTool
+&lt;/code>&lt;/pre>
+&lt;h2 id="others">Others&lt;/h2>
+&lt;p>到&lt;em>&lt;b>&lt;a href="https://exiftool.org/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;strong>ExifTool&lt;/strong>官网&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>下载二进制包，解压并进入。如有需要，请链接到&lt;code>/usr/bin/&lt;/code>&lt;/p>
+&lt;h1 id="使用exiftool">使用ExifTool&lt;/h1>
+&lt;h2 id="查看exif">查看&lt;strong>EXIF&lt;/strong>&lt;/h2>
+&lt;h3 id="直接查看">直接查看&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool {{InputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>可选参数：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-a&lt;/code> 查看所有metadata，但博主实测并没有增加多少新的数据，还重复了很多&lt;/li>
+&lt;/ul>
+&lt;h3 id="导出为html">导出为&lt;strong>HTML&lt;/strong>&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -h {{InputFile}} &amp;gt; {{OutputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>可选参数：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-a&lt;/code> 查看所有metadata&lt;/li>
+&lt;/ul>
+&lt;h3 id="导出为json">导出为json&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -j {{InputFile}} &amp;gt; {{OutputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>可选参数：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-a&lt;/code> 查看所有metadata&lt;/li>
+&lt;/ul>
+&lt;h2 id="编辑exif">编辑EXIF&lt;/h2>
+&lt;h3 id="写入到单文件">写入到单文件&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -{{TAG}}={{Content}} {{InputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code class="language-bash">exiftool -comment=&amp;quot;Good Quality&amp;quot; -artist=&amp;quot;Richard Chen&amp;quot; input.png
+&lt;/code>&lt;/pre>
+&lt;h3 id="写入到多文件或文件夹">写入到多文件或文件夹&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -{{TAG}}={{Content}} {{InputFile1}} {{InputFile2}} {{Folder}}
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code class="language-bash">exiftool -comment=&amp;quot;Good Quality&amp;quot; -artist=&amp;quot;Richard Chen&amp;quot; input_1.png input_2.jpg ~/Pictures/
+&lt;/code>&lt;/pre>
+&lt;h2 id="删除exif">删除EXIF&lt;/h2>
+&lt;pre>&lt;code>exiftool -all= {{InputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code>exiftool -all= input_1.png input_2.jpg ~/Pictures/
+&lt;/code>&lt;/pre>
+&lt;h3 id="文件夹下所有图片">文件夹下所有图片&lt;/h3>
+&lt;p>此方法适用于多级文件夹&lt;/p>
+&lt;pre>&lt;code class="language-bash">find {{Folder}} -iname &amp;quot;*.{{Ext}}&amp;quot; -exec exiftool -all= {} +
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code class="language-bash">find ~/Pictures/ -iname &amp;quot;*.jpg&amp;quot; -exec exiftool -all= {} +
+&lt;/code>&lt;/pre>
+&lt;h1 id="references">&lt;em>References&lt;/em>&lt;/h1>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://exiftool.org/examples.html"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>ExifTool Command-Line Examples&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://exiftool.org/exiftool_pod.pdf"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>User Contributed Perl Documentation&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>&lt;em>Other resources on the Internet&lt;/em>&lt;/p></description></item></channel></rss>

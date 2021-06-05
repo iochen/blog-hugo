@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>V2Gen on Richard Chen's Blog</title><link>https://iochen.com/tags/v2gen/</link><description>Recent content in V2Gen on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Sun, 02 Feb 2020 18:26:20 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/v2gen/index.xml" rel="self" type="application/rss+xml"/><item><title>从订阅链接生成V2Ray配置 - V2Gen的使用</title><link>https://iochen.com/post/v2gen-usage/</link><pubDate>Sun, 02 Feb 2020 18:26:20 +0000</pubDate><guid>https://iochen.com/post/v2gen-usage/</guid><description>&lt;p>本文章讲述了 v2gen 的实际使用用例，从订阅以及 &lt;code>vmess://XXXXXXXXXXXX&lt;/code> 链接
+中生成 V2Ray json 文件。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="项目地址">项目地址&lt;/h2>
+&lt;p>详细说明：
+&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>&lt;strong>github.com/iochen/v2gen&lt;/strong>&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h2 id="预览">预览&lt;/h2>
+&lt;pre>&lt;code class="language-data">[ 0] 中继香港C1 Media (HK)(1) [518ms (0 errors)]
+[ 1] 中继香港C3 Media (HK)(1) [527ms (0 errors)]
+[ 2] 中继香港C2 Media (HK)(1) [536ms (0 errors)]
+[ 3] 中继香港C5 Media (HK)(1) [451ms (0 errors)]
+[ 4] 中继香港C6 Media (HK)(1) [452ms (0 errors)]
+[ 5] 中继香港G2 Media (HK)(1) [904ms (0 errors)]
+[ 6] BGP中继香港 2 Media (HK)(1) [468ms (0 errors)]
+[ 7] BGP中继香港 3 Media (HK)(1) [778ms (0 errors)]
+[ 8] BGP中继香港 1 Media (HK)(1) [881ms (0 errors)]
+[ 9] 中继香港G1 Media (HK)(1) [1.35s (1 errors)]
+...
+[50] 日本中继 3 Media (JP)(1) [641ms (0 errors)]
+=====================
+Please Select:
+&lt;/code>&lt;/pre>
+&lt;h2 id="安装">安装&lt;/h2>
+&lt;p>请注意，本程序并没有&lt;strong>GUI&lt;/strong>（图形）界面&lt;/p>
+&lt;h3 id="方法一从release中下载">方法一：从Release中下载&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_amd64_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux AMD64&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_386_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux 386&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_arm64_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux ARM64&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_arm_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux ARM&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_amd64_windows.exe"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Windows AMD64&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_386_windows.exe"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Windows 386&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;br>
+然后请将相应文件加以执行权限并放入到&lt;strong>PATH&lt;/strong>中，命名为&lt;code>v2gen&lt;/code>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="方法二从源码自行编译">方法二：从源码自行编译&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ go get -u -v iochen.com/v2gen/cmd/v2gen
+&lt;/code>&lt;/pre>
+&lt;h2 id="常用命令">常用命令&lt;/h2>
+&lt;h3 id="测速并选择">测速并选择&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径
+&lt;/code>&lt;/pre>
+&lt;h3 id="测速并排序与选择">测速并排序与选择&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -sort
+&lt;/code>&lt;/pre>
+&lt;h3 id="测速并采用最优节点">测速并采用最优节点&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -best
+&lt;/code>&lt;/pre>
+&lt;h3 id="随机节点">随机节点&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -r
+&lt;/code>&lt;/pre>
+&lt;h3 id="设置测速或延时目标链接">设置测速（或延时）目标链接&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -dest 目标链接
+&lt;/code>&lt;/pre>
+&lt;h3 id="打印到控制台以进行管道操作">打印到控制台以进行管道操作&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o &amp;quot;-&amp;quot; -n 序号 | jq .
+&lt;/code>&lt;/pre>
+&lt;h2 id="进阶操作">进阶操作&lt;/h2>
+&lt;p>请到 &lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/blob/master/README_zh_cn.md"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>GitHub README&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>
+文件中继续探索！&lt;/p>
+&lt;h2 id="todo">TODO&lt;/h2>
+&lt;ul>
+&lt;li>重构 v2gen&lt;/li>
+&lt;li>优化多参数时的逻辑判断&lt;/li>
+&lt;/ul></description></item></channel></rss>

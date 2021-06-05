@@ -1,0 +1,1536 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard Chen's Blog</title><link>https://iochen.com/</link><description>Recent content on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Sun, 18 Apr 2021 10:00:21 +0800</lastBuildDate><atom:link href="https://iochen.com/index.xml" rel="self" type="application/rss+xml"/><item><title>做一个简易的马克思发生器</title><link>https://iochen.com/post/build-a-simple-marx-generator/</link><pubDate>Sun, 18 Apr 2021 10:00:21 +0800</pubDate><guid>https://iochen.com/post/build-a-simple-marx-generator/</guid><description>&lt;p>你喜欢一些能产生火花的东西，比如说特斯拉线圈吗？但你又没有时间，金钱或耐心来打造一款自己的高压发生设备。&lt;/p>
+&lt;p>那么，这里就有一个简单的项目，使你可以创造自己想要的又大，又长，能让邻居找上门来的项目，这甚至比特斯拉线圈要来得有趣！&lt;/p>
+&lt;h2 id="工作原理">工作原理&lt;/h2>
+&lt;p>马克思发生器由多个单元组成，每单元由 电阻，电容和火花隙 组成，它们长得像这样：&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FG8ASBFFK75D8CI.jpg"
+alt/>&lt;/p>
+&lt;p>（译者注：上图中，输出端从 左下 而非 左上 引线可以得到更好效果）&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FNP7CAFFKB3DRCR.jpg"
+alt/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/../../../../../Desktop/FIMRNEOFKB3DRCT.jpg"
+alt/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FWBV587FKB3DRCS.jpg"
+alt/>&lt;/p>
+&lt;p>电容通过电阻并联充电，因此每个电容两端电压都为输入电压。 当所有火花隙都接通（有火花产生）时，电容就像是串联了起来一样。所以说，输出电压就等于输入电压乘以电容的数目，从而在装置末端产生长长的火花。&lt;/p>
+&lt;p>电阻b（Rb）具有镇流作用，用于防止在第一个间隙上形成连续的电弧，以防马克思发生器因此着火。 电阻的阻值主要取决于输入电源。在这里，我们将使用 10MΩ 电阻。您可以通过降低 电阻b（Rb）的阻值以尝试获得频率更高的放电现象，避免在火花隙上形成电弧。&lt;/p>
+&lt;p>现在，既然知道它的原来，那么就来试一试吧！&lt;/p>
+&lt;h2 id="材料">材料&lt;/h2>
+&lt;p>我使用了手头的材料。&lt;/p>
+&lt;p>最佳选项是：陶瓷电容 和 1MΩ 1W 电阻&lt;/p>
+&lt;p>陶瓷电容最适合该项目，因为它们价格便宜，容易获得，并且适合用于脉冲放电电路。聚丙烯电容也可以，但价格昂贵，高额定电压的聚丙烯电容很难找到。&lt;/p>
+&lt;p>电阻应为 1MΩ 和 1W 左右的类型，普通的1/4W 电阻非常不合适，因为它们容易引起电弧，从而烧坏马克思发生器，因此请使用 1W 玻璃釉电阻或碳膜电阻。&lt;/p>
+&lt;p>如有困惑，请尝试先进行小规模实验，然后再购买更多零件，以测试性能如何。&lt;/p>
+&lt;p>我使用的是：&lt;/p>
+&lt;ul>
+&lt;li>1nF, 4kV 陶瓷电容 * 10&lt;/li>
+&lt;li>1MΩ, 2W, 500V 碳膜电阻 * 20&lt;/li>
+&lt;li>电阻b（Rb）使用了 4.7MΩ, 1W, 3.5kV 玻璃釉电阻 * 2&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FR3XYRKFK917304.jpg"
+alt/>&lt;/p>
+&lt;p>你也可以为马克思发生器制作底座，最佳底座是玻璃（但易碎），陶瓷（易碎），塑料（理想，但有些可能会导电）或任何您认为不错的东西！我采用的是木头，这是一个非常糟糕的主意（因为木头是导电的），但是我别无选择，要么是木制底座，要么没有底座。&lt;/p>
+&lt;p>你可以使用较大的电容来获得更大，更响亮的火花，但充电时间也会更长！&lt;/p>
+&lt;p>你电容两端电压常常可以超出其额定电压，但这显然会增加发生事故的机率！&lt;/p>
+&lt;p>别忘了，输出端的火花大小取决于输入电压和级数&amp;hellip;&lt;/p>
+&lt;h2 id="工具">工具&lt;/h2>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FSA2723FITUIXBN.jpg"
+alt="Also You Need the Tools!"/>&lt;/p>
+&lt;p>你需要一把顺手的电烙铁，否则构建一个马克思发生器将十分困难，并且由于电晕放电，得到的结果会远远不如预期。别忘了，助焊剂也是你的好帮手。&lt;/p>
+&lt;p>热胶枪也非常方便，它可以固定几乎所有东西。&lt;/p>
+&lt;p>当然，除此之外，常用工具也很必要，这里不再赘述。&lt;/p>
+&lt;h2 id="电源">电源&lt;/h2>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FG9UBFOFKB3DRCU.jpg"
+alt="Power Supply"/>&lt;/p>
+&lt;details>&lt;summary>more pictures&lt;/summary>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FV09JCIFKB3DRCV.jpg"
+alt="Power Supply"/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/F67VW5QFLJJUT9K.jpg"
+alt="Power Supply"/>&lt;/p>
+&lt;/details>
+&lt;p>马克思发生器需要 4-8kV 的电压，但只需很小的电流。这种电源可在空气净化器，复印机和激光打印机中找到。&lt;/p>
+&lt;p>我自己制作了一个的 6kV 的电源。它采用了一个小型自制 450V 逆变器，后方连接 18级电压倍增器，可得到约 7kV 的电压。&lt;/p>
+&lt;p>马克思发生器也没有正负极之分，所以直接连接上去即可。&lt;/p>
+&lt;h2 id="组装">组装&lt;/h2>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/F3G1YQAFK917303.jpg"
+alt="The Construction of the Marx Generator."/>&lt;/p>
+&lt;details>&lt;summary>more pictures&lt;/summary>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FPDHNBGFK917302.jpg"
+alt="The Construction of the Marx Generator."/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FQTXHZRFK917301.jpg"
+alt="The Construction of the Marx Generator."/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/F9D56RAFK917300.jpg"
+alt="The Construction of the Marx Generator."/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/F78CEL5FK9172ZX.jpg"
+alt="The Construction of the Marx Generator."/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/F7Q5U2JFK9172ZZ.jpg"
+alt="The Construction of the Marx Generator."/>&lt;/p>
+&lt;/details>
+&lt;p>每个人的方式都会有所不同，而我将把自己的方式告诉你：&lt;/p>
+&lt;p>我先将电容用热熔胶粘在基座上。&lt;/p>
+&lt;p>然后，我电烙铁将 1M 的电阻焊到电容上，并剪断多余的脚。但是我没有剪断电容的引脚，待会你就知道为什么了&lt;/p>
+&lt;p>之后，我将 4.7M 电阻焊了上去。&lt;/p>
+&lt;p>最后，请确保焊点完美，并确保除放电处外，没有突出的尖端。 否则，会发生尖端放电，削弱电弧强度。&lt;/p>
+&lt;h2 id="火花隙">火花隙&lt;/h2>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FOU392NFK9172ZY.jpg"
+alt="Spark Gaps"/>&lt;/p>
+&lt;p>这就是为什么之前我说不要剪掉电容的引脚，因为我们要用它构成火花隙&lt;/p>
+&lt;p>将引脚弯曲成&lt;strong>V&lt;/strong>形，并使&lt;strong>V&lt;/strong>形引脚的末端靠在一起，大约2毫米的距离。&lt;/p>
+&lt;p>但是不要将末端靠在一起，否则会导致大量放电，使得马克思发生器无法正常工作&lt;/p>
+&lt;h2 id="成果">成果&lt;/h2>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FSYXZVIFKB3DRD8.jpg"
+alt="Testing&amp;amp;hellip; Testing&amp;amp;hellip;"/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FAHXS7LFKB3DRCQ.jpg"
+alt="Testing&amp;amp;hellip; Testing&amp;amp;hellip;"/>&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/build-a-simple-marx-generator/FG4G5C1FKB3DRCL.jpg"
+alt="img"/>&lt;/p>
+&lt;h2 id="译者注">译者注&lt;/h2>
+&lt;p>本文原文、图片来自 &lt;em>&lt;b>&lt;a href="https://www.instructables.com/Build-a-simple-Marx-Generator/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Build a Simple Marx Generator&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>，由 &lt;em>&lt;b>&lt;a href="https://iochen.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Richard Chen&amp;rsquo;s Blog&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 翻译&lt;/p>
+&lt;p>本文以 &lt;strong>CC BY-NC-SA 4.0&lt;/strong> 许可进行分发&lt;/p></description></item><item><title>在 Flash 退出舞台后为 Chrome 启用 Adobe Flash</title><link>https://iochen.com/post/enable-adobe-flash-chrome-after-end-of-life/</link><pubDate>Thu, 04 Feb 2021 19:35:24 +0800</pubDate><guid>https://iochen.com/post/enable-adobe-flash-chrome-after-end-of-life/</guid><description>&lt;p>就像你知道的那样（或不知道），Adobe Flash 于 2020年12月31日 退出历史舞台，而自2021年1月12日起完全无法使用！&lt;/p>
+&lt;p>但是，对于部分用户以及 IT 人员而言，使用仍只支持 Adobe Flash 的旧系统时会引起灾难。&lt;/p>
+&lt;p>就算在此之前，出于安全考虑，也仍需要采取特殊步骤来允许 Adobe Flash。&lt;/p>
+&lt;p>而自 2021年1月12日 起，这些步骤将不再有效。即使选择“允许” Flash，Adobe 也会故意阻止它。你会看到类似下面的内容。&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/enable-adobe-flash-chrome-after-end-of-life/Disabled.png"
+alt="Adobe Flash 已禁用"/>&lt;/p>
+&lt;h2 id="解决方案">解决方案&lt;/h2>
+&lt;p>该解决方法仅应用于紧急情况，因为是时候该减少对 Flash 的依赖了。&lt;/p>
+&lt;p>为了解决此问题，您将需要 Chrome 版本 87 或更早版本，因为版本88不包括 Adobe Flash。&lt;/p>
+&lt;h3 id="step-1">STEP 1&lt;/h3>
+&lt;h4 id="windows">Windows&lt;/h4>
+&lt;pre>&lt;code>C:\Users\{用户名}\AppData\Local\Google\Chrome\User Data\Default\Pepper Data\Shockwave Flash\System\
+&lt;/code>&lt;/pre>
+&lt;p>需要在如上路径创建一个 &lt;code>mms.cfg&lt;/code> 文件&lt;/p>
+&lt;p>（请自行替换 &lt;code>{用户名}&lt;/code>）&lt;/p>
+&lt;h4 id="mac">Mac&lt;/h4>
+&lt;pre>&lt;code>/Users/{用户名}/Library/Application Support/Google/Chrome/Default/Pepper Data/Shockwave Flash/System/
+&lt;/code>&lt;/pre>
+&lt;p>需要在如上路径创建一个 &lt;code>mms.cfg&lt;/code> 文件&lt;/p>
+&lt;p>（请自行替换 &lt;code>{用户名}&lt;/code>）&lt;/p>
+&lt;h4 id="linux">Linux&lt;/h4>
+&lt;pre>&lt;code>~/.config/google-chrome/Default/Pepper Data/Shockwave Flash/System/
+&lt;/code>&lt;/pre>
+&lt;p>需要在如上路径创建一个 &lt;code>mms.cfg&lt;/code> 文件&lt;/p>
+&lt;h3 id="step-2">STEP 2&lt;/h3>
+&lt;p>&lt;code>mms.cfg&lt;/code> 文件内容如下：&lt;/p>
+&lt;pre>&lt;code class="language-cfg">EnableAllowList = 1
+AllowListUrlPattern = http://COMPUTERNAME/
+AllowListUrlPattern = https://IP.ADDRESS/
+AllowListUrlPattern = *://server.domain.com/
+AllowListUrlPattern = ...
+&lt;/code>&lt;/pre>
+&lt;p>按需添加 &lt;code>AllowListUrlPattern = ...&lt;/code>&lt;/p>
+&lt;p>例如：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>AllowListUrlPattern = *://google.com/&lt;/code>&lt;/li>
+&lt;li>&lt;code>AllowListUrlPattern = *://192.168.1.1/&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h3 id="step-3">STEP 3&lt;/h3>
+&lt;p>要访问网站：&lt;/p>
+&lt;ol>
+&lt;li>创建此文件并编辑保存后，打开 &lt;strong>Chrome&lt;/strong>&lt;/li>
+&lt;li>打开到您要查看的页面&lt;/li>
+&lt;li>单击地址栏左方的 &lt;strong>小锁&lt;/strong> 或 &lt;strong>不安全图标&lt;/strong>&lt;/li>
+&lt;li>将 &lt;strong>Adobe Flash&lt;/strong> 从 &lt;strong>询问&lt;/strong> 更改为 &lt;strong>允许&lt;/strong>&lt;/li>
+&lt;li>&lt;strong>Chrome&lt;/strong> 提示时，点击 &lt;strong>刷新&lt;/strong>&lt;/li>
+&lt;li>不要更新，单击 &lt;strong>运行一次&lt;/strong>。&lt;/li>
+&lt;/ol>
+&lt;p>（译者注：译者使用的是 英文版，选项名称可能有所出入）&lt;/p>
+&lt;h3 id="其它">其它&lt;/h3>
+&lt;p>（以下信息与原文章无关）&lt;/p>
+&lt;p>注：博主在 Linux 上实测有效，在其它平台未测试&lt;/p>
+&lt;p>本文翻译自：&lt;em>&lt;b>&lt;a href="https://www.stephenwagner.com/2021/01/13/enable-adobe-flash-chrome-after-end-of-life/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Enable Adobe Flash on Chrome after End of Life&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;hr>
+&lt;p>内容著作权归 &lt;em>&lt;b>&lt;a href="https://www.stephenwagner.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>原作者&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 所有&lt;/p>
+&lt;p>译文著作权归 &lt;em>&lt;b>&lt;a href="https://iochen.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Richard Chen&amp;rsquo;s Blog&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 所有&lt;/p>
+&lt;p>二次分发同时标明 &lt;em>&lt;b>&lt;a href="%28https://www.stephenwagner.com/2021/01/13/enable-adobe-flash-chrome-after-end-of-life/%29">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>原文&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 与 &lt;em>&lt;b>&lt;a href="https://iochen.com/post/enable-adobe-flash-chrome-after-end-of-life/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>译文&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 出处&lt;/p></description></item><item><title>起风了</title><link>https://iochen.com/post/the-wind-rises/</link><pubDate>Sat, 26 Dec 2020 21:14:30 +0800</pubDate><guid>https://iochen.com/post/the-wind-rises/</guid><description>&lt;blockquote>
+&lt;p>風立ちぬ、いざ生きめやも&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>起风了！当试着生存！&lt;/li>
+&lt;li>只有在余命不多的人们的眼里，才会觉得自然之类美不胜收&lt;/li>
+&lt;/ul></description></item><item><title>Tomoyo After</title><link>https://iochen.com/post/tomoyo-after-its-a-wonderful-life/</link><pubDate>Fri, 07 Aug 2020 17:58:23 +0800</pubDate><guid>https://iochen.com/post/tomoyo-after-its-a-wonderful-life/</guid><description>&lt;h2 id="its-a-wonderful-life">It&amp;rsquo;s a Wonderful Life&lt;/h2>
+&lt;center>
+与回到重症监护室的他重逢，已是两天后了
+&lt;p>虽仍无法交谈&lt;/p>
+&lt;p>但却听见了仅有一词的呼唤&lt;/p>
+&lt;p>那便是我的名字&lt;/p>
+&lt;p>我立刻，如孩子般地欢呼起来&lt;/p>
+&lt;p>没过多久，他被转移到了普通病房&lt;/p>
+&lt;p>从此开始了每日的复健&lt;/p>
+&lt;p>两人齐心合力、拼命地活着&lt;/p>
+&lt;p>两人携手不断前行着&lt;/p>
+&lt;p>此刻的我们，已然抉择&lt;/p>
+&lt;p>无论今后还有怎样的未来在前方等候着&lt;/p>
+&lt;p>也绝不后悔&lt;/p>
+&lt;p>我们怀有这份自信&lt;/p>
+&lt;p>因为我们&lt;/p>
+&lt;p>已经找到了最为重要的宝物&lt;/p>
+&lt;p>两人最后所见的风景&lt;/p>
+&lt;p>时至今日仍无法忘却&lt;/p>
+&lt;p>那是一片不知延绵至何处的晚霞&lt;/p>
+&lt;p>两人就这般怜爱地凝望着那片天空&lt;/p>
+&lt;p>至今都未曾发觉，世界竟是如此绚烂&lt;/p>
+&lt;p>无论正处年少无知的童年&lt;/p>
+&lt;p>抑或是正值痛彻心扉之际&lt;/p>
+&lt;p>都不曾知晓这片光景，一直对此未曾倾动&lt;/p>
+&lt;p>但它却是这般绚烂&lt;/p>
+&lt;p>不知不觉间，他陷入了酣眠&lt;/p>
+&lt;p>那副面孔宛若&lt;/p>
+&lt;p>跑至终点的选手般潇洒&lt;/p>
+&lt;p>那时他微微张了张嘴，不知说了什么&lt;/p>
+&lt;p>仅仅发出了非常轻微的声音&lt;/p>
+&lt;p>或许只是梦话而已&lt;/p>
+&lt;p>即便如此，每当回忆起那句话，我都觉得&lt;/p>
+&lt;p>他也在那刻，到达了相同的境地吧&lt;/p>
+&lt;p>我如此地确信着&lt;/p>
+&lt;p>我已不会再度陷入绝望&lt;/p>
+&lt;p>而将跨越逆境&lt;/p>
+&lt;p>坚信着永恒之爱&lt;/p>
+&lt;p>一心一意地坚信着&lt;/p>
+&lt;p>因为曾有过两人生活的时光&lt;/p>
+&lt;p>那是只属于我的宝物&lt;/p>
+&lt;p>无可替代的宝物&lt;/p>
+&lt;p>虽曾发生心痛欲裂之事&lt;/p>
+&lt;p>也曾有过不住哭喊之际&lt;/p>
+&lt;p>但正因那些日子的存在&lt;/p>
+&lt;p>如今，才能看到这闪耀的一切&lt;/p>
+&lt;p>与他的邂逅也好&lt;/p>
+&lt;p>与他共度的时光也好&lt;/p>
+&lt;p>绝望之际也好&lt;/p>
+&lt;p>独自不断流泪的日子也好&lt;/p>
+&lt;p>从今以后将要踏上的道路也好&lt;/p>
+&lt;p>过去的&lt;/p>
+&lt;p>未来的&lt;/p>
+&lt;p>一切的一切&lt;/p>
+&lt;p>都如那日所见的红霞般&lt;/p>
+&lt;p>放射着光芒&lt;/p>
+&lt;p>因为我已找到了这段人生的光芒&lt;/p>
+&lt;p>所以我想，现在该向与我有着同样烦恼的人们&lt;/p>
+&lt;p>伸出援助之手了&lt;/p>
+&lt;p>于是，这样不断地前行&lt;/p>
+&lt;p>不知何时，成为了自己生存的意义&lt;/p>
+&lt;p>所以，我希望找到那份宝物的人&lt;/p>
+&lt;p>今后也能帮助他人找寻&lt;/p>
+&lt;p>那时，你应该已不再迷惘&lt;/p>
+&lt;p>因为你，&lt;/p>
+&lt;p>你应该已经领悟了人生的意义&lt;/p>
+&lt;p>你的宝物，会是怎样的呢&lt;/p>
+&lt;p>而又将如何才能得到它呢&lt;/p>
+&lt;p>这点谁都无法知晓&lt;/p>
+&lt;p>但，总有一天定会找到&lt;/p>
+&lt;p>所以，无论此刻多么痛苦&lt;/p>
+&lt;p>如何辛酸，有多悲伤&lt;/p>
+&lt;p>何等愤怒&lt;/p>
+&lt;p>怎样欢笑&lt;/p>
+&lt;p>为何流泪&lt;/p>
+&lt;p>因何哭喊&lt;/p>
+&lt;p>无论如何，我都希望你们能继续前行&lt;/p>
+&lt;p>直到找到属于你自己的宝物之日为止&lt;/p>
+&lt;p>如果正对着这屏幕的你&lt;/p>
+&lt;p>在那追寻的路途中，变得孤立无援的话&lt;/p>
+&lt;p>不必担心&lt;/p>
+&lt;p>你并非独自一人&lt;/p>
+&lt;p>我就待在此处&lt;/p>
+&lt;p>无论何时都伴你随行&lt;/p>
+&lt;p>所以请放心吧&lt;/p>
+&lt;p>因为那是我&lt;/p>
+&lt;p>在伴他同行的旅途中&lt;/p>
+&lt;p>一起找寻到的宝物&lt;/p>
+&lt;p>name：林中的熊宝宝&lt;br>
+&lt;br>&lt;/p>
+&lt;hr>
+&lt;br>
+…谢谢
+&lt;p>…幸好有你&lt;/p>
+&lt;p>才有这段美好的人生&lt;/p>
+&lt;p>来，走吧&lt;/p>
+&lt;p>世界是如此美好&lt;/p>
+&lt;p>同时&lt;/p>
+&lt;p>人生更是如此精彩&lt;/p>
+&lt;p>It&amp;rsquo;s a Wonderful Life&lt;/p>
+&lt;/center>
+&lt;p>&lt;br>&lt;br>&lt;/p>
+&lt;h2 id="reference">reference&lt;/h2>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://web.archive.org/web/20200807101243/https://www.douban.com/review/7443650/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Douban Review 7443650&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;br>
+&lt;em>&lt;b>&lt;a href="https://key.visualarts.gr.jp/product/tomoyo/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>智代アフター 初回限定版&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p></description></item><item><title>ICMP首部 与 IP首部 校验和的计算</title><link>https://iochen.com/post/icmp-header-and-ip-header-checksum/</link><pubDate>Mon, 03 Aug 2020 17:55:59 +0800</pubDate><guid>https://iochen.com/post/icmp-header-and-ip-header-checksum/</guid><description>&lt;p>本篇文章详细讲解了计算 &lt;strong>ICMP 首部&lt;/strong> 与 &lt;strong>IP 首部&lt;/strong> 的计算方法，以及其校验方法&lt;/p>
+&lt;h2 id="开头">开头&lt;/h2>
+&lt;p>以下内容是一段 &lt;strong>IPv4&lt;/strong> 的示例首部数据包&lt;/p>
+&lt;pre>&lt;code class="language-hex">4500 0073 0000 4000 4011 *B861* C0A8 0001
+C0A8 00C7
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>注：被&lt;code>*&lt;/code>引起的部分为需要计算的校验和&lt;/em>&lt;/p>
+&lt;p>既然是要计算校验和，那开始肯定是不知道的，所以我们默认为&lt;code>0000&lt;/code>，所以，我么就是要对下面这一串数据进行校验和操作。&lt;/p>
+&lt;pre>&lt;code class="language-hex">4500 0073 0000 4000 4011 0000 C0A8 0001
+C0A8 00C7
+&lt;/code>&lt;/pre>
+&lt;h2 id="第一步">第一步&lt;/h2>
+&lt;p>每&lt;strong>16&lt;/strong>字节相加求和，于是我们就有了&lt;/p>
+&lt;p>$$\mathtt{0x4500}+\mathtt{0x0073}+\mathtt{0x0000}+&amp;hellip;+\mathtt{0x00C7}=\mathtt{0x2479C}$$&lt;/p>
+&lt;h3 id="go代码实现">&lt;strong>Go&lt;/strong>代码实现&lt;/h3>
+&lt;p>注：传入&lt;code>data []byte&lt;/code>，大端编码&lt;/p>
+&lt;pre>&lt;code class="language-go">var sum uint32
+var length = len(data)
+var index int
+for length &amp;gt; 1 {
+sum += uint32(data[index])&amp;lt;&amp;lt;8 + uint32(data[index+1])
+index += 2
+length -= 2
+}
+// 如果len(data)为奇数
+if length &amp;gt; 0 {
+sum += uint32(data[index])
+}
+&lt;/code>&lt;/pre>
+&lt;h2 id="第二步">第二步&lt;/h2>
+&lt;p>由于我们的校验码只有&lt;strong>16&lt;/strong>bit，所以我们就要把上面的$\mathtt{0x2479C}$转为&lt;strong>16&lt;/strong>bit&lt;br>
+&lt;code>2479C&lt;/code>可以转化为&lt;/p>
+&lt;pre>&lt;code>0002 479C
+&lt;/code>&lt;/pre>
+&lt;p>那我们可以将两个相加，即&lt;/p>
+&lt;p>$$\mathtt{0x0002}+\mathtt{0x479C}=\mathtt{0x479E}$$&lt;/p>
+&lt;p>如果这样算下来还是超过&lt;strong>16&lt;/strong>bit，则需再次进行此运算。
+那么最多需要几次运算呢，我们可以算一下。&lt;/p>
+&lt;h3 id="极端情况">极端情况&lt;/h3>
+&lt;p>由谷歌可知，&lt;strong>TCP&lt;/strong>包最大为&lt;code>65535 bytes&lt;/code>，以&lt;strong>16&lt;/strong>bit 为一个小节的话，也就是&lt;code>32767.5&lt;/code>个小节。
+假设每个小节都是$\mathtt{0xFFFF}$（剩余的半个小节以$\mathtt{0x00FF}$计算）。&lt;br>
+已知&lt;code>32767&lt;/code>的十六进制为$\mathtt{0x7FFF}$，那求和最大是&lt;/p>
+&lt;p>$$\mathtt{0x7FFF}\times{}\mathtt{0xFFFF}+\mathtt{0x00FF}=\mathtt{0x7FFE8100}
+$$&lt;/p>
+&lt;p>第一次进行第二步运算后结果为$\mathtt{0x100FE
+}$，第二次为$\mathtt{0x00FF}$&lt;br>
+所以不难看出，最多需要&lt;mark>&lt;strong>两次&lt;/strong>&lt;/mark>第二步的运算即可。&lt;/p>
+&lt;h3 id="go代码实现-1">&lt;strong>Go&lt;/strong>代码实现&lt;/h3>
+&lt;pre>&lt;code class="language-go">sum = (sum &amp;gt;&amp;gt; 16) + (sum &amp;amp; 0xFFFF)
+// 与上一行代码作用相同，
+// 超过16bit的部分会在最后被舍弃掉
+sum += sum &amp;gt;&amp;gt; 16
+&lt;/code>&lt;/pre>
+&lt;h2 id="第三步">第三步&lt;/h2>
+&lt;p>取反运算，这一步的目的是为了验证的方便。&lt;/p>
+&lt;p>$$\overline{\mathtt{0x479E}} = \mathtt{0xB861}$$&lt;/p>
+&lt;h3 id="go代码实现-2">&lt;strong>Go&lt;/strong>代码实现&lt;/h3>
+&lt;pre>&lt;code class="language-go">return uint16(^sum)
+&lt;/code>&lt;/pre>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;h3 id="go代码实现-3">&lt;strong>Go&lt;/strong>代码实现&lt;/h3>
+&lt;pre>&lt;code class="language-go">func Checksum(data []byte) uint16 {
+var sum uint32
+var length = len(data)
+var index int
+for length &amp;gt; 1 {
+sum += uint32(data[index])&amp;lt;&amp;lt;8 + uint32(data[index+1])
+index += 2
+length -= 2
+}
+// 如果len(data)为奇数
+if length &amp;gt; 0 {
+sum += uint32(data[index])
+}
+sum = (sum &amp;gt;&amp;gt; 16) + (sum &amp;amp; 0xFFFF)
+// 与上一行代码作用相同，
+// 超过16bit的部分会在最后被舍弃掉
+sum += sum &amp;gt;&amp;gt; 16
+return uint16(^sum)
+}
+&lt;/code>&lt;/pre></description></item><item><title>在 Go 中获取 GOPATH 的最佳方案</title><link>https://iochen.com/post/get-go-path-in-go/</link><pubDate>Fri, 17 Jul 2020 20:47:28 +0800</pubDate><guid>https://iochen.com/post/get-go-path-in-go/</guid><description>&lt;p>此文章主要讲述了在 golang 程序中完美获取 GOPATH 的方法&lt;/p>
+&lt;h2 id="初级">初级&lt;/h2>
+&lt;p>golang 的最初几个版本都是依赖于环境变量中的 &lt;strong>GOPATH&lt;/strong> 来进行判断的，
+所以在这种情况下，只需要&lt;/p>
+&lt;pre>&lt;code class="language-go">os.Getenv(&amp;quot;GOPATH&amp;quot;) // import &amp;quot;os&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>即可，最多再解析一下&lt;/p>
+&lt;pre>&lt;code class="language-go">sep := string(filepath.ListSeparator)
+pathList := strings.Split(path, sep) // import &amp;quot;strings&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;h2 id="中级">中级&lt;/h2>
+&lt;p>我们有时发现，即使是没有 &lt;strong>GOPATH&lt;/strong> 这个 env，也是可以正常运行。
+经阅读 golang 源代码后，不难发现，其有默认值。&lt;br>
+&lt;em>&lt;b>&lt;a href="https://golang.org/src/go/build/build.go#L273"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>golang 源代码&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>:&lt;/p>
+&lt;pre>&lt;code class="language-go">c.GOPATH = envOr(&amp;quot;GOPATH&amp;quot;, defaultGOPATH())
+&lt;/code>&lt;/pre>
+&lt;p>不难发现，其实我们 &lt;strong>build&lt;/strong> 包中就已有 envOr 的实现，于是，
+现在的我们只需要&lt;/p>
+&lt;pre>&lt;code class="language-go">build.Default.GOPATH // import &amp;quot;go/build&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>即可&lt;/p>
+&lt;h2 id="高级">高级&lt;/h2>
+&lt;p>我们发现&lt;/p>
+&lt;pre>&lt;code class="language-shell">$ go env -w GOPATH=/foo/bar
+&lt;/code>&lt;/pre>
+&lt;p>时，并未将 &lt;code>/foo/bar&lt;/code> 写入环境变量，而是写入了 env 文件，经
+查看源代码后，不难发现 &lt;em>&lt;b>&lt;a href="https://github.com/golang/go/blob/c4f2a9788a7be04daf931ac54382fbe2cb754938/src/cmd/go/internal/cfg/cfg.go#L151"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>EnvFile 的实现&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;pre>&lt;code class="language-go">// EnvFile returns the name of the Go environment configuration file.
+func EnvFile() (string, error) {
+if file := os.Getenv(&amp;quot;GOENV&amp;quot;); file != &amp;quot;&amp;quot; {
+if file == &amp;quot;off&amp;quot; {
+return &amp;quot;&amp;quot;, fmt.Errorf(&amp;quot;GOENV=off&amp;quot;)
+}
+return file, nil
+}
+dir, err := os.UserConfigDir()
+if err != nil {
+return &amp;quot;&amp;quot;, err
+}
+if dir == &amp;quot;&amp;quot; {
+return &amp;quot;&amp;quot;, fmt.Errorf(&amp;quot;missing user-config dir&amp;quot;)
+}
+return filepath.Join(dir, &amp;quot;go/env&amp;quot;), nil
+}
+&lt;/code>&lt;/pre>
+&lt;p>于是，最终我们有了&lt;/p>
+&lt;pre>&lt;code class="language-go">func envFile() (string, error) {
+if file := os.Getenv(&amp;quot;GOENV&amp;quot;); file != &amp;quot;&amp;quot; {
+if file == &amp;quot;off&amp;quot; {
+return &amp;quot;&amp;quot;, fmt.Errorf(&amp;quot;GOENV=off&amp;quot;)
+}
+return file, nil
+}
+dir, err := os.UserConfigDir()
+if err != nil {
+return &amp;quot;&amp;quot;, err
+}
+if dir == &amp;quot;&amp;quot; {
+return &amp;quot;&amp;quot;, fmt.Errorf(&amp;quot;missing user-config dir&amp;quot;)
+}
+return filepath.Join(dir, &amp;quot;go&amp;quot;, &amp;quot;env&amp;quot;), nil
+}
+func getRuntimeEnv(key string) (string, error) {
+file, err := envFile()
+if err != nil {
+return &amp;quot;&amp;quot;, err
+}
+if file == &amp;quot;&amp;quot; {
+return &amp;quot;&amp;quot;, fmt.Errorf(&amp;quot;missing runtime env file&amp;quot;)
+}
+var data []byte
+var runtimeEnv string
+data, err = ioutil.ReadFile(file)
+envStrings := strings.Split(string(data), &amp;quot;\n&amp;quot;)
+for _, envItem := range envStrings {
+envItem = strings.TrimSuffix(envItem, &amp;quot;\r&amp;quot;)
+envKeyValue := strings.Split(envItem, &amp;quot;=&amp;quot;)
+if strings.ToLower(envKeyValue[0]) == strings.ToLower(key) {
+runtimeEnv = envKeyValue[1]
+}
+}
+return runtimeEnv, nil
+}
+goPath, envErr := getRuntimeEnv(&amp;quot;GOPATH&amp;quot;)
+if envErr != nil {
+fmt.Println(&amp;quot;Failed: please set '$GOPATH' manually, or use 'datapath' option to specify the path to your custom 'data' directory&amp;quot;)
+return
+}
+if goPath == &amp;quot;&amp;quot; {
+goPath = build.Default.GOPATH
+}
+sep := string(filepath.ListSeparator)
+pathList := strings.Split(path, sep)
+&lt;/code>&lt;/pre>
+&lt;h2 id="相关">相关&lt;/h2>
+&lt;p>Related Pull Request: &lt;em>&lt;b>&lt;a href="https://github.com/v2ray/domain-list-community/pull/637"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>https://github.com/v2ray/domain-list-community/pull/637&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p></description></item><item><title>Linux下使用ExifTool对EXIF的操作</title><link>https://iochen.com/post/view-edit-remove-exif-data-with-exiftool/</link><pubDate>Tue, 04 Feb 2020 17:48:18 +0000</pubDate><guid>https://iochen.com/post/view-edit-remove-exif-data-with-exiftool/</guid><description>&lt;h1 id="前言">前言&lt;/h1>
+&lt;p>&lt;strong>EXIF&lt;/strong>数据可以包括你的相机信息，快门，光圈，ISO，创建时间，编辑信息，GPS信息等信息，他们会在无心之中泄漏你的隐私，特别是上传照片到互联网上时，那更是有极大的泄漏风险。因此，在上传照片到网路上时，请务必删除&lt;strong>EXIF&lt;/strong>信息。&lt;/p>
+&lt;p>本篇文章就是要教你在&lt;strong>Linux&lt;/strong>下，如何使用&lt;strong>ExifTool&lt;/strong>查看、修改与删除图片的&lt;strong>EXIF&lt;/strong>数据&lt;/p>
+&lt;h1 id="安装exiftool">安装&lt;strong>ExifTool&lt;/strong>&lt;/h1>
+&lt;h2 id="opensuse">openSUSE&lt;/h2>
+&lt;pre>&lt;code class="language-bash">zypper in exiftool
+&lt;/code>&lt;/pre>
+&lt;h2 id="ubuntu">Ubuntu&lt;/h2>
+&lt;pre>&lt;code class="language-bash">apt-get install libimage-exiftool-perl
+&lt;/code>&lt;/pre>
+&lt;h2 id="centos">CentOS&lt;/h2>
+&lt;pre>&lt;code class="language-bash">yum install perl-Image-ExifTool
+&lt;/code>&lt;/pre>
+&lt;h2 id="others">Others&lt;/h2>
+&lt;p>到&lt;em>&lt;b>&lt;a href="https://exiftool.org/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;strong>ExifTool&lt;/strong>官网&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>下载二进制包，解压并进入。如有需要，请链接到&lt;code>/usr/bin/&lt;/code>&lt;/p>
+&lt;h1 id="使用exiftool">使用ExifTool&lt;/h1>
+&lt;h2 id="查看exif">查看&lt;strong>EXIF&lt;/strong>&lt;/h2>
+&lt;h3 id="直接查看">直接查看&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool {{InputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>可选参数：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-a&lt;/code> 查看所有metadata，但博主实测并没有增加多少新的数据，还重复了很多&lt;/li>
+&lt;/ul>
+&lt;h3 id="导出为html">导出为&lt;strong>HTML&lt;/strong>&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -h {{InputFile}} &amp;gt; {{OutputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>可选参数：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-a&lt;/code> 查看所有metadata&lt;/li>
+&lt;/ul>
+&lt;h3 id="导出为json">导出为json&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -j {{InputFile}} &amp;gt; {{OutputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>可选参数：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-a&lt;/code> 查看所有metadata&lt;/li>
+&lt;/ul>
+&lt;h2 id="编辑exif">编辑EXIF&lt;/h2>
+&lt;h3 id="写入到单文件">写入到单文件&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -{{TAG}}={{Content}} {{InputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code class="language-bash">exiftool -comment=&amp;quot;Good Quality&amp;quot; -artist=&amp;quot;Richard Chen&amp;quot; input.png
+&lt;/code>&lt;/pre>
+&lt;h3 id="写入到多文件或文件夹">写入到多文件或文件夹&lt;/h3>
+&lt;pre>&lt;code class="language-bash">exiftool -{{TAG}}={{Content}} {{InputFile1}} {{InputFile2}} {{Folder}}
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code class="language-bash">exiftool -comment=&amp;quot;Good Quality&amp;quot; -artist=&amp;quot;Richard Chen&amp;quot; input_1.png input_2.jpg ~/Pictures/
+&lt;/code>&lt;/pre>
+&lt;h2 id="删除exif">删除EXIF&lt;/h2>
+&lt;pre>&lt;code>exiftool -all= {{InputFile}}
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code>exiftool -all= input_1.png input_2.jpg ~/Pictures/
+&lt;/code>&lt;/pre>
+&lt;h3 id="文件夹下所有图片">文件夹下所有图片&lt;/h3>
+&lt;p>此方法适用于多级文件夹&lt;/p>
+&lt;pre>&lt;code class="language-bash">find {{Folder}} -iname &amp;quot;*.{{Ext}}&amp;quot; -exec exiftool -all= {} +
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>example:&lt;/em>&lt;/p>
+&lt;pre>&lt;code class="language-bash">find ~/Pictures/ -iname &amp;quot;*.jpg&amp;quot; -exec exiftool -all= {} +
+&lt;/code>&lt;/pre>
+&lt;h1 id="references">&lt;em>References&lt;/em>&lt;/h1>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://exiftool.org/examples.html"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>ExifTool Command-Line Examples&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://exiftool.org/exiftool_pod.pdf"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>User Contributed Perl Documentation&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>&lt;em>Other resources on the Internet&lt;/em>&lt;/p></description></item><item><title>wrong file size</title><link>https://iochen.com/post/filesize-puzzle/</link><pubDate>Mon, 03 Feb 2020 14:30:22 +0000</pubDate><guid>https://iochen.com/post/filesize-puzzle/</guid><description>&lt;h1 id="environment">Environment&lt;/h1>
+&lt;ul>
+&lt;li>System: &lt;strong>openSUSE&lt;/strong> &lt;em>15.1&lt;/em>&lt;/li>
+&lt;li>Desktop: &lt;strong>KDE&lt;/strong> &lt;em>Plasma&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;h1 id="details">Details&lt;/h1>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/filesize-puzzle/image-20200203174433732.png"
+alt="image-20200203174433732"/>&lt;/p>
+&lt;p>Other files under the same folder:&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/filesize-puzzle/image-20200203174529757.png"
+alt="image-20200203174529757"/>&lt;/p>
+&lt;p>Copyed to other folder:&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/filesize-puzzle/image-20200203174744479.png"
+alt="image-20200203174744479"/>&lt;/p>
+&lt;p>After rebooted:&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/filesize-puzzle/image-20200203175030071.png"
+alt="image-20200203175030071"/>&lt;/p>
+&lt;p>File type:&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/filesize-puzzle/image-20200203175053415.png"
+alt="image-20200203175053415"/>&lt;/p>
+&lt;h1 id="my-guess">My Guess&lt;/h1>
+&lt;p>There is a place, which caches the file size of every file. When the file is generating(not finished), it caches the file size. After moved to other folder, or computer is rebooted, it will refresh the cache.&lt;/p>
+&lt;p>But&amp;hellip; it&amp;rsquo;s a bug though :)&lt;/p></description></item><item><title>从订阅链接生成V2Ray配置 - V2Gen的使用</title><link>https://iochen.com/post/v2gen-usage/</link><pubDate>Sun, 02 Feb 2020 18:26:20 +0000</pubDate><guid>https://iochen.com/post/v2gen-usage/</guid><description>&lt;p>本文章讲述了 v2gen 的实际使用用例，从订阅以及 &lt;code>vmess://XXXXXXXXXXXX&lt;/code> 链接
+中生成 V2Ray json 文件。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="项目地址">项目地址&lt;/h2>
+&lt;p>详细说明：
+&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>&lt;strong>github.com/iochen/v2gen&lt;/strong>&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h2 id="预览">预览&lt;/h2>
+&lt;pre>&lt;code class="language-data">[ 0] 中继香港C1 Media (HK)(1) [518ms (0 errors)]
+[ 1] 中继香港C3 Media (HK)(1) [527ms (0 errors)]
+[ 2] 中继香港C2 Media (HK)(1) [536ms (0 errors)]
+[ 3] 中继香港C5 Media (HK)(1) [451ms (0 errors)]
+[ 4] 中继香港C6 Media (HK)(1) [452ms (0 errors)]
+[ 5] 中继香港G2 Media (HK)(1) [904ms (0 errors)]
+[ 6] BGP中继香港 2 Media (HK)(1) [468ms (0 errors)]
+[ 7] BGP中继香港 3 Media (HK)(1) [778ms (0 errors)]
+[ 8] BGP中继香港 1 Media (HK)(1) [881ms (0 errors)]
+[ 9] 中继香港G1 Media (HK)(1) [1.35s (1 errors)]
+...
+[50] 日本中继 3 Media (JP)(1) [641ms (0 errors)]
+=====================
+Please Select:
+&lt;/code>&lt;/pre>
+&lt;h2 id="安装">安装&lt;/h2>
+&lt;p>请注意，本程序并没有&lt;strong>GUI&lt;/strong>（图形）界面&lt;/p>
+&lt;h3 id="方法一从release中下载">方法一：从Release中下载&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_amd64_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux AMD64&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_386_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux 386&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_arm64_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux ARM64&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_arm_linux"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Linux ARM&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_amd64_windows.exe"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Windows AMD64&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/releases/latest/download/v2gen_386_windows.exe"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Windows 386&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;br>
+然后请将相应文件加以执行权限并放入到&lt;strong>PATH&lt;/strong>中，命名为&lt;code>v2gen&lt;/code>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="方法二从源码自行编译">方法二：从源码自行编译&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ go get -u -v iochen.com/v2gen/cmd/v2gen
+&lt;/code>&lt;/pre>
+&lt;h2 id="常用命令">常用命令&lt;/h2>
+&lt;h3 id="测速并选择">测速并选择&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径
+&lt;/code>&lt;/pre>
+&lt;h3 id="测速并排序与选择">测速并排序与选择&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -sort
+&lt;/code>&lt;/pre>
+&lt;h3 id="测速并采用最优节点">测速并采用最优节点&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -best
+&lt;/code>&lt;/pre>
+&lt;h3 id="随机节点">随机节点&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -r
+&lt;/code>&lt;/pre>
+&lt;h3 id="设置测速或延时目标链接">设置测速（或延时）目标链接&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o V2Ray配置文件路径 -dest 目标链接
+&lt;/code>&lt;/pre>
+&lt;h3 id="打印到控制台以进行管道操作">打印到控制台以进行管道操作&lt;/h3>
+&lt;pre>&lt;code class="language-shell">$ v2gen -u 订阅链接 -o &amp;quot;-&amp;quot; -n 序号 | jq .
+&lt;/code>&lt;/pre>
+&lt;h2 id="进阶操作">进阶操作&lt;/h2>
+&lt;p>请到 &lt;em>&lt;b>&lt;a href="https://github.com/iochen/v2gen/blob/master/README_zh_cn.md"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>GitHub README&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>
+文件中继续探索！&lt;/p>
+&lt;h2 id="todo">TODO&lt;/h2>
+&lt;ul>
+&lt;li>重构 v2gen&lt;/li>
+&lt;li>优化多参数时的逻辑判断&lt;/li>
+&lt;/ul></description></item><item><title>GPG中创建ECC-512公私钥</title><link>https://iochen.com/post/gen-ecc-512-gpg-keys/</link><pubDate>Sun, 18 Aug 2019 12:09:56 +0000</pubDate><guid>https://iochen.com/post/gen-ecc-512-gpg-keys/</guid><description>&lt;p>此文章主要讲解&lt;/p>
+&lt;ul>
+&lt;li>如何在GPG中创建ECC-512公私钥&lt;/li>
+&lt;li>解决创建过程中的错误&lt;/li>
+&lt;/ul>
+&lt;p>错误：&lt;/p>
+&lt;pre>&lt;code class="language-error">gpg: signing failed: Invalid length
+gpg: make_keysig_packet failed: Invalid length
+Key generation failed: Invalid length
+&lt;/code>&lt;/pre>
+&lt;h1 id="创建">创建&lt;/h1>
+&lt;pre>&lt;code>gpg --expert --full-gen-key
+&lt;/code>&lt;/pre>
+&lt;p>选择&lt;code>ECC and ECC&lt;/code>以及加密方式
+按提示输入即可&lt;/p>
+&lt;h1 id="错误">错误&lt;/h1>
+&lt;pre>&lt;code class="language-error">gpg: signing failed: Invalid length
+gpg: make_keysig_packet failed: Invalid length
+Key generation failed: Invalid length
+&lt;/code>&lt;/pre>
+&lt;h2 id="解决方案">解决方案&lt;/h2>
+&lt;p>编辑&lt;code>~/.gpg/gpg.conf&lt;/code>文件
+修改（或添加）&lt;code>cert-digest-algo&lt;/code>为：&lt;/p>
+&lt;pre>&lt;code class="language-conf">cert-digest-algo SHA256
+&lt;/code>&lt;/pre>
+&lt;p>即可&lt;/p></description></item><item><title>Linux 下的压缩，打包及解压操作</title><link>https://iochen.com/post/zip-softwares-on-linux/</link><pubDate>Sun, 18 Aug 2019 11:27:43 +0000</pubDate><guid>https://iochen.com/post/zip-softwares-on-linux/</guid><description>&lt;p>此文章将介绍 如何在Linux命令行下，压缩，解压，打包一个或多个文件&lt;/p>
+&lt;h1 id="打包">打包&lt;/h1>
+&lt;h2 id="tar">.tar&lt;/h2>
+&lt;p>假设有一个文件（夹）&lt;code>foo&lt;/code>,要打包为&lt;code>archive.tar&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-shell"># tar cf archive.tar foo
+&lt;/code>&lt;/pre>
+&lt;p>假设有多个文件（夹）&lt;code>foo&lt;/code>和&lt;code>bar&lt;/code> ,要打包为&lt;code>archive.tar&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">tar cf archive.tar foo bar
+&lt;/code>&lt;/pre>
+&lt;h1 id="压缩">压缩&lt;/h1>
+&lt;h2 id="targz">.tar.gz&lt;/h2>
+&lt;p>假设有文件（夹）&lt;code>foo&lt;/code>和&lt;code>bar&lt;/code>,要压缩为&lt;code>archive.tar.gz&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">tar cfz archive.tar.gz foo bar
+&lt;/code>&lt;/pre>
+&lt;h2 id="tarxz">.tar.xz&lt;/h2>
+&lt;p>假设有文件（夹）&lt;code>foo&lt;/code>和&lt;code>bar&lt;/code>,要压缩为&lt;code>archive.tar.xz&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">tar cfz archive.tar.xz foo bar
+&lt;/code>&lt;/pre>
+&lt;h2 id="zip">.zip&lt;/h2>
+&lt;p>假设有&lt;strong>文件&lt;/strong>&lt;code>foo&lt;/code>和&lt;code>bar&lt;/code>,要压缩为&lt;code>archive.zip&lt;/code> (！！注意，不适用于文件夹！！)&lt;/p>
+&lt;pre>&lt;code class="language-bash">zip archive.zip foo bar
+&lt;/code>&lt;/pre>
+&lt;p>假设有&lt;strong>文件夹&lt;/strong>&lt;code>foo&lt;/code>和&lt;code>bar&lt;/code>,要压缩为&lt;code>archive.zip&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">zip -r archive.zip foo bar
+&lt;/code>&lt;/pre>
+&lt;h2 id="7z">.7z&lt;/h2>
+&lt;p>假设有文件（夹）&lt;code>foo&lt;/code>和&lt;code>bar&lt;/code>,要压缩为&lt;code>archive.7z&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">7z a archive.7z foo bar
+&lt;/code>&lt;/pre>
+&lt;h1 id="解压">解压&lt;/h1>
+&lt;h2 id="tar-1">.tar.*&lt;/h2>
+&lt;p>解压/解包&lt;code>.tar.*&lt;/code>文件，假设为&lt;code>archive.tar.gz&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">tar xf archive.tar.gz
+&lt;/code>&lt;/pre>
+&lt;h2 id="7z-1">.7z&lt;/h2>
+&lt;p>解压&lt;code>.7z&lt;/code>文件，假设为&lt;code>archive.7z&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">7z e archive.7z
+&lt;/code>&lt;/pre>
+&lt;h2 id="zip-1">.zip&lt;/h2>
+&lt;p>解压&lt;code>.zip&lt;/code>文件，假设为&lt;code>archive.zip&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-bash">unzip archive.zip
+&lt;/code>&lt;/pre></description></item><item><title>Linux下使用FFmpeg,将mp4等格式转mp3格式</title><link>https://iochen.com/post/convert-videos-to-audio-on-linux/</link><pubDate>Sun, 18 Aug 2019 11:09:08 +0000</pubDate><guid>https://iochen.com/post/convert-videos-to-audio-on-linux/</guid><description>&lt;p>本文章将介绍 Linux下使用FFmpeg,将各类格式互相转换，以及如何批量转换&lt;/p>
+&lt;h1 id="单个转换">单个转换&lt;/h1>
+&lt;h2 id="命令">命令&lt;/h2>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i {输入文件} {输出文件}
+&lt;/code>&lt;/pre>
+&lt;h2 id="示例">示例&lt;/h2>
+&lt;h3 id="mp4-转-mp3">mp4 转 mp3&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.mp4 foobar.mp3
+&lt;/code>&lt;/pre>
+&lt;h3 id="flv-转-mp3">flv 转 mp3&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.flv foobar.mp3
+&lt;/code>&lt;/pre>
+&lt;h3 id="mp4-转-wav">mp4 转 wav&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.mp4 foobar.wav
+&lt;/code>&lt;/pre>
+&lt;h3 id="wav-转-mp3">wav 转 mp3&lt;/h3>
+&lt;pre>&lt;code class="language-bash">ffmpeg -i foo.wav foobar.mp3
+&lt;/code>&lt;/pre>
+&lt;h1 id="批量转换">批量转换&lt;/h1>
+&lt;p>比如，文件夹下有&lt;code>*.mp4&lt;/code>文件，要批量转换为&lt;code>XX.mp3&lt;/code>文件，可以用如下方法&lt;/p>
+&lt;pre>&lt;code class="language-bash">for i in ./*.mp4
+do
+ffmpeg -i $i ${i}.mp3
+done
+&lt;/code>&lt;/pre>
+&lt;p>再比如，文件夹下所有文件文件，都要批量转换为&lt;code>XX.mp3&lt;/code>文件，可以用如下方法&lt;/p>
+&lt;pre>&lt;code class="language-bash">for i in ./*
+do
+ffmpeg -i $i ${i}.mp3
+done
+&lt;/code>&lt;/pre></description></item><item><title>dovecot permission denied 的解决办法</title><link>https://iochen.com/post/dovecot-problem-solve/</link><pubDate>Mon, 01 Jul 2019 11:15:45 +0000</pubDate><guid>https://iochen.com/post/dovecot-problem-solve/</guid><description>&lt;p>今天，在&lt;strong>openSUSE Leap 15.0&lt;/strong>上配置&lt;strong>dovecot&lt;/strong>的时候，出现了这个错误：&lt;/p>
+&lt;pre>&lt;code class="language-log">doveconf: Fatal: Error in configuration file /etc/dovecot/dovecot.conf line 7: ssl_cert: /etc/{some path} Can not open file: Permission denied
+&lt;/code>&lt;/pre>
+&lt;p>以下是我的解决办法&lt;/p>
+&lt;h1 id="环境">环境&lt;/h1>
+&lt;p>我的SSL证书是由&lt;strong>certbot&lt;/strong>颁发的，在&lt;code>/etc/certbot/...&lt;/code>下&lt;/p>
+&lt;h1 id="错误现象">错误现象&lt;/h1>
+&lt;p>&lt;strong>systemed&lt;/strong>开启&lt;strong>dovecot&lt;/strong>时，报错&lt;/p>
+&lt;pre>&lt;code class="language-log">doveconf: Fatal: Error in configuration file /etc/dovecot/dovecot.conf line 7: ssl_cert: /etc/{some path} Can not open file: Permission denied
+&lt;/code>&lt;/pre>
+&lt;h1 id="解决方案">解决方案&lt;/h1>
+&lt;p>在&lt;code>profiles/apparmor.d/abstractions/ssl_certs&lt;/code>中对应位置添加&lt;/p>
+&lt;pre>&lt;code class="language-c"> /etc/certbot/archive/*/cert*.pem r,
+/etc/certbot/archive/*/chain*.pem r,
+/etc/certbot/archive/*/fullchain*.pem r,
+&lt;/code>&lt;/pre>
+&lt;p>在&lt;code>profiles/apparmor.d/abstractions/ssl_keys&lt;/code>对应位置添加&lt;/p>
+&lt;pre>&lt;code> /etc/certbot/archive/*/privkey*.pem r,
+&lt;/code>&lt;/pre>
+&lt;p>详细可参考&lt;/p>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://gitlab.com/iochen/apparmor/commit/3016ffb3367e03ee2129401472d44d5eea4c1fb2"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>https://gitlab.com/iochen/apparmor/commit/3016ffb3367e03ee2129401472d44d5eea4c1fb2&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://gitlab.com/iochen/apparmor/commit/4d275bab696f58e1431d26da642e82adbe092526"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>https://gitlab.com/iochen/apparmor/commit/4d275bab696f58e1431d26da642e82adbe092526&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h1 id="后续">后续&lt;/h1>
+&lt;p>已在&lt;em>&lt;b>&lt;a href="https://gitlab.com/apparmor/apparmor"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>apparmor官方仓库&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>中提出&lt;em>&lt;b>&lt;a href="https://gitlab.com/apparmor/apparmor/merge_requests/397"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>PR&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h1 id="参考">参考&lt;/h1>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://forums.opensuse.org/showthread.php/531740-Unexpected-permissions-issue-with-Dovecot"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>LEAP 42.3 Unexpected permissions issue with Dovecot&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p></description></item><item><title>Linux上SD卡问题的解决</title><link>https://iochen.com/post/solved-problem-about-sd-card-formart-on-linux/</link><pubDate>Thu, 31 Jan 2019 12:40:13 +0000</pubDate><guid>https://iochen.com/post/solved-problem-about-sd-card-formart-on-linux/</guid><description>&lt;p>这篇文章主要会写Linux下格式化SD卡后，一些设备无法识别的问题。&lt;/p>
+&lt;h1 id="起因">起因&lt;/h1>
+&lt;p>今天我把我SD卡格式化了一下，发现插上我的德生收音机后无法识别使用，开始我以为Linux文件系统有问题，换了一堆格式化的应用，最终依旧是无法识别。&lt;/p>
+&lt;h1 id="解决方案">解决方案&lt;/h1>
+&lt;p>在我不断的折腾后，我终于找到了解决方案：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>如果已挂载，请先卸载磁盘。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>先&lt;strong>建立分区表&lt;/strong>，如果是（比如我）非精通人士，建议使用&lt;strong>gParted&lt;/strong>软件（&lt;strong>zypper&lt;/strong>可直接安装）。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>建立好后，&lt;strong>再建立主分区&lt;/strong>，格式化为你想要的格式，建议再设一个卷名。&lt;/p>
+&lt;p>（&lt;strong>gParted&lt;/strong>的话别忘了点击右上角的应用，否则是不会格式化的。）
+至此，已完成！&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="附">附&lt;/h1>
+&lt;p>&lt;strong>gParted&lt;/strong>是Linux上 我认为比较好磁盘管理软件(GUI)，可能会专出一篇凑凑我的博客数。&lt;/p>
+&lt;p>写本次文章的目的只是把博客底部的2018更新到2019 :)&lt;/p></description></item><item><title>基于CentOS 7,使用Postfix &amp; Dovecot搭建邮件服务器 -Part 2</title><link>https://iochen.com/post/install-email-service-on-centos-7-part-2-dovecot/</link><pubDate>Fri, 27 Jul 2018 20:54:21 +0000</pubDate><guid>https://iochen.com/post/install-email-service-on-centos-7-part-2-dovecot/</guid><description>&lt;p>本文将详细讲解 如何在CentOS 7下，使用Postfix &amp;amp; Dovecot 搭建自己的邮件服务器。&lt;br>
+这是第二部分: Dovecot 与 其它优化。&lt;/p>
+&lt;h1 id="前言">前言&lt;/h1>
+&lt;p>在我自己搭建的时候，看了许多网络教程，但博主自己在实现过程中遇到了许多坑，比如教程本身有问题，讲解不明等，所以在此自己写一篇。&lt;/p>
+&lt;p>关于&lt;strong>Postfix&lt;/strong>及前面内容(Part 1),&lt;br>
+&lt;strong>链接在此 -&amp;gt; &lt;em>&lt;b>&lt;a href="https://iochen.com/2018/07/21/install-email-service-on-CentOS-7-part-1-postfix/">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>基于CentOS 7,使用Postfix &amp;amp; Dovecot搭建邮件服务器 -Part 1&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/strong>&lt;/p>
+&lt;h1 id="实践">实践&lt;/h1>
+&lt;h2 id="变量设定">&lt;strong>变量设定&lt;/strong>&lt;/h2>
+&lt;font color=red>
+重要!!!
+**假如你的IP为`8.8.8.8`, 域名为`example.com`, 你想要创建的邮箱为` xxx@example.com`**
+**证书, 密钥请点此 ->** [**证书路径**](/2018/07/21/install-email-service-on-CentOS-7-part-1-postfix/#签发证书)
+&lt;/font>
+&lt;h2 id="dovecot">Dovecot&lt;/h2>
+&lt;h3 id="安装">安装&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo yum -y install dovecot
+&lt;/code>&lt;/pre>
+&lt;h3 id="配置">配置&lt;/h3>
+&lt;p>编辑&lt;code>/etc/dovecot/dovecot.conf&lt;/code>&lt;/p>
+&lt;pre>&lt;code># 第24行 : 取消注释并修改
+protocols = imap pop3 lmtp
+# 第30行: 取消注释并修改
+listen = *, ::
+&lt;/code>&lt;/pre>
+&lt;p>编辑&lt;code>/etc/dovecot/conf.d/10-auth.conf&lt;/code>&lt;/p>
+&lt;pre>&lt;code># 第10行: 取消注释并修改
+disable_plaintext_auth = yes
+# 第100行: 修改
+auth_mechanisms = plain login
+&lt;/code>&lt;/pre>
+&lt;p>编辑&lt;code>/etc/dovecot/conf.d/10-mail.conf&lt;/code>&lt;/p>
+&lt;pre>&lt;code># 第30行: 取消注释并修改
+mail_location = maildir:~/Mailbox
+&lt;/code>&lt;/pre>
+&lt;p>编辑&lt;code>/etc/dovecot/conf.d/10-master.conf&lt;/code>&lt;/p>
+&lt;pre>&lt;code># 第89~93行: 全部注释!!!
+# unix_listener auth-userdb {
+#mode = 0666
+#user =
+#group =
+# }
+# 第96~98行: 取消注释并修改
+unix_listener /var/spool/postfix/private/auth {
+mode = 0666
+user = postfix
+group = postfix
+}
+&lt;/code>&lt;/pre>
+&lt;p>编辑&lt;code>/etc/dovecot/conf.d/10-ssl.conf&lt;/code>&lt;/p>
+&lt;pre>&lt;code># 第8行: 修改
+ssl = required
+# 第14~15行: 取消注释并修改,注意替换路径!!! 路径见本文前面 变量设定 部分
+ssl_cert = &amp;lt;/etc/letsencrypt/live/mail.example.com/cert.pem
+ssl_key = &amp;lt;/etc/letsencrypt/live/mail.example.com/privkey.pem
+&lt;/code>&lt;/pre>
+&lt;h3 id="重启dovecot">重启Dovecot&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl restart dovecot &amp;amp;&amp;amp; sudo systemctl enable dovecot
+&lt;/code>&lt;/pre>
+&lt;h2 id="firewall相应配置">firewall相应配置&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --add-port={110/tcp,143/tcp,995/tcp,993/tcp} --permanent &amp;amp;&amp;amp; sudo firewall-cmd --reload
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>110/tcp&lt;/strong>为&lt;strong>POP3&lt;/strong>端口, &lt;strong>143/tcp&lt;/strong>为&lt;strong>IMAP&lt;/strong>端口, &lt;strong>995/tcp&lt;/strong>为&lt;strong>POP3S&lt;/strong>端口, &lt;strong>993/tcp&lt;/strong>为&lt;strong>IMAPS&lt;/strong>端口&lt;/p>
+&lt;h1 id="检验">检验&lt;/h1>
+&lt;p>假设你的Linux服务器中, 你的用户名为&lt;code>user&lt;/code>, 则可按下方配置操作:
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/install-email-service-on-CentOS-7-part-2-dovecot/68eee113-65c4-4cd9-9347-1b1cf2c608e8.png"
+alt="email for user"/>&lt;/p>
+&lt;h1 id="参考">参考&lt;/h1>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://blog.csdn.net/wh211212/article/details/53040620"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>CentOS 7.2 部署邮件服务器（Postfix）&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;em>注:作者未注明许可协议&lt;/em>&lt;br>
+&lt;em>&lt;b>&lt;a href="http://lomu.me/post/SPF-DKIM-DMARC-PTR"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>邮件服务器添加SPF、DKIM、DMARC、PTR提高送达率 &amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;em>注:作者未注明许可协议&lt;/em> &lt;em>注:此链接未使用HTTPS&lt;/em>&lt;/p></description></item><item><title>基于CentOS 7,使用Postfix &amp; Dovecot搭建邮件服务器 -Part 1</title><link>https://iochen.com/post/install-email-service-on-centos-7-part-1-postfix/</link><pubDate>Sat, 21 Jul 2018 19:52:16 +0000</pubDate><guid>https://iochen.com/post/install-email-service-on-centos-7-part-1-postfix/</guid><description>&lt;p>本文将详细讲解 如何在CentOS 7下，使用Postfix &amp;amp; Dovecot 搭建自己的邮件服务器。&lt;br>
+这是第一部分: Postfix 与 DNS各种记录。&lt;/p>
+&lt;h1 id="前言">前言&lt;/h1>
+&lt;p>在我自己搭建的时候，看了许多网络教程，但博主自己在实现过程中遇到了许多坑，比如教程本身有问题，讲解不明等，所以在此自己写一篇。&lt;/p>
+&lt;h1 id="实践">实践&lt;/h1>
+&lt;h2 id="变量设定">&lt;strong>变量设定&lt;/strong>&lt;/h2>
+&lt;font color=red>
+重要!!!
+**假如你的IP为`8.8.8.8`, 域名为`example.com`, 你想要创建的邮箱为` xxx@example.com`**
+&lt;/font>
+&lt;h2 id="dns记录">DNS记录&lt;/h2>
+&lt;h3 id="必要记录">必要记录&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">名称(Name)&lt;/th>
+&lt;th style="text-align:center">记录类型(Type)&lt;/th>
+&lt;th style="text-align:center">记录内容(Value)&lt;/th>
+&lt;th style="text-align:center">注&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">&lt;code>mail&lt;/code>&lt;/td>
+&lt;td style="text-align:center">A&lt;/td>
+&lt;td style="text-align:center">&lt;code>8.8.8.8&lt;/code>&lt;/td>
+&lt;td style="text-align:center">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;code>@&lt;/code>&lt;/td>
+&lt;td style="text-align:center">MX&lt;/td>
+&lt;td style="text-align:center">&lt;code>mail.example.com&lt;/code>&lt;/td>
+&lt;td style="text-align:center">优先级(Priority)为 &lt;code>10&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="选填记录">选填记录&lt;/h3>
+&lt;p>变量假设: 你的邮箱为&lt;code> i@example.com&lt;/code>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">名称(Name)&lt;/th>
+&lt;th style="text-align:center">记录类型(Type)&lt;/th>
+&lt;th style="text-align:center">记录内容(Value)&lt;/th>
+&lt;th style="text-align:center">注&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">&lt;code>@&lt;/code>&lt;/td>
+&lt;td style="text-align:center">TXT&lt;/td>
+&lt;td style="text-align:center">&lt;code>v=spf1 mx ~all&lt;/code>&lt;/td>
+&lt;td style="text-align:center">&lt;em>&lt;b>&lt;a href="#SPF%e8%ae%b0%e5%bd%95">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>见下&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;code>_dmarc&lt;/code>&lt;/td>
+&lt;td style="text-align:center">TXT&lt;/td>
+&lt;td style="text-align:center">&lt;code>v=DMARC1;p=reject;rua=i@example.com&lt;/code>&lt;/td>
+&lt;td style="text-align:center">&lt;em>&lt;b>&lt;a href="#DMARC%e8%ae%b0%e5%bd%95">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>见下&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="spf记录">SPF记录&lt;/h4>
+&lt;p>&lt;strong>SPF记录&lt;/strong>可确定允许哪些IP 使用你的域名 来发送电子邮件。&lt;br>
+SPF的设置选项可以参考：&lt;em>&lt;b>&lt;a href="http://www.openspf.org/SPFRecordSyntax"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>SPF Record Syntax&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> &lt;em>注:此链接未使用HTTPS&lt;/em>&lt;br>
+部分如下：&lt;br>
+&lt;code>a&lt;/code>：所有该域名的&lt;strong>A记录&lt;/strong>都为通过，a不指定的情况下为当前域名&lt;br>
+&lt;code>ip4&lt;/code>：指定通过的IPv4地址&lt;br>
+&lt;code>mx&lt;/code>：mx记录域名的A记录IP可以发邮件&lt;br>
+&lt;code>all&lt;/code>：指其它IP该作何处理，&lt;code>-&lt;/code>表示&lt;strong>拒绝&lt;/strong>，&lt;code>~&lt;/code>表示&lt;strong>软拒绝&lt;/strong>，&lt;code>+&lt;/code>表示&lt;strong>通过&lt;/strong>&lt;br>
+这里的&lt;code>v=spf1 mx ~all&lt;/code>，则表示允许MX记录的IP收发邮件,软拒绝其它IP发来的邮件。&lt;/p>
+&lt;h4 id="dmarc记录">DMARC记录&lt;/h4>
+&lt;p>&lt;strong>DMARC协议&lt;/strong>是有效解决信头From伪造而诞生的一种新的邮件来源验证手段，为邮件发件人地址提供强大保护，并在邮件收发双方之间建立起一个数据反馈机制。&lt;br>
+具体信息可以看这里：&lt;em>&lt;b>&lt;a href="https://dmarc.org/overview/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>DMARC Overview&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>。&lt;br>
+&lt;strong>DMARC记录&lt;/strong>中常用的参数解释:&lt;br>
+&lt;code>p&lt;/code>：用于告知收件方，当检测到某邮件存在伪造我（发件人）的情况，收件方要做出什么处理，处理方式从轻到重依次为：&lt;code>none&lt;/code>为不作任何处理；&lt;code>quarantine&lt;/code>为将邮件标记为垃圾邮件；&lt;code>reject&lt;/code>为拒绝该邮件。&lt;br>
+&lt;code>rua&lt;/code>：用于在收件方检测后，将一段时间的汇总报告，发送到哪个邮箱地址。&lt;br>
+&lt;code>ruf&lt;/code>：用于当检测到伪造邮件时，收件方须将该伪造信息的报告发送到哪个邮箱地址。&lt;br>
+例如我设置的是&lt;code>v=DMARC1;p=reject;rua=i@example.com&lt;/code>，意思是拒绝伪造邮件，并且将一段时间的汇总报告发送给&lt;code>i@example.com&lt;/code>。&lt;/p>
+&lt;h2 id="证书签发">证书签发&lt;/h2>
+&lt;p>这里使用&lt;strong>Certbot&lt;/strong>&lt;/p>
+&lt;h3 id="安装certbot">安装Certbot&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo yum -y install yum-utils
+$ sudo yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
+$ sudo yum install certbot
+&lt;/code>&lt;/pre>
+&lt;h3 id="签发证书">签发证书&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo certbot certonly -d mail.example.com
+&lt;/code>&lt;/pre>
+&lt;p>看提示, 使用&lt;strong>root用户&lt;/strong>登录, 在提示的目录下会有&lt;code>cert.pem&lt;/code> &lt;code>chain.pem&lt;/code> &lt;code>fullchain.pem&lt;/code> &lt;code>privkey.pem&lt;/code>&lt;br>
+博主这些文件的所在目录是&lt;code>/etc/letsencrypt/live/mail.example.com/&lt;/code>&lt;br>
+那么&lt;strong>证书文件&lt;/strong>就是&lt;code>/etc/letsencrypt/live/mail.example.com/cert.pem&lt;/code>&lt;br>
+&lt;strong>密钥文件&lt;/strong>是&lt;code>/etc/letsencrypt/live/mail.example.com/privkey.pem&lt;/code>&lt;br>
+下文请注意替换!!!&lt;/p>
+&lt;h2 id="postfix">Postfix&lt;/h2>
+&lt;h3 id="安装postfix">安装Postfix&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo yum -y install postfix
+&lt;/code>&lt;/pre>
+&lt;h3 id="配置postfix">配置Postfix&lt;/h3>
+&lt;p>编辑&lt;code>/etc/postfix/main.cf&lt;/code>文件&lt;/p>
+&lt;pre>&lt;code class="language-conf"># 第75行: 取消注释并修改
+myhostname = mail.example.com
+# 第83行: 取消注释并修改
+mydomain = example.com
+# 第99行: 取消注释并修改
+myorigin = $mydomain
+# 第116行: 修改
+inet_interfaces = all
+# 第164行: 添加
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+# 第264行: 取消注释并修改为你的内网(就填下面的一般也行)
+mynetworks = 127.0.0.0/8, 10.0.0.0/24
+# 第419行: 修改
+home_mailbox = Mailbox/
+# 第574行: 添加
+smtpd_banner = $myhostname ESMTP
+# 把下面的内容添加到最后
+# 限制邮件大小为10M
+message_size_limit = 10485760
+# 限制邮箱大小为1G
+mailbox_size_limit = 1073741824
+# SMTP验证用内容 (为接下来的Dovecot做准备)
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_recipient_restrictions = permit_mynetworks,permit_auth_destination,permit_sasl_authenticated,reject
+# TLS/SSL内容, 注意替换路径!!!
+smtpd_use_tls = yes
+smtpd_tls_cert_file = /etc/letsencrypt/live/mail.example.com/cert.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/mail.example.com/privkey.pem
+smtpd_tls_session_cache_database = btree:/etc/postfix/smtpd_scache
+&lt;/code>&lt;/pre>
+&lt;p>编辑&lt;code>/etc/postfix/master.cf&lt;/code>&lt;/p>
+&lt;pre>&lt;code># 第26~28行: 取消注释
+smtps inet n - n - - smtpd
+-o syslog_name=postfix/smtps
+-o smtpd_tls_wrappermode=yes
+&lt;/code>&lt;/pre>
+&lt;h3 id="重启postfix并开机自启">重启Postfix并开机自启&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl restart postfix &amp;amp;&amp;amp; sudo systemctl enable postfix
+&lt;/code>&lt;/pre>
+&lt;h3 id="firewall相应配置">firewall相应配置&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --add-port={25/tcp,465/tcp} --permanent &amp;amp;&amp;amp; sudo firewall-cmd --reload
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>25/tcp&lt;/strong>为&lt;strong>SMTP&lt;/strong>端口, &lt;strong>465/tcp&lt;/strong>为&lt;strong>SMTPS&lt;/strong>端口&lt;br>
+注: 可能部分VPS未开放25端口, 请与VPS提供商联系!&lt;/p>
+&lt;h2 id="dkim">DKIM&lt;/h2>
+&lt;p>&lt;strong>DomainKeys Identified Mail&lt;/strong>的缩写，域名密钥识别邮件标准。&lt;/p>
+&lt;h3 id="安装">安装&lt;/h3>
+&lt;h4 id="下载安装epel">下载安装EPEL&lt;/h4>
+&lt;p>64 bit:&lt;/p>
+&lt;pre>&lt;code class="language-bash">$ sudo rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+&lt;/code>&lt;/pre>
+&lt;p>32 bit:&lt;/p>
+&lt;pre>&lt;code class="language-bash">$ sudo rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+&lt;/code>&lt;/pre>
+&lt;h4 id="安装opendkim">安装opendkim&lt;/h4>
+&lt;pre>&lt;code>$ sudo yum install opendkim
+&lt;/code>&lt;/pre>
+&lt;h3 id="生成dkim-key-注意修改域名">生成DKIM key (注意修改域名)&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ export domain=example.com
+&lt;/code>&lt;/pre>
+&lt;p>接下来请以root用户运行!!!&lt;/p>
+&lt;pre>&lt;code class="language-bash">$ mkdir /etc/opendkim/keys/$domain
+$ cd /etc/opendkim/keys/$domain
+$ opendkim-genkey -d $domain -s default
+$ chown -R opendkim:opendkim /etc/opendkim/keys/$domain
+$ echo &amp;quot;default._domainkey.$domain $domain:default:/etc/opendkim/keys/$domain/default.private&amp;quot; &amp;gt;&amp;gt; /etc/opendkim/KeyTable
+$ echo &amp;quot;*@$domain default._domainkey.$domain&amp;quot; &amp;gt;&amp;gt; /etc/opendkim/SigningTable
+&lt;/code>&lt;/pre>
+&lt;p>生成之后打开``/etc/opendkim/keys/example.com/default.txt&lt;code>，里面就是DKIM key，需要添加到DNS，主机记录为&lt;/code>default._domainkey`，记录值为括号里面的（去掉引号,换行）,&lt;br>
+例如:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">名称(Name)&lt;/th>
+&lt;th style="text-align:center">记录类型(Type)&lt;/th>
+&lt;th style="text-align:center">记录内容(Value)&lt;/th>
+&lt;th style="text-align:center">注&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">&lt;code>default._domainkey&lt;/code>&lt;/td>
+&lt;td style="text-align:center">TXT&lt;/td>
+&lt;td style="text-align:center">&lt;code>v=DKIM1; k=rsa; p=...&lt;/code>&lt;/td>
+&lt;td style="text-align:center">/&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="修改opendkim配置">修改openDKIM配置&lt;/h3>
+&lt;p>编辑&lt;code>/etc/opendkim.conf&lt;/code>&lt;/p>
+&lt;ol>
+&lt;li>将&lt;code>Mode&lt;/code> 改为 &lt;code>Mode sv&lt;/code>&lt;/li>
+&lt;li>将&lt;code>Domain&lt;/code> 改为 &lt;code>Domain example.com&lt;/code> (注意替换)&lt;/li>
+&lt;li>将所有变量前面的#去掉，但是&lt;code>KeyFile&lt;/code>,&lt;code>Statistics&lt;/code>,&lt;code>ReportAddress&lt;/code>加上&lt;code>#&lt;/code>&lt;/li>
+&lt;li>再把&lt;code>SigningTable /etc/opendkim/SigningTable&lt;/code>改成&lt;code>SigningTable refile:/etc/opendkim/SigningTable&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;h3 id="设置postfix">设置Postfix&lt;/h3>
+&lt;p>编辑&lt;code>/etc/postfix/main.cf&lt;/code>&lt;br>
+加上下面几行&lt;/p>
+&lt;pre>&lt;code class="language-conf"># opendkim 配置
+smtpd_milters = inet:127.0.0.1:8891
+non_smtpd_milters = inet:127.0.0.1:8891
+milter_default_action = accept
+&lt;/code>&lt;/pre>
+&lt;h3 id="重启服务">重启服务&lt;/h3>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl restart postfix opendkim &amp;amp;&amp;amp; sudo systemctl enable opendkim
+&lt;/code>&lt;/pre>
+&lt;p>P.S.: 第一次启动如果出现&lt;code> Generating default DKIM keys: hostname: Unknown host&lt;/code> 可以在 &lt;code>/etc/hosts&lt;/code> 上面加上域名，例如：&lt;/p>
+&lt;pre>&lt;code class="language-hosts">127.0.0.1 example.com localhost localhost.localdomain localhost4 localhost4.localdomain4
+&lt;/code>&lt;/pre>
+&lt;h1 id="小结">小结&lt;/h1>
+&lt;p>这里将&lt;strong>SMTP(S)&lt;/strong>, 即发件服务配置好了, 关于&lt;strong>Dovecot&lt;/strong>及后续内容(Part 2),&lt;br>
+&lt;strong>链接在此 -&amp;gt; &lt;em>&lt;b>&lt;a href="https://iochen.com/2018/07/27/install-email-service-on-CentOS-7-part-2-dovecot/">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>基于CentOS 7,使用Postfix &amp;amp; Dovecot搭建邮件服务器 -Part 2&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/strong>&lt;/p>
+&lt;h1 id="参考">参考&lt;/h1>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://blog.csdn.net/wh211212/article/details/53040620"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>CentOS 7.2 部署邮件服务器（Postfix）&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;em>注:作者未注明许可协议&lt;/em>&lt;br>
+&lt;em>&lt;b>&lt;a href="http://lomu.me/post/SPF-DKIM-DMARC-PTR"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>邮件服务器添加SPF、DKIM、DMARC、PTR提高送达率 &amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;em>注:作者未注明许可协议&lt;/em> &lt;em>注:此链接未使用HTTPS&lt;/em>&lt;/p></description></item><item><title>nginx配置HTTPS并取得A+</title><link>https://iochen.com/post/get-a-plus-on-https-by-using-nginx/</link><pubDate>Wed, 11 Jul 2018 19:25:20 +0000</pubDate><guid>https://iochen.com/post/get-a-plus-on-https-by-using-nginx/</guid><description>&lt;p>主要是我自己的nginx配置, 并且HTTPS取得&lt;strong>A+&lt;/strong>.&lt;/p>
+&lt;p>先来展示一下:&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/get-A-plus-on-https-by-using-nginx/58b2543b-5fc7-43a3-9473-f30cf6218ced.png"
+alt="58b2543b-5fc7-43a3-9473-f30cf6218ced"/>&lt;/p>
+&lt;h1 id="直接上配置">直接上配置!&lt;/h1>
+&lt;pre>&lt;code class="language-nginx">server {
+listen 80;
+listen [::]:80;
+server_name domain.ltd; # 你的域名
+return 301 https://domain.ltd$request_uri; # 你的域名
+error_page 497 =301 https://domain.ltd$request_uri; # 你的域名
+}
+server {
+listen 443 ssl http2;
+listen [::]:443 ssl http2;
+server_name domain.ltd; # 你的域名
+add_header Strict-Transport-Security &amp;quot;max-age=63072000; includeSubDomains; preload&amp;quot;;
+ssl on;
+ssl_certificate /etc/certificate_path/file.pem ; # 你的证书路径
+ssl_certificate_key /etc/certificate_key_path/file.pem ; # 你的证书key路径
+ssl_protocols TLSv1.3 TLSv1.2;
+ssl_stapling on;
+ssl_ciphers &amp;quot;ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA&amp;quot;;
+ssl_prefer_server_ciphers on;
+ssl_session_cache shared:SSL:10m;
+ssl_session_timeout 10m;
+ssl_dhparam /etc/myssl/dhparam.pem; # 你的DH证书路径,下面会说
+charset utf-8;
+access_log /var/log/nginx/access.log; # 可自行修改
+error_log /var/log/nginx/error.log; # 可自行修改
+location / {
+root /usr/share/nginx/path; # 你的网站根目录
+try_files $uri $uri/ /index.php?$uri;
+index index.php index.html;
+}
+# ERROR pages
+error_page 404 /404.html;
+error_page 500 502 503 504 /50x.html;
+location = /50x.html {
+root /usr/share/nginx/path; # 你的网站根目录
+}
+# GZIP
+gzip on;
+gzip_min_length 1k;
+gzip_comp_level 2;
+gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png image/jpg;
+gzip_vary on;
+gzip_disable &amp;quot;MSIE [1-6]\.&amp;quot;;
+# PHP
+location ~ \.php$ {
+root html;
+fastcgi_pass 127.0.0.1:9000;
+fastcgi_index index.php;
+fastcgi_param SCRIPT_FILENAME /usr/share/nginx/path/$fastcgi_script_name; # 你的网站根目录
+include fastcgi_params;
+}
+}
+&lt;/code>&lt;/pre>
+&lt;h1 id="必要修改说明">必要修改&amp;amp;&amp;amp;说明&lt;/h1>
+&lt;h2 id="必要替换">必要替换:&lt;/h2>
+&lt;pre>&lt;code>domain.ltd =&amp;gt; 你的域名
+/etc/certificate_path/file.pem =&amp;gt; 你的证书路径
+/etc/certificate_key_path/file.pem =&amp;gt; 你的证书key路径
+/etc/myssl/dhparam.pem =&amp;gt; 你的DH证书路径,下面会说
+/usr/share/nginx/path =&amp;gt; 你的网站文件根目录
+&lt;/code>&lt;/pre>
+&lt;h2 id="个别说明">个别说明&lt;/h2>
+&lt;p>DH证书: 请先安装&lt;code>openssl&lt;/code>&lt;/p>
+&lt;pre>&lt;code>openssl dhparam -dsaparam -out dhparam.pem 4096
+&lt;/code>&lt;/pre>
+&lt;p>建议使用&lt;strong>nohup&lt;/strong>,生成会花费一定时间.&lt;br>
+&lt;em>&lt;b>&lt;a href="#nohup">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>nohup ?&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h1 id="附">附&lt;/h1>
+&lt;h2 id="nohup">nohup&lt;/h2>
+&lt;p>nohup使用:&lt;/p>
+&lt;pre>&lt;code class="language-bash">$ nohup [应该的命令] &amp;amp;
+&lt;/code>&lt;/pre>
+&lt;p>会将屏幕输出内容存放在本地目录下&lt;code>nohup.out&lt;/code>文件内&lt;/p></description></item><item><title>CentOS7防火墙的使用</title><link>https://iochen.com/post/firewall-of-centos/</link><pubDate>Sat, 02 Jun 2018 18:28:52 +0000</pubDate><guid>https://iochen.com/post/firewall-of-centos/</guid><description>&lt;p>记录&lt;strong>CentOS7&lt;/strong>下**firewall(firewalld)**的用法，包括&lt;em>开启&lt;/em>、&lt;em>关闭&lt;/em>、&lt;em>查看&lt;/em>等操作。&lt;/p>
+&lt;h1 id="命令">命令&lt;/h1>
+&lt;p>直接上命令&lt;/p>
+&lt;h2 id="开启">开启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>&lt;b>&lt;a href="#%e9%87%8d%e5%90%af">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>注：执行此条命令后不会立即生效，请参阅此处&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;br>
+这里是开启&lt;strong>TCP&lt;/strong>的&lt;strong>80&lt;/strong>端口，下方是详解&lt;/p>
+&lt;pre>&lt;code>--zone=public 操作的域
+--add-port=80/tcp 要开启的端口，格式为`端口/协议`
+--permanent 指的是永久生效，去除即临时生效
+&lt;/code>&lt;/pre>
+&lt;h2 id="关闭">关闭&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --remove-port=80/tcp --permanent
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>&lt;b>&lt;a href="#%e9%87%8d%e5%90%af">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>注：执行此条命令后不会立即生效，请参阅此处&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;br>
+这里是关闭&lt;strong>TCP&lt;/strong>的&lt;strong>80&lt;/strong>端口，下方是详解&lt;/p>
+&lt;pre>&lt;code>--zone=public 操作的域
+--remove-port=80/tcp 要开启的端口，格式为`端口/协议`
+--permanent 指的是永久生效，去除即临时生效
+&lt;/code>&lt;/pre>
+&lt;h2 id="查看">查看&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --list-ports
+&lt;/code>&lt;/pre>
+&lt;h2 id="重启">重启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo firewall-cmd --reload
+&lt;/code>&lt;/pre>
+&lt;h1 id="启用or关闭firewallfirewalld服务">启用or关闭**firewall(firewalld)**服务&lt;/h1>
+&lt;h2 id="关闭-1">关闭&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl stop firewalld.service
+&lt;/code>&lt;/pre>
+&lt;h2 id="开启-1">开启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl start firewalld.service
+&lt;/code>&lt;/pre>
+&lt;h2 id="重启-1">重启&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl restart firewalld.service
+&lt;/code>&lt;/pre>
+&lt;h2 id="状态">状态&lt;/h2>
+&lt;pre>&lt;code class="language-bash">$ sudo systemctl status firewalld.service
+&lt;/code>&lt;/pre>
+&lt;p>我自己的示例(开启状态):
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@publichttps://img.iochen.com/AJ5Ssm0L.png"
+alt/>&lt;/p></description></item><item><title>openssl RSA简单使用</title><link>https://iochen.com/post/openssl-rsa-1/</link><pubDate>Sat, 10 Feb 2018 11:44:49 +0000</pubDate><guid>https://iochen.com/post/openssl-rsa-1/</guid><description>&lt;p>最近看到的关于TLS的文章比较多啊，我也来凑凑热闹，来一篇关于非对称加密用法的博客。当然了，这篇文章对不懂的人也没什么用，懂的人也不会看这篇，还是写给自己看吧&lt;/p>
+&lt;p>这里的非对称加密用的是&lt;strong>RSA&lt;/strong>&lt;/p>
+&lt;h1 id="基本">基本&lt;/h1>
+&lt;p>非对称加密密钥的用法主要是如下几种：&lt;/p>
+&lt;pre>&lt;code>加密 → 公钥
+解密 → 私钥
+签名 → 私钥
+解密 → 私钥
+&lt;/code>&lt;/pre>
+&lt;h1 id="用法">用法&lt;/h1>
+&lt;h2 id="生成密钥">生成密钥&lt;/h2>
+&lt;h3 id="生成私钥">生成私钥&lt;/h3>
+&lt;p>比如我要生成一个叫&lt;code>pr.pem&lt;/code>的私钥文件，直接&lt;/p>
+&lt;pre>&lt;code>openssl genrsa -out pr.pem
+&lt;/code>&lt;/pre>
+&lt;p>就可以了，就像这样：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/f05d8842-7080-4b4c-bcc2-bbc07ceaefc5.png"
+alt="生成私钥"/>&lt;/p>
+&lt;h3 id="提取公钥">提取公钥&lt;/h3>
+&lt;p>比如我要从&lt;code>pr.pem&lt;/code>里提取&lt;code>pu.pem&lt;/code>的公钥，直接&lt;/p>
+&lt;pre>&lt;code>openssl rsa -pubout -in pr.pem -out pu.pem
+&lt;/code>&lt;/pre>
+&lt;p>即可，可以看到：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/6ed6724b-1fac-415e-bd11-8403680fe04c.png"
+alt="提取公钥"/>&lt;/p>
+&lt;h3 id="小结">小结&lt;/h3>
+&lt;p>至此，公钥和私钥就生成好了，来看看吧！&lt;br>
+私钥：&lt;br>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/b567d11b-55c7-4e2e-9629-32a406427301.png"
+alt="私钥"/>
+公钥：&lt;br>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/4f6e2b69-034f-4bdd-a02a-52ef9310e0bd.png"
+alt="公钥"/>&lt;/p>
+&lt;h2 id="加解密">加解密&lt;/h2>
+&lt;h3 id="加密">加密&lt;/h3>
+&lt;p>我们先创建一个叫&lt;code>test&lt;/code>的文件，写点什么
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/35036b25-44cf-4565-a645-ff2719ce065e.png"
+alt="测试文件"/>
+接下来加密&lt;/p>
+&lt;pre>&lt;code>openssl rsautl -pubin -encrypt -in test -inkey pu.pem -out test_en
+&lt;/code>&lt;/pre>
+&lt;p>来看看加密后的文件：&lt;br>
+&lt;em>注：现在用&lt;code>cat&lt;/code>是看不了的，只是一堆乱码，所以我用&lt;code>hexdump&lt;/code>查看二进制文件&lt;/em>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/a0caf393-a88d-4c94-83d5-4493d6278fa9.png"
+alt="加密后"/>&lt;/p>
+&lt;h3 id="解密">解密&lt;/h3>
+&lt;p>简单！输入&lt;/p>
+&lt;pre>&lt;code>openssl rsautl -decrypt -in test_en -inkey pr.pem -out test_dn
+&lt;/code>&lt;/pre>
+&lt;p>又回来了不是吗！&lt;br>
+来看看解密后的文件：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/ed16ca35-cee3-44ff-a71d-fbcdfd57b0eb.png"
+alt="解密后"/>
+完全一样！&lt;/p>
+&lt;h2 id="签名与验证">签名与验证&lt;/h2>
+&lt;h3 id="签名">签名&lt;/h3>
+&lt;p>我想为&lt;code>test&lt;/code>文件签名，直接&lt;/p>
+&lt;pre>&lt;code>openssl dgst -sha256 -sign pr.pem -out test_sign test
+&lt;/code>&lt;/pre>
+&lt;p>即可生成签名文件&lt;code>test_sign&lt;/code>&lt;/p>
+&lt;h3 id="验证签名">验证签名&lt;/h3>
+&lt;p>一样，一句命令！&lt;/p>
+&lt;pre>&lt;code>openssl dgst -sha256 -verify pu.pem -signature test_sign test
+&lt;/code>&lt;/pre>
+&lt;p>好的，得到一句
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/e3b95074-4eee-4d75-907e-682898c8d55f.png"
+alt="验证通过"/>
+这就是验证通过了&lt;/p>
+&lt;p>如果这个原来数据被一些人修改后，比如：&lt;br>
+&lt;em>这里我为&lt;code>test&lt;/code>文件加了一行&lt;/em>
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/a9569407-189a-411c-9ebe-a9a19031e2c7.png"
+alt="修改后"/>
+就会出现：
+&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/openssl-RSA-1/d0ce75e7-7750-4b53-b574-069953fbc965.png"
+alt="验证失败"/>&lt;/p>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>这里我有一些没有说，因为写着写着就写的很详细很长了，具体可以参考&lt;em>&lt;b>&lt;a href="https://www.cnblogs.com/gordon0918/p/5382541.html"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>这位&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>的博客。&lt;/p>
+&lt;h1 id="个人总结">个人总结&lt;/h1>
+&lt;p>其实，我只要记6段代码就好了&lt;/p>
+&lt;pre>&lt;code>openssl genrsa -out pr.pem //生成
+openssl rsa -pubout -in pr.pem -out pu.pem //提取
+openssl rsautl -pubin -encrypt -in test -inkey pu.pem -out test_en //加密
+openssl rsautl -decrypt -in test_en -inkey pr.pem -out test_dn //解密
+openssl dgst -sha256 -sign pr.pem -out test_sign test //签名
+openssl dgst -sha256 -verify pu.pem -signature test_sign test //验证
+&lt;/code>&lt;/pre>
+&lt;h1 id="其它">其它&lt;/h1>
+&lt;ul>
+&lt;li>这里的密钥对不会在任何地方使用！&lt;/li>
+&lt;li>&lt;del>博主的正式公钥：地址：&lt;em>&lt;b>&lt;a href="https://mega.nz/#!sM4GDIxY"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>https://mega.nz/#!sM4GDIxY&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 密钥：&lt;code>!0bW3hOti7GQHtkXYgXY52o8IK9RZVos7hzdZV8fA4uc&lt;/code>&lt;/del> 已弃用&lt;/li>
+&lt;/ul>
+&lt;p>有问题请在下面问！（至于我会不会……😭）&lt;/p></description></item><item><title>Hexo中Gitalk配置使用教程-可能是目前最详细的教程</title><link>https://iochen.com/post/use-gitalk-in-hexo/</link><pubDate>Sat, 06 Jan 2018 19:22:20 +0000</pubDate><guid>https://iochen.com/post/use-gitalk-in-hexo/</guid><description>&lt;p>&lt;strong>Gitalk&lt;/strong>的详细配置与示例&lt;/p>
+&lt;h1 id="github部分">GitHub部分&lt;/h1>
+&lt;p>首先，你得有一个&lt;strong>Github&lt;/strong>账号（这个就不多说了吧），下面，打开&lt;em>&lt;b>&lt;a href="https://github.com/settings/applications/new"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>&lt;strong>github.com/settings/applications/new&lt;/strong>&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>，具体填法如下：&lt;/p>
+&lt;pre>&lt;code class="language-cpp">Application name //应用名称，随便填
+Homepage URL //没有过多要求，可以填自己的博客地址
+Application description //应用描述，描述一下，无要求
+Authorization callback URL //这个就有要求了，填自己要使用Gitalk的博客地址，不可乱填
+&lt;/code>&lt;/pre>
+&lt;p>接着，你就可以得到&lt;code>Client ID&lt;/code>和&lt;code>Client Secret&lt;/code>，之后会用到的。接下来，我们回到hexo的主题配置里。&lt;/p>
+&lt;h1 id="文件修改">文件修改&lt;/h1>
+&lt;h2 id="swig文件修改法">swig文件修改法&lt;/h2>
+&lt;p>在这里，我以&lt;strong>NexT&lt;/strong>主题做示范，如果发现你的主题大部分以&lt;code>.ejs&lt;/code> 结尾 请见 &lt;em>&lt;b>&lt;a href="#ejs%e6%96%87%e4%bb%b6%e4%bf%ae%e6%94%b9%e6%b3%95">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>ejs文件修改法&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h3 id="添加swig代码">添加swig代码&lt;/h3>
+&lt;p>在主题的&lt;code>\layout\_third-party\comments&lt;/code>目录中，新建一个&lt;code>gitalk.swig&lt;/code>文件，文件内容如下：&lt;/p>
+&lt;pre>&lt;code class="language-java">{% if page.comments &amp;amp;&amp;amp; theme.gitalk.enable %}
+&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.css&amp;quot;&amp;gt;
+&amp;lt;script src=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+var gitalk = new Gitalk({
+clientID: '{{ theme.gitalk.ClientID }}',
+clientSecret: '{{ theme.gitalk.ClientSecret }}',
+repo: '{{ theme.gitalk.repo }}',
+owner: '{{ theme.gitalk.owner }}',
+admin: {{ theme.gitalk.adminUser }},
+id: {{ theme.gitalk.ID }},
+labels: {{ theme.gitalk.labels }},
+perPage: {{ theme.gitalk.perPage }},
+pagerDirection: '{{ theme.gitalk.pagerDirection }}',
+createIssueManually: {{ theme.gitalk.createIssueManually }},
+distractionFreeMode: {{ theme.gitalk.distractionFreeMode }}
+})
+gitalk.render('gitalk-container')
+&amp;lt;/script&amp;gt;
+{% endif %}
+&lt;/code>&lt;/pre>
+&lt;p>还是，在主题的&lt;code>\layout\_third-party\comments&lt;/code>目录中，找到一个&lt;code>index.swig&lt;/code>的文件，打开，添加这一行代码：&lt;/p>
+&lt;pre>&lt;code class="language-java">{% include 'gitalk.swig' %}
+&lt;/code>&lt;/pre>
+&lt;p>接着，在主题的&lt;code>\layout\_partials&lt;/code>目录中，找到&lt;code>comments.swig&lt;/code>文件，打开，找到&lt;/p>
+&lt;pre>&lt;code class="language-java">{% elseif theme.valine.appid and theme.valine.appkey %}
+&amp;lt;div class=&amp;quot;comments&amp;quot; id=&amp;quot;comments&amp;quot;&amp;gt;
+&amp;lt;/div&amp;gt;
+{% endif %}
+&lt;/code>&lt;/pre>
+&lt;p>在空了一行的地方加上以下代码：&lt;/p>
+&lt;pre>&lt;code class="language-java">{% elseif theme.gitalk.enable %}
+&amp;lt;div id=&amp;quot;gitalk-container&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h3 id="进行配置">进行配置&lt;/h3>
+&lt;p>接下来，转到主题的配置文件里，加上这一段：&lt;/p>
+&lt;pre>&lt;code class="language-js">gitalk:
+enable: true
+ClientID: xxxxxx
+ClientSecret: xxxxxxxxxxxx
+repo: gitalk
+owner: iosite
+adminUser: &amp;quot;['iosite']&amp;quot;
+ID: location.pathname
+labels: &amp;quot;['Gitalk']&amp;quot;
+perPage: 15
+pagerDirection: last
+createIssueManually: true
+distractionFreeMode: false
+&lt;/code>&lt;/pre>
+&lt;p>*部分功能未添加，因为大部分人应该也用不到，这里就不多说了，如果需要更多，请见&lt;em>&lt;b>&lt;a href="https://github.com/gitalk/gitalk"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>官方文档&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>各个功能：&lt;/p>
+&lt;pre>&lt;code class="language-js"> enable: true #指的是是否开启Gitalk
+ClientID: xxxxxx #之前的Client ID
+ClientSecret: xxxxxxxxxxxx #之前的Client Secret
+repo: gitalk #你要存放的项目名，下文会详细再说
+owner: iosite #这个项目名的拥有者（GitHub账号或组织）
+adminUser: &amp;quot;['iosite']&amp;quot; #管理员用户，下文也会详细讲
+ID: location.pathname #页面ID，不知道就默认的就好了
+labels: &amp;quot;['Gitalk']&amp;quot; #GitHub issues的标签，下面会详细说
+perPage: 15 #每页多少个评论
+pagerDirection: last #排序方式是从旧到新（first）还是从新到旧（last）
+createIssueManually: true #如果当前页面没有相应的 isssue ，且登录的用户属于 admin，则会自动创建 issue。如果设置为 true，则显示一个初始化页面，创建 issue 需要点击 init 按钮。
+distractionFreeMode: false #是否启用快捷键(cmd|ctrl + enter) 提交评论.
+&lt;/code>&lt;/pre>
+&lt;p>详细说明：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>repo&lt;br>
+&lt;strong>Gitalk&lt;/strong>是基于&lt;strong>GitHub&lt;/strong>的&lt;strong>issues&lt;/strong>功能的，所以，你要为他建一个库或用现成的库，我个人建议新建一个，而&lt;code>repo&lt;/code>就是你要用的库的名称。 比如，我就为&lt;strong>Gitalk&lt;/strong>专门建了一个叫&lt;code>gitalk&lt;/code>的库，所以在&lt;code>repo: &lt;/code>处填&lt;code>gitalk&lt;/code>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>adminUser&lt;br>
+即管理员帐号。如果你是个人账号，那么这=里就填你的账户名和协作者的账户名。&lt;/p>
+&lt;p>以数组形式，外面再加一层引号&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>labels&lt;br>
+主要是说一下，如果你之前用的是&lt;strong>Gitment&lt;/strong>，又有评论，把这里改成&lt;code>gitment&lt;/code>即可，如果没有，默认的就可以啦！以数组形式，外面再加一层引号&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="样式修改">样式修改&lt;/h3>
+&lt;p>最后，在&lt;code>layout/_third-party/comments/index.swig&lt;/code>中添加这样一行：&lt;/p>
+&lt;pre>&lt;code class="language-css">.gt-container a{border-bottom: none;}
+&lt;/code>&lt;/pre>
+&lt;p>完成！&lt;/p>
+&lt;h2 id="ejs文件修改法">ejs文件修改法&lt;/h2>
+&lt;h3 id="修改源码">修改源码&lt;/h3>
+&lt;p>添加&lt;code>layout/_partial/post/gitalk.ejs&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-html"> &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.css&amp;quot;&amp;gt;
+&amp;lt;script src=&amp;quot;https://unpkg.com/gitalk/dist/gitalk.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+var gitalk = new Gitalk({
+clientID: '&amp;lt;%=theme.gitalk.ClientID%&amp;gt;',
+clientSecret: '&amp;lt;%=theme.gitalk.ClientSecret%&amp;gt;',
+repo: '&amp;lt;%=theme.gitalk.repo%&amp;gt;',
+owner: '&amp;lt;%=theme.gitalk.owner%&amp;gt;',
+admin: &amp;lt;%=theme.gitalk.adminUser%&amp;gt;,
+id: &amp;lt;%=theme.gitalk.ID%&amp;gt;,
+labels: &amp;lt;%=theme.gitalk.labels%&amp;gt;,
+perPage: &amp;lt;%=theme.gitalk.perPage%&amp;gt;,
+pagerDirection: '&amp;lt;%=theme.gitalk.pagerDirection%&amp;gt;',
+createIssueManually: &amp;lt;%=theme.gitalk.createIssueManually%&amp;gt;,
+distractionFreeMode: &amp;lt;%=theme.gitalk.distractionFreeMode%&amp;gt;
+})
+gitalk.render('gitalk-container')
+&amp;lt;/script&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>在 &lt;code>layout/_partial/article.ejs&lt;/code> 倒数第二行加入&lt;/p>
+&lt;pre>&lt;code class="language-html"> &amp;lt;% if (theme.gitalk.enable){ %&amp;gt;
+&amp;lt;div id=&amp;quot;gitalk-container&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;%- include post/gitalk.ejs %&amp;gt;
+&amp;lt;% } %&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>配置修改法见&lt;em>&lt;b>&lt;a href="#%e8%bf%9b%e8%a1%8c%e9%85%8d%e7%bd%ae">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>上文&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>，与swig格式大同小异&lt;/p>
+&lt;p>Demo就在下面，欢迎留言评论！&lt;/p></description></item><item><title>hexo评论系统——Gitment</title><link>https://iochen.com/post/use-gitment-in-your-blog/</link><pubDate>Fri, 05 Jan 2018 19:22:56 +0000</pubDate><guid>https://iochen.com/post/use-gitment-in-your-blog/</guid><description>&lt;p>由于&lt;strong>hexo&lt;/strong>生成的是静态博客，所以有些功能是无法附加上去的，就比如说评论系统。&lt;br>
+我用过的评论系统不多，也只有&lt;strong>Disqus&lt;/strong>和&lt;strong>Gitment&lt;/strong>，其他的也只是了解一些，我就来谈谈为什么要用&lt;strong>Gitment&lt;/strong>吧！&lt;br>
+国内之前是有&lt;strong>多说&lt;/strong>的，但由于一些“原因”被迫关闭了。现在国内比较流行的是&lt;strong>畅言&lt;/strong>，但毕竟这还是要经过审查的，所以我没有用。&lt;br>
+之所以之前使用&lt;strong>Disqus&lt;/strong>，是因为它在国外的应用很广，自己也试用了用，感觉不错，所以之前一直用的是&lt;strong>Disqus&lt;/strong>。&lt;br>
+&lt;strong>Gitment&lt;/strong>用下来我个人感觉整体还不错，下面，我就来说说应该怎样配置&lt;strong>Gitment&lt;/strong>吧。&lt;/p>
+&lt;h1>&lt;font color="red">&lt;b>！！由于Gitment不再维护，建议使用&lt;a href="https://iochen.com/2018/01/06/use-gitalk-in-hexo/">Gitalk&lt;/a>！！&lt;/b>&lt;/font>&lt;/h1>
+&lt;h2 id="配置gitment">配置&lt;strong>Gitment&lt;/strong>&lt;/h2>
+&lt;p>首先，你得有一个&lt;strong>Github&lt;/strong>账号（这个就不多说了吧），下面，打开&lt;em>&lt;b>&lt;a href="https://github.com/settings/applications/new"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>&lt;em>&lt;strong>这个链接&lt;/strong>&lt;/em>&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>，具体填法如下：&lt;/p>
+&lt;pre>&lt;code class="language-cpp">Application name //应用名称，随便填
+Homepage URL //没有过多要求，可以填自己的博客地址
+Application description //应用描述，描述一下，无要求
+Authorization callback URL //这个就有要求了，填自己要使用Gitment的博客地址，不可乱填
+&lt;/code>&lt;/pre>
+&lt;p>接着，你就可以得到&lt;code>Client ID&lt;/code>和&lt;code>Client Secret&lt;/code>，之后会用到的。接下来，我们回到hexo的主题配置里继续！&lt;/p>
+&lt;h3 id="如何配置">如何配置&lt;/h3>
+&lt;p>如果在主题的配置文件里有&lt;code>gitment&lt;/code> ，就继续往下看吧！如果没有，请翻到底部，或点击左边的&lt;code>附：如何添加Gitment功能&lt;/code>。
+（我只用过&lt;strong>Next&lt;/strong>主题，只知道&lt;strong>NexT&lt;/strong>主题是有的）&lt;br>
+怎么填呢？见下面&lt;/p>
+&lt;pre>&lt;code class="language-cpp">gitment:
+enable: true //是否打开
+count: true //是否计数
+cleanly: false //是否隐藏'Powered by Gitment'字样
+language: zh-Hans //语言
+github_user: geedme //你的GitHub用户名或ID
+github_repo: gitment //你要存放的库，下文会详细写
+client_id: xxxxx //上文的的Client Id
+client_secret: xxxxxx //上文的Client Secret
+&lt;/code>&lt;/pre>
+&lt;p>*如需复制，请删除 // 及后方内容，或将 // 改为 # *&lt;br>
+&lt;em>我之前踩过一个坑，就是 冒号 和后面的内容之间一定要加空格！否则会出错的！！&lt;/em>&lt;/p>
+&lt;p>至于还有几个选项没有写，一是因为不常用，二是因为……我也没用过……不能误导大家。&lt;br>
+可能&lt;code>repo&lt;/code>说的不太明白（其实是我第一次没搞懂），我这里详细说一下。其实&lt;strong>Gitment&lt;/strong>是基于&lt;strong>GitHub&lt;/strong>的&lt;strong>issues&lt;/strong>功能的，所以，你要为他建一个库或用现成的库，我个人建议新建一个，而&lt;code>repo&lt;/code>就是你要用的库的名称。 比如，我就为&lt;strong>Gitment&lt;/strong>专门建了一个叫&lt;code>gitment&lt;/code>的库，所以在&lt;code>github_repo: &lt;/code>处填&lt;code>gitment&lt;/code>。&lt;/p>
+&lt;h3 id="附如何添加gitment功能">附：如何添加Gitment功能&lt;/h3>
+&lt;p>&lt;em>附加内容未亲自实验过，内容来源于网络&lt;/em>&lt;/p>
+&lt;p>见&lt;em>&lt;b>&lt;a href="https://dj9399.github.io/post/Gitment%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>此网站&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>(懒得写了……)&lt;/p>
+&lt;h2 id="其它">其它&lt;/h2>
+&lt;p>这是我写的第一篇&amp;quot;有意义&amp;quot;的博文，欢迎大家在下方评论！&lt;/p></description></item><item><title/><link>https://iochen.com/search/</link><pubDate>Mon, 02 Jan 2006 15:04:05 -0700</pubDate><guid>https://iochen.com/search/</guid><description>&lt;div style="
+padding-left: 5%;
+padding-top: 1em;">
+&lt;input id="key" type="text" placeholder="Search" style="
+width: 90%;
+height: 2.5em;
+font-size: large;
+padding-left: 2%;"/>
+&lt;i id="searchbtn" class="fa fa-search fa-lg" style="
+position: relative;
+left: -1.6em;
+color: #222222;
+cursor:pointer;">&lt;/i>
+&lt;input type="checkbox" class="mdisnone" id="autos" style="
+height: 2em;
+width: 2em;
+vertical-align: middle;
+display: inline-block;
+" checked> &lt;/div>
+&lt;div id="result" style="
+padding-left: 5%;
+padding-right: 5%;
+padding-bottom: 1em;">&lt;/div>
+&lt;script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js">&lt;/script>
+&lt;script defer>
+let data;
+document.getElementById("result").innerHTML = "&lt;p>downloading data...&lt;/p>";
+$.getJSON('search.json', function (d) {
+data = d
+});
+document.getElementById("result").innerHTML = "&lt;p>ready to search&lt;/p>";
+function doSearch() {
+let j;
+const list = [];
+const key = document.getElementById("key").value.toLowerCase();
+if (key === "") {
+document.getElementById("result").innerHTML = "&lt;p>ready to search&lt;/p>";
+return
+}
+document.getElementById("result").innerHTML = "";
+let entry;
+for (const i in data.Entries) {
+entry = data.Entries[i];
+for (j in entry.Key) {
+if (entry.Key[j].indexOf(key) !== -1) {
+list[list.length] = entry;
+break
+}
+}
+}
+let r = "";
+for (j in list) {
+r += "&lt;li>&lt;a href="+list[j].URL+">"+list[j].Title+"&lt;/a>&lt;/li>"
+}
+document.getElementById("result").innerHTML = r;
+if (list.length === 0) {
+document.getElementById("result").innerHTML = "&lt;p>no result found&lt;/p>"
+}
+}
+$('#searchbtn').click(doSearch);
+$(document).keydown(function (event) {
+if (event.keyCode === 13) {
+$(document).keyup(function (event) {
+if (event.keyCode === 13) {
+$("#searchbtn").click();
+}
+});
+}
+});
+$("input[id=key]").on('input', function () {
+if ($('input[id=autos]').is(':checked')) {
+doSearch()
+}
+});
+&lt;/script></description></item><item><title>Links</title><link>https://iochen.com/links/</link><pubDate>Mon, 02 Jan 2006 15:04:05 -0700</pubDate><guid>https://iochen.com/links/</guid><description>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Name&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://liuyandong.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>栋哥的博客&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>I was so much older then, I&amp;rsquo;m younger than that now.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://lmzdx.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>绿帽子大学&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>软件那些事儿电台的官方网站 :)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://blog.sukiu.net/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>一人易安 - AnYi&amp;rsquo;s Blog&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>一个有趣的小朋友🙈&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://jiayu.mybabya.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>JiaYu Blog&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>Hello my name is JiaYu&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Powered by</title><link>https://iochen.com/powered-by/</link><pubDate>Mon, 02 Jan 2006 15:04:05 -0700</pubDate><guid>https://iochen.com/powered-by/</guid><description>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Name&lt;/th>
+&lt;th>Where&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://gohugo.io/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Hugo&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>static web-page generator&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://github.com/joshuous/hugo-notepadium"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Notepadium&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>base of my theme&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://github.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>GitHub&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>- static web-page storage service &lt;br/> - comment storage service &lt;br> - CI/CD service&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://github.com/gitalk/gitalk"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Gitalk&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>comment service&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://vercel.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Vercel&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>- CI/CD service &lt;br> - CDN service&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://www.jsdelivr.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>JsDelivr&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>CDN service&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://www.cloudflare.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Cloudflare&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>DNS service&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;em>&lt;b>&lt;a href="https://imgbot.net/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>ImgBot&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/td>
+&lt;td>picture minification service&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

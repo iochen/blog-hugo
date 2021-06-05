@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>issue on Richard Chen's Blog</title><link>https://iochen.com/tags/issue/</link><description>Recent content in issue on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Mon, 01 Jul 2019 11:15:45 +0000</lastBuildDate><atom:link href="https://iochen.com/tags/issue/index.xml" rel="self" type="application/rss+xml"/><item><title>dovecot permission denied 的解决办法</title><link>https://iochen.com/post/dovecot-problem-solve/</link><pubDate>Mon, 01 Jul 2019 11:15:45 +0000</pubDate><guid>https://iochen.com/post/dovecot-problem-solve/</guid><description>&lt;p>今天，在&lt;strong>openSUSE Leap 15.0&lt;/strong>上配置&lt;strong>dovecot&lt;/strong>的时候，出现了这个错误：&lt;/p>
+&lt;pre>&lt;code class="language-log">doveconf: Fatal: Error in configuration file /etc/dovecot/dovecot.conf line 7: ssl_cert: /etc/{some path} Can not open file: Permission denied
+&lt;/code>&lt;/pre>
+&lt;p>以下是我的解决办法&lt;/p>
+&lt;h1 id="环境">环境&lt;/h1>
+&lt;p>我的SSL证书是由&lt;strong>certbot&lt;/strong>颁发的，在&lt;code>/etc/certbot/...&lt;/code>下&lt;/p>
+&lt;h1 id="错误现象">错误现象&lt;/h1>
+&lt;p>&lt;strong>systemed&lt;/strong>开启&lt;strong>dovecot&lt;/strong>时，报错&lt;/p>
+&lt;pre>&lt;code class="language-log">doveconf: Fatal: Error in configuration file /etc/dovecot/dovecot.conf line 7: ssl_cert: /etc/{some path} Can not open file: Permission denied
+&lt;/code>&lt;/pre>
+&lt;h1 id="解决方案">解决方案&lt;/h1>
+&lt;p>在&lt;code>profiles/apparmor.d/abstractions/ssl_certs&lt;/code>中对应位置添加&lt;/p>
+&lt;pre>&lt;code class="language-c"> /etc/certbot/archive/*/cert*.pem r,
+/etc/certbot/archive/*/chain*.pem r,
+/etc/certbot/archive/*/fullchain*.pem r,
+&lt;/code>&lt;/pre>
+&lt;p>在&lt;code>profiles/apparmor.d/abstractions/ssl_keys&lt;/code>对应位置添加&lt;/p>
+&lt;pre>&lt;code> /etc/certbot/archive/*/privkey*.pem r,
+&lt;/code>&lt;/pre>
+&lt;p>详细可参考&lt;/p>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://gitlab.com/iochen/apparmor/commit/3016ffb3367e03ee2129401472d44d5eea4c1fb2"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>https://gitlab.com/iochen/apparmor/commit/3016ffb3367e03ee2129401472d44d5eea4c1fb2&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://gitlab.com/iochen/apparmor/commit/4d275bab696f58e1431d26da642e82adbe092526"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>https://gitlab.com/iochen/apparmor/commit/4d275bab696f58e1431d26da642e82adbe092526&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h1 id="后续">后续&lt;/h1>
+&lt;p>已在&lt;em>&lt;b>&lt;a href="https://gitlab.com/apparmor/apparmor"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>apparmor官方仓库&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>中提出&lt;em>&lt;b>&lt;a href="https://gitlab.com/apparmor/apparmor/merge_requests/397"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>PR&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;h1 id="参考">参考&lt;/h1>
+&lt;p>&lt;em>&lt;b>&lt;a href="https://forums.opensuse.org/showthread.php/531740-Unexpected-permissions-issue-with-Dovecot"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>LEAP 42.3 Unexpected permissions issue with Dovecot&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p></description></item></channel></rss>

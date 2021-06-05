@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Translation on Richard Chen's Blog</title><link>https://iochen.com/tags/translation/</link><description>Recent content in Translation on Richard Chen's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>©2020-2021 Richard Chen.</copyright><lastBuildDate>Thu, 04 Feb 2021 19:35:24 +0800</lastBuildDate><atom:link href="https://iochen.com/tags/translation/index.xml" rel="self" type="application/rss+xml"/><item><title>在 Flash 退出舞台后为 Chrome 启用 Adobe Flash</title><link>https://iochen.com/post/enable-adobe-flash-chrome-after-end-of-life/</link><pubDate>Thu, 04 Feb 2021 19:35:24 +0800</pubDate><guid>https://iochen.com/post/enable-adobe-flash-chrome-after-end-of-life/</guid><description>&lt;p>就像你知道的那样（或不知道），Adobe Flash 于 2020年12月31日 退出历史舞台，而自2021年1月12日起完全无法使用！&lt;/p>
+&lt;p>但是，对于部分用户以及 IT 人员而言，使用仍只支持 Adobe Flash 的旧系统时会引起灾难。&lt;/p>
+&lt;p>就算在此之前，出于安全考虑，也仍需要采取特殊步骤来允许 Adobe Flash。&lt;/p>
+&lt;p>而自 2021年1月12日 起，这些步骤将不再有效。即使选择“允许” Flash，Adobe 也会故意阻止它。你会看到类似下面的内容。&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/iochen/blog-hugo@public/img/enable-adobe-flash-chrome-after-end-of-life/Disabled.png"
+alt="Adobe Flash 已禁用"/>&lt;/p>
+&lt;h2 id="解决方案">解决方案&lt;/h2>
+&lt;p>该解决方法仅应用于紧急情况，因为是时候该减少对 Flash 的依赖了。&lt;/p>
+&lt;p>为了解决此问题，您将需要 Chrome 版本 87 或更早版本，因为版本88不包括 Adobe Flash。&lt;/p>
+&lt;h3 id="step-1">STEP 1&lt;/h3>
+&lt;h4 id="windows">Windows&lt;/h4>
+&lt;pre>&lt;code>C:\Users\{用户名}\AppData\Local\Google\Chrome\User Data\Default\Pepper Data\Shockwave Flash\System\
+&lt;/code>&lt;/pre>
+&lt;p>需要在如上路径创建一个 &lt;code>mms.cfg&lt;/code> 文件&lt;/p>
+&lt;p>（请自行替换 &lt;code>{用户名}&lt;/code>）&lt;/p>
+&lt;h4 id="mac">Mac&lt;/h4>
+&lt;pre>&lt;code>/Users/{用户名}/Library/Application Support/Google/Chrome/Default/Pepper Data/Shockwave Flash/System/
+&lt;/code>&lt;/pre>
+&lt;p>需要在如上路径创建一个 &lt;code>mms.cfg&lt;/code> 文件&lt;/p>
+&lt;p>（请自行替换 &lt;code>{用户名}&lt;/code>）&lt;/p>
+&lt;h4 id="linux">Linux&lt;/h4>
+&lt;pre>&lt;code>~/.config/google-chrome/Default/Pepper Data/Shockwave Flash/System/
+&lt;/code>&lt;/pre>
+&lt;p>需要在如上路径创建一个 &lt;code>mms.cfg&lt;/code> 文件&lt;/p>
+&lt;h3 id="step-2">STEP 2&lt;/h3>
+&lt;p>&lt;code>mms.cfg&lt;/code> 文件内容如下：&lt;/p>
+&lt;pre>&lt;code class="language-cfg">EnableAllowList = 1
+AllowListUrlPattern = http://COMPUTERNAME/
+AllowListUrlPattern = https://IP.ADDRESS/
+AllowListUrlPattern = *://server.domain.com/
+AllowListUrlPattern = ...
+&lt;/code>&lt;/pre>
+&lt;p>按需添加 &lt;code>AllowListUrlPattern = ...&lt;/code>&lt;/p>
+&lt;p>例如：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>AllowListUrlPattern = *://google.com/&lt;/code>&lt;/li>
+&lt;li>&lt;code>AllowListUrlPattern = *://192.168.1.1/&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h3 id="step-3">STEP 3&lt;/h3>
+&lt;p>要访问网站：&lt;/p>
+&lt;ol>
+&lt;li>创建此文件并编辑保存后，打开 &lt;strong>Chrome&lt;/strong>&lt;/li>
+&lt;li>打开到您要查看的页面&lt;/li>
+&lt;li>单击地址栏左方的 &lt;strong>小锁&lt;/strong> 或 &lt;strong>不安全图标&lt;/strong>&lt;/li>
+&lt;li>将 &lt;strong>Adobe Flash&lt;/strong> 从 &lt;strong>询问&lt;/strong> 更改为 &lt;strong>允许&lt;/strong>&lt;/li>
+&lt;li>&lt;strong>Chrome&lt;/strong> 提示时，点击 &lt;strong>刷新&lt;/strong>&lt;/li>
+&lt;li>不要更新，单击 &lt;strong>运行一次&lt;/strong>。&lt;/li>
+&lt;/ol>
+&lt;p>（译者注：译者使用的是 英文版，选项名称可能有所出入）&lt;/p>
+&lt;h3 id="其它">其它&lt;/h3>
+&lt;p>（以下信息与原文章无关）&lt;/p>
+&lt;p>注：博主在 Linux 上实测有效，在其它平台未测试&lt;/p>
+&lt;p>本文翻译自：&lt;em>&lt;b>&lt;a href="https://www.stephenwagner.com/2021/01/13/enable-adobe-flash-chrome-after-end-of-life/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Enable Adobe Flash on Chrome after End of Life&amp;nbsp;&lt;/a>&lt;/b>&lt;/em>&lt;/p>
+&lt;hr>
+&lt;p>内容著作权归 &lt;em>&lt;b>&lt;a href="https://www.stephenwagner.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>原作者&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 所有&lt;/p>
+&lt;p>译文著作权归 &lt;em>&lt;b>&lt;a href="https://iochen.com/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>Richard Chen&amp;rsquo;s Blog&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 所有&lt;/p>
+&lt;p>二次分发同时标明 &lt;em>&lt;b>&lt;a href="%28https://www.stephenwagner.com/2021/01/13/enable-adobe-flash-chrome-after-end-of-life/%29">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>原文&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 与 &lt;em>&lt;b>&lt;a href="https://iochen.com/post/enable-adobe-flash-chrome-after-end-of-life/"target="_blank">&amp;nbsp;&lt;i class="fa fa-external-link" aria-hidden="true" style="font-size: small">&lt;/i>译文&amp;nbsp;&lt;/a>&lt;/b>&lt;/em> 出处&lt;/p></description></item></channel></rss>
