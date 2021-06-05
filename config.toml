@@ -1,8 +1,8 @@
 baseURL = "https://iochen.com/"
-languageCode = "en-us"
+languageCode = "zh-CN"
 title = "Richard Chen's Blog"
 theme = "iotheme"
-copyright = "©2020 Richard Chen."
+copyright = "©2020-2021 Richard Chen."
 
 [params]
 logo = "images/logo.svg"
